@@ -14,6 +14,7 @@ def index():
 def dashboard(id):
     return render_template("dashboard.html", user_id=id)
 
+
 # Create Custom Error Pages
 
 # Invalid URL
