@@ -9,10 +9,10 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route('/dashboard/<id>')
+@app.route('/dashboard')
 
-def dashboard(id):
-    return render_template("dashboard.html", user_id=id)
+def dashboard():
+    return render_template("dashboard.html")
 
 
 # Create Custom Error Pages

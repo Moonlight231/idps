@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Responsive Dashboard Design #2 | AsmrProg</title>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <i class='bx bx-code-alt'></i>
+            <div class="logo-name"><span>ID</span>PS</div>
+        </a>
+        <ul class="side-menu">
+            <li class="active"><a href="#"><i class="material-icons-sharp">dashboard</i> Dashboard</a></li>
+            <li><a href="#"><i class="material-icons-sharp">person_outline</i>User</a></li>
+            <li> <a href="#"><i class="material-icons-sharp">insights</i>Analytics</a></li>
+            <li><a href="#"><i class="material-icons-sharp">receipt_long</i>History</a></li>
+            <li><a href="#"><i class="material-icons-sharp">add</i> New Login</a></li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="#" class="logout">
+                    <i class="material-icons-sharp">logout</i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <div class="navbar">
+                <div class="dark-mode">
+                    <span class="material-icons-sharp active">
+                        light_mode
+                    </span>
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                </div>
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey, <b>John Rey</b></p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="images/Dp.jpg">
+                    </div>
+                </div>
+            <div>
+        </nav>
+
+        <!-- End of Navbar -->
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#">
+                                Analytics
+                            </a></li>
+                        /
+                        <li><a href="#" class="active">Shop</a></li>
+                    </ul>
+                </div>
+                <a href="#" class="report">
+                    <i class='bx bx-cloud-download'></i>
+                    <span>Download CSV</span>
+                </a>
+            </div>
+
+            <!-- Insights -->
+                <ul class="insights">
+
+                    <li class='user-profile'>
+                        <span class="info">
+                            <img src="images/Dp.jpg">
+                            <!--<h3>AsmrProg</h3>
+                            <p>Fullstack Web Developer</p>-->
+                        </span>
+                    </li>
+                    
+                    <li>
+                        <span class="info">
+                            
+                            <h3>
+                                Dela Cruz, Juan P.
+                            </h3>
+                            <p>
+                                <strong>Birthday:&nbsp;&nbsp;</strong> 01-01-2003<br>
+                                <strong>Blood Type:&nbsp;&nbsp;</strong> O+<br>
+                                <strong>Address:&nbsp;&nbsp;</strong> Alangilan, Batangas City, Batangas<br>
+                                <br>
+                                <strong>Email:&nbsp;&nbsp;</strong> juandelacruz@gmaul.com<br>
+                                <strong>Contact No:&nbsp;&nbsp;</strong> +63 921-346-5789
+                            </p>
+                            
+                        </span>
+                    </li>
+                    
+                    
+                </ul>
+            <!-- End of Insights -->
+
+            <div class="bottom-data">
+                <div class="orders">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Recent Orders</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-search'></i>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Order Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="images/profile-1.jpg">
+                                    <p>John Doe</p>
+                                </td>
+                                <td>14-08-2023</td>
+                                <td><span class="status completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="images/profile-1.jpg">
+                                    <p>John Doe</p>
+                                </td>
+                                <td>14-08-2023</td>
+                                <td><span class="status pending">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="images/profile-1.jpg">
+                                    <p>John Doe</p>
+                                </td>
+                                <td>14-08-2023</td>
+                                <td><span class="status process">Processing</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Reminders -->
+                <div class="reminders">
+                    <div class="header">
+                        <i class='bx bx-note'></i>
+                        <h3>Remiders</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-plus'></i>
+                    </div>
+                    <ul class="task-list">
+                        <li class="completed">
+                            <div class="task-title">
+                                <i class='bx bx-check-circle'></i>
+                                <p>Start Our Meeting</p>
+                            </div>
+                            <i class='bx bx-dots-vertical-rounded'></i>
+                        </li>
+                        <li class="completed">
+                            <div class="task-title">
+                                <i class='bx bx-check-circle'></i>
+                                <p>Analyse Our Site</p>
+                            </div>
+                            <i class='bx bx-dots-vertical-rounded'></i>
+                        </li>
+                        <li class="not-completed">
+                            <div class="task-title">
+                                <i class='bx bx-x-circle'></i>
+                                <p>Play Footbal</p>
+                            </div>
+                            <i class='bx bx-dots-vertical-rounded'></i>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- End of Reminders-->
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
