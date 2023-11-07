@@ -31,6 +31,9 @@ document.querySelector('.content nav .bx.bx-menu').addEventListener('click', tog
 
 
 
+
+
+
 const searchBtn = document.querySelector('.content nav form .form-input button');
 const searchBtnIcon = document.querySelector('.content nav form .form-input button .bx');
 const searchForm = document.querySelector('.content nav form');
@@ -59,63 +62,8 @@ window.addEventListener('resize', () => {
     }
 });
 
-//new dark mode
-function getUserPreference() {
-  return localStorage.getItem('theme') || 'light';
-}
-function saveUserPreference(userPreference) {
-  localStorage.setItem('theme', userPreference);
-}
-
-function getAppliedMode(userPreference) {
-  if (userPreference === 'light') {
-    darkMode.querySelector('span:nth-child(1)').classList.add('active');
-  darkMode.querySelector('span:nth-child(2)').classList.remove('active');
-    return 'light';
-  }
-  if (userPreference === 'dark') {
-    darkMode.querySelector('span:nth-child(1)').classList.remove('active');
-  darkMode.querySelector('span:nth-child(2)').classList.add('active');
-    return 'dark';
-  }
-}
-
-function setAppliedMode(mode) {
-  document.documentElement.dataset.appliedMode = mode;
-}
-
-function rotatePreferences(userPreference) {
-  if (userPreference === 'dark') {
-    return 'light'
-  }
-  if (userPreference === 'light') {
-    return 'dark';
-  }
-
-}
-
-const themeDisplay = document.getElementById('mode');
-const themeToggler = document.getElementById('theme-toggle');
-const darkMode = document.querySelector('.dark-mode');
-
-let userPreference = getUserPreference();
-setAppliedMode(getAppliedMode(userPreference));
-themeDisplay.innerText = userPreference;
-
-themeToggler.onclick = () => {
-  const newUserPref = rotatePreferences(userPreference);
-  userPreference = newUserPref;
-  saveUserPreference(newUserPref);
-  themeDisplay.innerText = newUserPref;
-  setAppliedMode(getAppliedMode(newUserPref));
-}
-
-
-
-/*
 const body = document.querySelector('body');
 const darkMode = document.querySelector('.dark-mode');
-
 
 function toggleDark() {
     if (body.classList.contains('dark-mode-variables')) {
@@ -141,7 +89,7 @@ function toggleDark() {
   }
 
 document.querySelector('.dark-mode').addEventListener('click', toggleDark);
-*/
+
 
 
 
