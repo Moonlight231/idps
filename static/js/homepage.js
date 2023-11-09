@@ -28,15 +28,15 @@ link3.addEventListener('click', () => {
 
 //
 const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry)=>{
-        console.log(entry)
-        if (entry.isIntersecting){
-            entry.target.classList.add('show')
-        }
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        setTimeout(() => {
+          entry.target.style.transitionDelay = '0s';
+        }, 300);
+      }
     });
-
-
-    });
+  });
 
 
 const hiddenElements = document.querySelectorAll('.hidden');

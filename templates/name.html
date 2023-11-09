@@ -1,0 +1,244 @@
+{% extends 'base.html'%}
+{% block content %}
+
+
+
+
+
+
+
+<main>
+{% for message in get_flashed_messages() %}
+    
+    <div class="toast">
+        <div class="toast-content">
+            <i class="fas fa-solid fa-check check"></i>
+            <div class="message">
+                Hey {{name}}, {{message}}
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress"></div>
+    </div>
+    
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+<div class="formcontainer">
+    <header>Name</header>
+
+{% if name %}
+    <br>
+    <h1>Hello {{name}}</h1>
+
+{% else %}
+    <br>
+    <h1>What's Your Name?</h1>
+    <br>
+    <form method="post">
+        <div class="form first">
+            <div class="details personal">
+                <span class="title">Personal Details</span>
+                <div class="fields">
+                    <div class="input-field">
+                        {{ form.hidden_tag() }}
+                        {{ form.name.label(class="label") }}
+                        {{ form.name(class="input", placeholder="Enter Name") }}
+                    </div>
+                </div>
+                <button class="nextBtn notifbutton" id="notifbutton">
+                    <span class="btnText">Next</span>
+                    <i class="uil uil-navigator"></i>
+                </button>
+                
+            </div>
+        </div>
+
+        
+        
+
+    </form>
+
+
+{% endif %}
+
+
+</div>
+
+
+<div class="formcontainer">
+    <header>Registration</header>
+    <form method="post" id="regform">
+        <div class="form first">
+            <div class="details personal">
+                <span class="title">Personal Details</span>
+                <div class="fields">
+                    <div class="input-field">
+                        <label>{{ form.name.label }}</label>
+                        <input type="text" placeholder="Enter your name" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Date of Birth</label>
+                        <input type="date" placeholder="Enter birth date" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Email</label>
+                        <input type="text" placeholder="Enter your email" required>
+                    </div>
+                    
+
+                    <div class="input-field">
+                        <label>Mobile Number</label>
+                        <input type="number" placeholder="Enter mobile number" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Gender</label>
+                        <input type="text" placeholder="Enter gender" required>
+                    </div>
+                    <div class="input-field">
+                        <label>occupation</label>
+                        <input type="text" placeholder="Enter your occupation" required>
+                    </div> 
+                </div>
+            </div>
+
+
+            <div class="details ID">
+                <span class="title">Identity Details</span>
+                <div class="fields">
+                    <div class="input-field">
+                        <label>ID type</label>
+                        <input type="text" placeholder="Enter ID type" required>
+                    </div>
+                    <div class="input-field">
+                        <label>ID number</label>
+                        <input type="number" placeholder="Enter ID number" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Issued Date</label>
+                        <input type="date" placeholder="Enter issued date" required>
+                    </div>
+                    
+
+                    <div class="input-field">
+                        <label>Issued State</label>
+                        <input type="text" placeholder="Enter issued state" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Issued Autority</label>
+                        <input type="text" placeholder="Enter issued authority" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Expiry Date</label>
+                        <input type="date" placeholder="Enter Expiry date" required>
+                    </div> 
+                </div>
+                <button class="nextBtn">
+                    <span class="btnText">Next</span>
+                    <i class="uil uil-navigator"></i>
+                </button>
+            </div>  
+        </div>
+
+
+        <div class="form second">
+            <div class=" address details">
+                <span class="title">Address Details</span>
+
+                <div class="fields">
+                    <div class="input-field">
+                        <label>Address Type</label>
+                        <input type="text" placeholder="Enter address type" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Nationality</label>
+                        <input type="text" placeholder="Enter nationality" required>
+                    </div>
+                    <div class="input-field">
+                        <label>State</label>
+                        <input type="text" placeholder="Enter state" required>
+                    </div>
+                    
+
+                    <div class="input-field">
+                        <label>Disctrict</label>
+                        <input type="text" placeholder="Enter disctrict" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Block Number</label>
+                        <input type="number" placeholder="Enter block number" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Ward number</label>
+                        <input type="text" placeholder="Enter your ward number" required>
+                    </div> 
+                </div>
+            </div>
+
+
+            <div class="details family">
+                <span class="title">Family Details</span>
+                <div class="fields">
+                    <div class="input-field">
+                        <label>Father name</label>
+                        <input type="text" placeholder="Enter your father name" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Mother name</label>
+                        <input type="text" placeholder="Enter your mother name" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Grandfather Name</label>
+                        <input type="text" placeholder="Enter grandfather name " required>
+                    </div>
+                    
+
+                    <div class="input-field">
+                        <label>Spouse Name</label>
+                        <input type="text" placeholder="Enter spouse name" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Father in Law</label>
+                        <input type="text" placeholder="Enter father in law name" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Mother in Law</label>
+                        <input type="date" placeholder="Enter mother in law name" required>
+                    </div> 
+                </div>
+                <div class="buttons">
+                    <div class="backBtn">
+                        <i class="uil uil-navigator"></i>
+                        <span class="btnText">Back</span>
+                    </div>
+                    <button class="nextBtn">    
+                        <span class="btnText">Next</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block sidebar_script %}
+<script>
+    document.getElementById('name-link').classList.toggle('active');
+</script>
+{% endblock %}

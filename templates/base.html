@@ -3,10 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="{{url_for('static', filename= '/css/style.css')}}" />
     <title>IDPS</title>
 </head>
@@ -35,8 +38,43 @@
         
 
     </div>
-
     <script src="{{url_for('static', filename= '/js/index.js')}}"></script>
+    <script>
+        const
+          toast = document.querySelector(".toast")
+          closeIcon = document.querySelector(".close"),
+          progress = document.querySelector(".progress");
+    
+          let timer1, timer2;
+    
+    
+          window.onload = function notify () {
+            toast.classList.add("active");
+            progress.classList.add("active");
+    
+            timer1 = setTimeout(() => {
+                toast.classList.remove("active");
+            }, 5000); //1s = 1000 milliseconds
+    
+            timer2 = setTimeout(() => {
+              progress.classList.remove("active");
+            }, 5300);
+          };
+          
+          closeIcon.addEventListener("click", () => {
+            toast.classList.remove("active");
+            
+            setTimeout(() => {
+              progress.classList.remove("active");
+            }, 300);
+    
+            clearTimeout(timer1);
+            clearTimeout(timer2);
+          });
+    </script>
+    {% block sidebar_script %}
+
+    {% endblock %}
 </body>
 
 </html>

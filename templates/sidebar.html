@@ -1,15 +1,17 @@
 <!-- Sidebar -->
 <div class="sidebar" id="side-bar">
-    <a href="#" class="logo">
+    <a href="{{url_for('index')}}" class="logo">
         <i class='bx bx-code-alt'></i>
         <div class="logo-name" style="font-weight:600;"><span   style="font-size:28px;">Rx</span>PRESS</div>
     </a>
     <ul class="side-menu">
-        <li class="active"><a href="{{url_for('dashboard')}}"><i class="material-icons-sharp">dashboard</i> Dashboard</a></li>
-        <li><a href="#"><i class="material-icons-sharp">person_outline</i>User</a></li>
-        <li> <a href="#"><i class="material-icons-sharp">insights</i>Analytics</a></li>
-        <li><a href="#"><i class="material-icons-sharp">receipt_long</i>History</a></li>
-        <li><a href="#"><i class="material-icons-sharp">add</i> New Login</a></li>
+        <li id="dashboard-link"><a href="{{url_for('dashboard')}}"><i class="material-icons-sharp">dashboard</i> Dashboard</a></li>
+        <li id="name-link"><a href="{{url_for('name')}}"><i class="material-icons-sharp">person_outline</i>Name</a></li>
+        <li id="add_customer-link"><a href="{{url_for('add_customer')}}"><i class="material-icons-sharp">person_outline</i>Add Customer</a></li>
+        <li id="user-link"><a href="#"><i class="material-icons-sharp">person_outline</i>User</a></li>
+        <li id="analytics-link"> <a href="#"><i class="material-icons-sharp">insights</i>Analytics</a></li>
+        <li id="history-link"><a href="#"><i class="material-icons-sharp">receipt_long</i>History</a></li>
+        <li id="new_login-link"><a href="#"><i class="material-icons-sharp">add</i> New Login</a></li>
     </ul>
     <ul class="side-menu">
         <li>

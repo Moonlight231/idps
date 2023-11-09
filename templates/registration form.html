@@ -1,0 +1,219 @@
+{% extends 'base.html'%}
+{% block content %}
+
+<main>
+
+    <!--
+    <div class="modal-bg">
+        <div class="modal">
+            <span class="close-modal" onclick="closeModal()"><i class="bx bx-x"></i></span>
+            <img class="img-qr" src="{{url_for('static', filename= '/images/qr-sample.png')}}" alt="QR Code">
+            <a href="#" class="download-button" style="color: white;
+            background-color: var(--success);">
+                Download QR
+            </a>
+        </div>
+    </div>
+    -->
+
+
+    <div class="header">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li><a href="#">
+                        Analytics
+                    </a></li>
+                /
+                <li><a href="#" class="active">Shop</a></li>
+            </ul>
+        </div>
+        <!--
+        <a href="#" class="report">
+            <i class='bx bx-qr'></i>
+            <span>Profile QR</span>
+        </a>
+         -->
+    </div>
+
+    <div class="formcontainer">
+        <header>Registration</header>
+        <form action="" id="regform">
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Personal Details</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Full Name</label>
+                            <input type="text" placeholder="Enter your name" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Date of Birth</label>
+                            <input type="date" placeholder="Enter birth date" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Email</label>
+                            <input type="text" placeholder="Enter your email" required>
+                        </div>
+                        
+
+                        <div class="input-field">
+                            <label>Mobile Number</label>
+                            <input type="number" placeholder="Enter mobile number" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Gender</label>
+                            <input type="text" placeholder="Enter gender" required>
+                        </div>
+                        <div class="input-field">
+                            <label>occupation</label>
+                            <input type="text" placeholder="Enter your occupation" required>
+                        </div> 
+                    </div>
+                </div>
+
+
+                <div class="details ID">
+                    <span class="title">Identity Details</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>ID type</label>
+                            <input type="text" placeholder="Enter ID type" required>
+                        </div>
+                        <div class="input-field">
+                            <label>ID number</label>
+                            <input type="number" placeholder="Enter ID number" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Issued Date</label>
+                            <input type="date" placeholder="Enter issued date" required>
+                        </div>
+                        
+
+                        <div class="input-field">
+                            <label>Issued State</label>
+                            <input type="text" placeholder="Enter issued state" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Issued Autority</label>
+                            <input type="text" placeholder="Enter issued authority" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Expiry Date</label>
+                            <input type="date" placeholder="Enter Expiry date" required>
+                        </div> 
+                    </div>
+                    <button class="nextBtn">
+                        <span class="btnText">Next</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>  
+            </div>
+
+
+            <div class="form second">
+                <div class=" address details">
+                    <span class="title">Address Details</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Address Type</label>
+                            <input type="text" placeholder="Enter address type" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Nationality</label>
+                            <input type="text" placeholder="Enter nationality" required>
+                        </div>
+                        <div class="input-field">
+                            <label>State</label>
+                            <input type="text" placeholder="Enter state" required>
+                        </div>
+                        
+
+                        <div class="input-field">
+                            <label>Disctrict</label>
+                            <input type="text" placeholder="Enter disctrict" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Block Number</label>
+                            <input type="number" placeholder="Enter block number" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Ward number</label>
+                            <input type="text" placeholder="Enter your ward number" required>
+                        </div> 
+                    </div>
+                </div>
+
+
+                <div class="details family">
+                    <span class="title">Family Details</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Father name</label>
+                            <input type="text" placeholder="Enter your father name" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Mother name</label>
+                            <input type="text" placeholder="Enter your mother name" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Grandfather Name</label>
+                            <input type="text" placeholder="Enter grandfather name " required>
+                        </div>
+                        
+
+                        <div class="input-field">
+                            <label>Spouse Name</label>
+                            <input type="text" placeholder="Enter spouse name" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Father in Law</label>
+                            <input type="text" placeholder="Enter father in law name" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Mother in Law</label>
+                            <input type="date" placeholder="Enter mother in law name" required>
+                        </div> 
+                    </div>
+                    <div class="buttons">
+                        <div class="backBtn">
+                            <i class="uil uil-navigator"></i>
+                            <span class="btnText">Back</span>
+                        </div>
+                        <button class="nextBtn">    
+                            <span class="btnText">Next</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+        <script>
+            const form = document.getElementById("regform"),
+                    nextBtn = form.querySelector(".nextBtn"),
+                    backBtn = form.querySelector(".backBtn"),
+                    allInput = form.querySelectorAll(".first input");
+        
+        
+            nextBtn.addEventListener("click", ()=> {
+                allInput.forEach(input =>{
+                    if(input.value != ""){
+                        form.classList.add('secActive');
+                    }else{
+                        form.classList.remove('secActive');
+                    }
+                })
+            })
+        
+            backBtn.addEventListener("click",()=> form.classList.remove('secActive'));
+        </script>   
+    </div>
+
+<!---Reg form js-->
+ 
+    
+</main>
+
+{% endblock %}
