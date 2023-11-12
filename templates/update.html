@@ -37,24 +37,24 @@
 
 {% if name %}
     <br>
-    <h1>Customer Added!</h1>
+    <h1>Update Customer:</h1>
 
     <div class="formcontainer">
         {% for our_customer in our_customers %}
                 {{ our_customer.customer_id}} - 
                 <a href="{{url_for('update', customer_id=our_customer.customer_id)}}"> {{ our_customer.name }} </a> - 
                 {{ our_customer.email}} - 
-                {{ our_customer.blood_type}} - <a href="{{url_for('delete', customer_id=our_customer.customer_id)}}"> Delete </a>
+                {{ our_customer.blood_type }}
                 <br>
         
         {% endfor %}
-        </div>
+    </div>
 
 {% else %}
     <br>
-    <h1>Customer List:</h1>
+    <h1>Update User:</h1>
     <br>
-    <form method="post">
+    <form action="/update/{{name_to_update.customer_id}}" method="post">
         <div class="form first">
             <div class="details personal">
                 <span class="title">Personal Details</span>
@@ -63,42 +63,31 @@
                         {{ form.hidden_tag() }}
 
                         {{ form.name.label(class="label") }}
-                        {{ form.name(class="input") }}
+                        {{ form.name(class="input", value=name_to_update.name) }}
 
                         {{ form.email.label(class="label") }}
-                        {{ form.email(class="input") }}
+                        {{ form.email(class="input", value=name_to_update.email) }}
 
                         {{ form.blood_type.label(class="label") }}
-                        {{ form.blood_type(class="input") }}
-
-                        {{ form.password_hash.label(class="label") }}
-                        {{ form.password_hash(class="input") }}
-
-                        {{ form.password_hash2.label(class="label") }}
-                        {{ form.password_hash2(class="input") }}
+                        {{ form.blood_type(class="input", value=name_to_update.blood_type) }}
                     </div>
                 </div>
-                <button class="nextBtn">
-                    <span class="btnText">Submit</span>
-                    <i class="uil uil-navigator"></i>
-                </button>
+                <div class="buttons">
+                    <button>
+                        <span>Update</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                    <br>
+                    <a href="{{url_for('delete', customer_id=customer_id)}}" class="extrabutton" style="background-color: var(--danger);" >
+                        <span class="btnText">Delete</span>
+                        <i class="uil uil-navigator extrai"></i>
+                    </a>
+                </div>
                 
             </div>
         </div>
 
     </form>
-    <div class="formcontainer">
-        {% for our_customer in our_customers %}
-                {{ our_customer.customer_id}} - 
-                <a href="{{url_for('update', customer_id=our_customer.customer_id)}}"> {{ our_customer.name }} </a> - 
-                {{ our_customer.email}} - 
-                {{ our_customer.blood_type}} - 
-                PW: {{ our_customer.password_hash}} - 
-                <a href="{{url_for('delete', customer_id=our_customer.customer_id)}}"> Delete </a>
-                <br>
-        
-        {% endfor %}
-    </div>
 </div>
 
 {% endif %}

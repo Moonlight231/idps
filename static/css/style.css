@@ -112,6 +112,91 @@ body{
       }
 }
 
+@keyframes in-circle-swoop {
+    from {
+      clip-path: var(--circle-top-right-out);
+    }
+    to {
+      clip-path: var(--circle-bottom-right-in);
+    }
+  }
+  
+  [transition-style="in:custom:circle-swoop"] {
+    --transition__duration: 5s;
+    animation-name: in-circle-swoop;
+  }
+
+  @keyframes out-circle-swoop {
+    from {
+      clip-path: var(--circle-bottom-right-in);
+    }
+    to {
+      clip-path: var(--circle-top-right-out);
+    }
+  }
+  
+  [transition-style="out:custom:circle-swoop"] {
+    --transition__duration: 1.25s;
+    --transition__easing: cubic-bezier(.30, 1, .25, 1);
+    animation-name: out-circle-swoop;
+  }
+  @keyframes in-circle-swoop {
+    from {
+      clip-path: var(--circle-top-right-out);
+    }
+    to {
+      clip-path: var(--circle-bottom-right-in);
+    }
+  }
+  
+  [transition-style="in:custom:circle-swoop"] {
+    --transition__duration: 3s;
+    animation-name: in-circle-swoop;
+  }
+
+  @keyframes wipe-cinematic-in {
+    0% {
+      clip-path: inset(100% 0 100% 0);
+    }
+    30%, 70% {
+      clip-path: inset(10% 0 10% 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  
+  [transition-style="in:wipe:cinematic"] {
+     animation-name: wipe-cinematic-in;
+  }
+
+  @keyframes wipe-in-bottom-right {
+    from {
+      clip-path: polygon(0 0, 0 0, 0 0, 0 50%);
+    }
+    to {
+      clip-path: polygon(-50% 0%, 200% 0, 0 200%, 0 -50%);
+    }
+  }
+  
+  [transition-style="in:wipe:bottom-right"] {
+    animation: 2.5s cubic-bezier(.25, 1, .30, 1) wipe-in-bottom-right both;
+  }
+
+
+  @keyframes wipe-in-right {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  
+  [transition-style="in:wipe:right"] {
+    animation: 2.5s cubic-bezier(.25, 1, .30, 1) wipe-in-right both;
+  }
+
 .sidebar{
     position: fixed;
     top: 0;
@@ -911,36 +996,38 @@ form .fields .input-field{
     color: var(--dark);
 }
 
-.formcontainer form  button, .backBtn{
+.formcontainer form button, .backBtn, .extrabutton{
     display: flex;
     align-items: center;
     justify-content: center;
     height: 45px;
     max-width: 200px;
     width: 100%;
-    border: none;
+    border: 0.16em solid rgba(255, 255, 255, 0);
     outline: none;
     color: #fff;
     border-radius: 5px;
     background-color: var(--primary);
-    transition: all 0.3s linear;
+    transition: all 0.3s;
     cursor: pointer;
 }
 
 .formcontainer form button,
-.formcontainer form .backBtn{
+.formcontainer form .backBtn,
+.extrabutton{
     font-size: 14px;
     font-weight: 400;
 }
 
 
 
-form button:hover{
-    background-color: #265df2;
+form button:hover, .extrabutton:hover{
+    border-color: var(--dark);
 }
 
 form button i,
-form .backBtn i{
+form .backBtn i,
+form .extrabutton .extrai{
     margin: 0 6px;
 }
 form .backBtn i{
@@ -952,7 +1039,7 @@ form .buttons{
 
 }
 
-form .buttons button, .backBtn{
+form .buttons button, .backBtn, .extrabutton{
     margin-right: 14px;
 }
 
@@ -1047,6 +1134,7 @@ form .buttons button, .backBtn{
 
 /*flashtoast 2*/
 .toast{
+    z-index: 10;
     position: absolute;
     top: 70px;
     right: 30px;
