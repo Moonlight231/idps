@@ -2,6 +2,20 @@
 {% block content %}
 
 <main>
+    {% for message in get_flashed_messages() %}
+    
+        <div class="toast">
+            <div class="toast-content">
+                <i class="fas fa-solid fa-check check"></i>
+                <div class="message">
+                    {{message}}
+                </div>
+            </div>
+            <i class="fa-solid fa-xmark close"></i>
+            <div class="progress"></div>
+        </div>
+
+    {% endfor %}
 
     <div class="modal-bg">
         <div class="modal"  transition-style="in:custom:circle-swoop">

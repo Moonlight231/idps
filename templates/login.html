@@ -35,24 +35,8 @@
 <div class="formcontainer">
     <header>Name</header>
 
-{% if name %}
     <br>
-    <h1>Customer Added!</h1>
-
-    <div class="formcontainer">
-        {% for our_customer in our_customers %}
-                {{ our_customer.id}} - 
-                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.name }} </a> - 
-                {{ our_customer.email}} - 
-                {{ our_customer.blood_type}} - <a href="{{url_for('delete', id=our_customer.id)}}"> Delete </a>
-                <br>
-        
-        {% endfor %}
-        </div>
-
-{% else %}
-    <br>
-    <h1>Customer List:</h1>
+    <h1>Login</h1>
     <br>
     <form method="post">
         <div class="form first">
@@ -87,19 +71,6 @@
         </div>
 
     </form>
-
-    <div class="formcontainer">
-        {% for our_customer in our_customers %}
-                {{ our_customer.id}} - 
-                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.name }} </a> - 
-                {{ our_customer.email}} - 
-                {{ our_customer.blood_type}} - 
-                PW: {{ our_customer.password_hash}} - 
-                <a href="{{url_for('delete', id=our_customer.id)}}"> Delete </a>
-                <br>
-        
-        {% endfor %}
-    </div>
 </div>
 
 {% endif %}

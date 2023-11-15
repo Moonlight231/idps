@@ -1,5 +1,6 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_wtf import FlaskForm
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Length
 from wtforms.widgets import TextArea
@@ -24,6 +25,15 @@ app.config['SECRET_KEY'] = "moonlight"
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+#Flask_Login Stuff
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = '/'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Customers.query.get(int(user_id))
+
 #Json Thing
 @app.route('/date')
 def get_current_date():
@@ -36,8 +46,8 @@ def get_current_date():
     return blood_type
 
 # Create Model
-class Customers(db.Model):
-    customer_id = db.Column(db.Integer, primary_key=True)
+class Customers(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
     blood_type = db.Column(db.String(120))
@@ -85,6 +95,12 @@ class CustomerForm(FlaskForm):
     blood_type = StringField("Blood Type:")
     password_hash = PasswordField('Password', validators=[DataRequired(), EqualTo('password_hash2', message='Passwords must match.')])
     password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+#Create Login Form
+class LoginForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 # Create a Name Form Class
@@ -143,13 +159,37 @@ class PasswordForm(FlaskForm):
 
 
 # Create a route decorator
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template("index.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        customer = Customers.query.filter_by(email=form.email.data).first()
+        if customer:
+            #Check the hash
+            if check_password_hash(customer.password_hash, form.password.data):
+                login_user(customer)
+                flash("Logged in successfully.")
+                return redirect(url_for('dashboard'))
+            else:
+                flash("Wrong password. Try Again.")
+        else:
+            flash("That Email is not registered yet.")
+    return render_template('index.html', form=form)
 
-@app.route('/dashboard')
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def dashboard():
     return render_template("dashboard.html")
+
+#Create Logout function
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out.")
+    return redirect(url_for('index'))
 
 @app.route('/regform')
 def dashboard2():
@@ -217,10 +257,10 @@ def add_customer():
     return render_template("add_customer.html", form=form, name=name, our_customers=our_customers)
 
 # Create Update Database Record
-@app.route('/update/<int:customer_id>', methods=['GET', 'POST'])
-def update(customer_id):
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
     form = CustomerForm()
-    name_to_update = Customers.query.get_or_404(customer_id)
+    name_to_update = Customers.query.get_or_404(id)
     if request.method == "POST":
         name_to_update.name = request.form['name']
         name_to_update.email = request.form['email']
@@ -233,15 +273,15 @@ def update(customer_id):
             flash("Error! Looks like there's a problem.")
             return render_template("update.html", form=form, name_to_update=name_to_update)
     else:
-        return render_template("update.html", form=form, name_to_update=name_to_update,customer_id=customer_id)
+        return render_template("update.html", form=form, name_to_update=name_to_update,id=id)
 
 
 # Create Delete Records
-@app.route('/delete/<int:customer_id>')
-def delete(customer_id):
+@app.route('/delete/<int:id>')
+def delete(id):
     name = None
     form = CustomerForm()
-    user_to_delete = Customers.query.get_or_404(customer_id)
+    user_to_delete = Customers.query.get_or_404(id)
     try:
         db.session.delete(user_to_delete)
         db.session.commit()

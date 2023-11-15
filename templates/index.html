@@ -14,6 +14,23 @@
 </head>
 
 <body>
+    {% for message in get_flashed_messages() %}
+    
+            <div class="toast">
+                <div class="toast-content">
+                    <i class="fas fa-solid fa-check check"></i>
+                    <div class="message">
+                        {{message}}
+                    </div>
+                </div>
+                <i class="fa-solid fa-xmark close"></i>
+                <div class="progress"></div>
+            </div>
+    
+    {% endfor %}
+
+
+    
     <div class="login" id="login-form">
         <div class="containers" id="containers">
             <span class="close-form" onclick="closeForm()"><i class="bx bx-x"></i></span>   
@@ -32,17 +49,19 @@
                 </form>
             </div>
             <div class="form-container sign-in">
-                <form>
+                <form method="POST">
                     <h1>Sign In</h1>
                     <div class="social-icons">
                         <a href="#" class="icon google"><i class="fa-brands fa-google-plus-g"></i></a>
                         <a href="#" class="icon facebook"><i class="fa-brands fa-facebook-f"></i></a>
                     </div>
                     <span>or use your email password</span>
-                    <input type="email" placeholder="Email">
-                    <input type="password" placeholder="Password">
-                    <a href="#">Forget Your Password?</a>
-                    <button>Sign In</button>
+
+                    {{ form.hidden_tag() }}
+                    {{ form.email(class="input", placeholder="Email") }}
+                    {{ form.password(class="input", placeholder="Password") }}
+                    <a href="#">Forgot Your Password?</a>
+                    <button>Log In</button>
                 </form>
             </div>
             <div class="toggle-container">
@@ -246,6 +265,39 @@
 
 
     <script src="{{url_for('static', filename='js/homepage.js')}}"></script>
+    <script>
+        const
+          toast = document.querySelector(".toast")
+          closeIcon = document.querySelector(".close"),
+          progress = document.querySelector(".progress");
+    
+          let timer1, timer2;
+    
+    
+          window.onload = function notify () {
+            toast.classList.add("active");
+            progress.classList.add("active");
+    
+            timer1 = setTimeout(() => {
+                toast.classList.remove("active");
+            }, 5000); //1s = 1000 milliseconds
+    
+            timer2 = setTimeout(() => {
+              progress.classList.remove("active");
+            }, 5300);
+          };
+          
+          closeIcon.addEventListener("click", () => {
+            toast.classList.remove("active");
+            
+            setTimeout(() => {
+              progress.classList.remove("active");
+            }, 300);
+    
+            clearTimeout(timer1);
+            clearTimeout(timer2);
+          });
+    </script>
 </body>
 
 </html>
