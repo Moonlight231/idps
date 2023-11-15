@@ -1,0 +1,122 @@
+{% extends 'base.html'%}
+{% block content %}
+
+
+
+
+
+
+
+<main>
+{% for message in get_flashed_messages() %}
+    
+    <div class="toast">
+        <div class="toast-content">
+            <i class="fas fa-solid fa-check check"></i>
+            <div class="message">
+                {{message}}
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress"></div>
+    </div>
+    
+{% endfor %}
+<div class="header">
+    <div class="left">
+        <h1>Prescriptions</h1>
+        <ul class="breadcrumb">
+            /
+            <li><a href="{{url_for('prescriptions')}}">
+                    Prescription List
+                </a></li>
+            /
+            <li><a href="#" class="active">Prescription {{prescription.id}}</a></li>
+        </ul>
+    </div>
+</div>
+
+{% if prescription.type == "Yellow" %}
+
+
+    <div class="gencontainer yellow"> 
+
+        
+        Prescribed by: {{prescription.doctor}} <br>
+            
+        <small><em>{{prescription.date_added}}</em></small> <br>
+        <small><em>Type: {{prescription.type}}</em></small> <br><br>
+        {{prescription.content}} <br>
+
+        
+
+    </div>
+    <br>
+    <div class="buttons">
+        <a href="{{url_for('prescriptions')}}" class="extrabutton small-button grey-btn" >
+            <span class="smallbtnText">Go Back</span>
+            <i class="uil uil-navigator extrai"></i>
+        </a>
+        <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button" >
+            <span class="smallbtnText">Edit</span>
+            <i class="uil uil-navigator extrai"></i>
+        </a>
+        <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
+            <span class="smallbtnText">Delete</span>
+            <i class="uil uil-navigator extrai"></i>
+        </a>
+    </div>
+
+    {% else %}
+
+        <div class="gencontainer">
+
+            
+            Prescribed by: {{prescription.doctor}} <br>
+                
+            <small><em>{{prescription.date_added}}</em></small> <br>
+            <small><em>Type: {{prescription.type}}</em></small> <br><br>
+            {{prescription.content}} <br>
+
+            
+
+        </div>
+        <br>
+        <div class="buttons">
+            <a href="{{url_for('prescriptions')}}" class="extrabutton small-button grey-btn" >
+                <span class="smallbtnText">Go Back</span>
+                <i class="uil uil-navigator extrai"></i>
+            </a>
+            <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button" >
+                <span class="smallbtnText">Edit</span>
+                <i class="uil uil-navigator extrai"></i>
+            </a>
+            <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
+                <span class="smallbtnText">Delete</span>
+                <i class="uil uil-navigator extrai"></i>
+            </a>
+        </div>
+
+        
+
+{%endif%}
+
+   
+
+
+
+
+
+
+</main>
+
+
+
+
+{% endblock %}
+
+{% block sidebar_script %}
+<script>
+    document.getElementById('add_customer-link').classList.toggle('active');
+</script>
+{% endblock %}

@@ -55,7 +55,7 @@
     --color-primary: #6C9BCF;
     --color-danger: rgb(226, 57, 57);
     --color-success: #1B9C85;
-    --color-warning: #F7D060;
+    --color-warning: #b68706;
     --color-white: #fff;
     --color-info-dark: #7d8da1;
     --color-dark: #363949;
@@ -536,7 +536,7 @@ nav .navbar .profile{
 }
 
 
-.content main .header{
+.content main .header, .content main header{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -563,7 +563,6 @@ nav .navbar .profile{
 
 .content main .header .left .breadcrumb li a{
     color: var(--dark-grey);
-    pointer-events: none;
 }
 
 .content main .header .left .breadcrumb li a.active{
@@ -889,6 +888,29 @@ nav .navbar .profile{
     box-shadow: 0 15px 10px rgba(0,0,0,0.1);
 }
 
+.gencontainer{
+    position: relative;
+    max-width: auto;
+    width: 100%;
+    border-radius: 6px;
+    padding: 30px;
+    padding-bottom: 20px;
+    margin-top: 30px;
+    background-color: var(--light);
+    box-shadow: 0 15px 10px rgba(0,0,0,0.1);
+}
+
+.yellow{
+    position: relative;
+    max-width: auto;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 30px;
+    background-color: var(--light);
+    border: 2px solid var(--warning);
+    box-shadow: 0 15px 10px rgba(0,0,0,0.1);
+}
+
 .formcontainer header{
     position: relative;
     font-size: 20px;
@@ -980,6 +1002,18 @@ form .fields .input-field{
     caret-color: var(--dark);
 }
 
+.input-field .input-textarea{
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--dark);
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    margin: 8px 0;
+    caret-color: var(--dark);
+}
+
 .input-field .input:is(:focus, :valid){
     box-shadow: 0 3px 6px rgba(0,0,0,0.13);
 }
@@ -1000,8 +1034,9 @@ form .fields .input-field{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 45px;
-    max-width: 200px;
+    height: 40px;
+    max-width: 125px;
+    min-width: max-content;
     width: 100%;
     border: 0.16em solid rgba(255, 255, 255, 0);
     outline: none;
@@ -1010,6 +1045,31 @@ form .fields .input-field{
     background-color: var(--primary);
     transition: all 0.3s;
     cursor: pointer;
+    padding-left: 10px;
+    padding-right: 3px;
+}
+
+.yellow-btn{
+    background-color:#ffbb00;
+}
+
+.grey-btn{
+    background-color:#414d65;
+}
+
+.red-btn{
+    background-color: #d21919;
+}
+
+.small-button{
+    max-width: fit-content;
+    height: 35px;
+    align-items: center;
+    padding-left: 6px;
+}
+
+.smallbtnText{
+    font-size: 13px;
 }
 
 .formcontainer form button,
@@ -1027,20 +1087,21 @@ form button:hover, .extrabutton:hover{
 
 form button i,
 form .backBtn i,
-form .extrabutton .extrai{
+form .extrabutton .extrai,
+.extrai{
     margin: 0 6px;
 }
 form .backBtn i{
     transform: rotate(180deg);
 }
-form .buttons{
+form .buttons, .buttons{
     display: flex;
     align-items: center;
 
 }
 
 form .buttons button, .backBtn, .extrabutton{
-    margin-right: 14px;
+    margin-right: 5px;
 }
 
 /*flash message

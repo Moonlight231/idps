@@ -1,13 +1,14 @@
-from flask import Flask, render_template, flash, request
+from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.widgets import TextArea
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-from datetime import datetime
+from datetime import datetime, date
 
 
 # Create Flask Instance
@@ -22,6 +23,17 @@ app.config['SECRET_KEY'] = "moonlight"
 # Initialize The Database
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+#Json Thing
+@app.route('/date')
+def get_current_date():
+    #return {"Date": date.today()}
+    blood_type = {
+        "Geo": "O+",
+        "Cam-cam": "AB-",
+        "Noriel": "A+"
+    }
+    return blood_type
 
 # Create Model
 class Customers(db.Model):
@@ -49,6 +61,23 @@ class Customers(db.Model):
     def __repr__(self):
         return '<Name %r>' % self.name
 
+# Create Prescription Model
+class Prescriptions(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    type = db.Column(db.String(255))
+    content = db.Column(db.Text)
+    doctor = db.Column(db.String(255))
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Create a Prescription Form
+class PrescriptionForm(FlaskForm):
+    type = StringField("Prescription Type", validators=[DataRequired()])
+    content = StringField("Content", validators=[DataRequired()], widget=TextArea())
+    doctor = StringField("Prescriber's Name", validators=[DataRequired()])
+    submit = SubmitField("Create")
+
+
+
 # Create a User Form Class
 class CustomerForm(FlaskForm):
     name = StringField("Name:",  validators=[DataRequired()])
@@ -58,10 +87,18 @@ class CustomerForm(FlaskForm):
     password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField("Submit")
 
-# Create a Form Class
+# Create a Name Form Class
 class NamerForm(FlaskForm):
     name = StringField("What's Your Name",  validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+# Create a Test Password Form Class
+class PasswordForm(FlaskForm):
+    email = StringField("What's Your Email",  validators=[DataRequired()])
+    password_hash = PasswordField("What's Your Password",  validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
 
     # BooleanField
 	# DateField
@@ -131,6 +168,33 @@ def name():
 
     return render_template("name.html", name=name, form=form)
 
+# Create passoword test page
+@app.route('/test_pw', methods=['GET', 'POST'])
+def test_pw():
+    email = None
+    password = None
+    pw_to_check = None
+    passed = None
+    form = PasswordForm()
+
+
+    # Validate Form
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password_hash.data
+        #Clear the form
+        form.email.data = ''
+        form.password_hash.data = ''
+
+        #Lookup Customer via Email address
+        pw_to_check = Customers.query.filter_by(email=email).first()
+
+        #Check hashed password
+        passed = check_password_hash(pw_to_check.password_hash, password)
+
+
+    return render_template("test_pw.html", email=email, password=password, pw_to_check=pw_to_check, passed=passed, form=form)
+
 @app.route('/customer/add', methods=['get', 'post'])
 def add_customer():
     name = None
@@ -187,6 +251,82 @@ def delete(customer_id):
     except:
         flash("Whoops! There was a problem deleting user, try again.")
         return render_template("add_customer.html", form=form, name=name, our_customers=our_customers)
+    
+
+# Create Prescription Page
+@app.route('/add-prescription', methods=['GET', 'POST'])
+def add_prescription():
+    form = PrescriptionForm()
+
+    if form.validate_on_submit():
+        prescription = Prescriptions(type=form.type.data, content=form.content.data, doctor=form.doctor.data)
+        #Clear the form
+        form.type.data = ''
+        form.content.data = ''
+        form.doctor.data = ''
+
+        #Add prescription to the database
+        db.session.add(prescription)
+        db.session.commit()
+
+        #Return a message
+        flash("Prescription Created Successfully")
+
+    #Redirect to the webpage
+    return render_template("add_prescription.html", form=form)
+
+@app.route('/prescriptions')
+def prescriptions():
+    #Grab all prescriptions in the database
+    prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
+    return render_template("prescriptions.html", prescriptions=prescriptions)
+
+@app.route('/prescriptions/<int:id>')
+def prescription(id):
+    prescription = Prescriptions.query.get_or_404(id)
+    return render_template('prescription.html', prescription=prescription)
+
+@app.route('/prescriptions/edit/<int:id>', methods=['GET', 'POST'])
+def edit_prescription(id):
+    prescription = Prescriptions.query.get_or_404(id)
+    form = PrescriptionForm()
+    if form.validate_on_submit():
+        prescription.type = form.type.data
+        prescription.doctor = form.doctor.data
+        prescription.content = form.content.data
+
+        #Update database record
+        db.session.add(prescription)
+        db.session.commit()
+        flash("Prescription has been updated.")
+        return redirect(url_for('prescription', id=prescription.id))
+    
+    form.type.data = prescription.type
+    form.doctor.data = prescription.doctor
+    form.content.data = prescription.content
+    return render_template('edit_prescription.html', form=form, prescription=prescription)
+
+@app.route('/prescriptions/delete/<int:id>')
+def delete_prescription(id):
+    prescription_to_delete = Prescriptions.query.get_or_404(id)
+
+    try:
+        db.session.delete(prescription_to_delete)
+        db.session.commit()
+
+        #Return a message
+        flash("Prescription was deleted.")
+
+        #Grab all prescriptions from the database
+        prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
+        return render_template("prescriptions.html", prescriptions=prescriptions)
+
+    except:
+        #return error message
+        flash("There was a problem deleting prescription, try again.")
+        #Grab all prescriptions from the database
+        prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
+        return render_template("prescriptions.html", prescriptions=prescriptions)
 
 
 # Create Custom Error Pages

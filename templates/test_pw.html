@@ -1,0 +1,85 @@
+{% extends 'base.html'%}
+{% block content %}
+
+
+
+
+
+
+
+<main>
+{% for message in get_flashed_messages() %}
+    
+    <div class="toast">
+        <div class="toast-content">
+            <i class="fas fa-solid fa-check check"></i>
+            <div class="message">
+                Hey {{name}}, {{message}}
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress"></div>
+    </div>
+    
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+<div class="formcontainer">
+    <header>Name</header>
+
+{% if email %}
+    <br>
+    <h1>Email: {{email}}</h1>
+    <h1>Password: {{password}}</h1>
+    <h2>I found this info:</h2>
+    Name: {{pw_to_check.name}} <br>
+    Email: {{pw_to_check.email}} <br>
+    PW: {{pw_to_check.password_hash}} <br>
+    Passed: {{passed}}
+
+{% else %}
+    <br>
+    <h1>What's Your Email?</h1>
+    <br>
+    <form method="post">
+        <div class="form first">
+            <div class="details personal">
+                <span class="title">Personal Details</span>
+                <div class="fields">
+                    <div class="input-field">
+                        {{ form.hidden_tag() }}
+                        {{ form.email.label(class="label") }}
+                        {{ form.email(class="input", placeholder="Enter Name") }}
+
+                        {{ form.password_hash.label(class="label") }}
+                        {{ form.password_hash(class="input", placeholder="Enter Name") }}
+                    </div>
+                </div>
+                <button class="nextBtn">
+                    <span class="btnText">Next</span>
+                    <i class="uil uil-navigator"></i>
+                </button>
+                
+            </div>
+        </div>
+
+        
+        
+
+    </form>
+
+
+{% endif %}
+
+
+</div>
+
+{% endblock %}
