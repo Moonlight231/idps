@@ -171,7 +171,7 @@ def index():
                 flash("Logged in successfully.")
                 return redirect(url_for('dashboard'))
             else:
-                flash("Wrong password. Try Again.")
+                flash("Wrong password. Try Again.", "error")
         else:
             flash("That Email is not registered yet.")
     return render_template('index.html', form=form)

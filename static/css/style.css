@@ -583,23 +583,33 @@ nav .navbar .profile{
     font-weight: 500;
 }
 
+
 .content main .insights{
     display: grid;
     /*grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));*/
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 2fr 6fr;
     grid-gap: 24px;
     margin-top: 36px;
     width: 100%;
 }
 
-.content main .insights li{
+.content main .add-info{
+    display: grid;
+    /*grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));*/
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 24px;
+    margin-top: 36px;
+    width: 100%;
+}
+
+
+.content main .insights li, .add-info li{
     padding: 24px;
     background: var(--light);
     border-radius: 20px;
     display: flex;
     align-items: center;
     grid-gap: 24px;
-    cursor: pointer;
     transition: .3s ease-in-out;
 }
 
@@ -625,9 +635,9 @@ nav .navbar .profile{
 
 }
 .content main .insights li .info h3{
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 600;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
     color: var(--primary);
 }
 
@@ -655,7 +665,7 @@ nav .navbar .profile{
 }
 
 .content main .user-profile img{
-    width: 18rem;
+    width: 20rem;
     height: auto;
     /*margin-bottom: 0.8rem;*/
     border-radius: 50%;
@@ -702,19 +712,22 @@ nav .navbar .profile{
 }
 
 .content main .bottom-data .header{
+    width: 100%;
     display: flex;
     align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
     grid-gap: 16px;
     margin-bottom: 24px;
 }
 
-.content main .bottom-data .header h3{
+.content main .bottom-data .header h3, .header h3{
     margin-right: auto;
     font-size: 24px;
     font-weight: 600;
 }
 
-.content main .bottom-data .header .bx{
+.content main .bottom-data .header .bx, .header .bx{
     cursor: pointer;
 }
 
@@ -728,22 +741,48 @@ nav .navbar .profile{
     border-collapse: collapse;
 }
 
+.content main .bottom-data .header .allPres{
+    margin-left: 100px;
+    height: 25px;
+    padding: 0 16px;
+    font-size: 15px;
+    border-radius: 36px;
+    background: var(--primary);
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 3px;
+    font-weight: 500;
+}
+
+.content main .bottom-data .header .all-pres {
+    font-size: 20px;
+}
+
+
 .content main .bottom-data .orders table th{
     padding-bottom: 12px;
-    font-size: 13px;
-    text-align: left;
-    border-bottom: 1px solid var(--grey);
+    font-size: 15px;
+    text-align: center;
 }
 
 .content main .bottom-data .orders table td{
     padding: 16px 0;
+    text-align: center;
+    align-items: center;
+    height: 2.8rem;
+    color: var(--color-dark-variant);
+    font-size: 13px;
 }
 
-.content main .bottom-data .orders table tr td:first-child{
+.content main .bottom-data .orders table tr td:nth-child(2){
     display: flex;
+    justify-content: center;
     align-items: center;
     grid-gap: 12px;
     padding-left: 6px;
+    padding-top: 32px;
 }
 
 .content main .bottom-data .orders table td img{
@@ -751,36 +790,157 @@ nav .navbar .profile{
     height: 36px;
     border-radius: 50%;
     object-fit: cover;
+
 }
 
 .content main .bottom-data .orders table tbody tr{
     cursor: pointer;
     transition: all 0.3s ease;
+    border-bottom: 0.5px solid var(--color-light);
 }
 
+.content main .bottom-data .orders table tbody tr:last-child{
+    border: none;
+  }
+  
 .content main .bottom-data .orders table tbody tr:hover{
     background: var(--grey);
 }
 
 .content main .bottom-data .orders table tr td .status{
-    font-size: 10px;
+    font-size: 14px;
     padding: 6px 16px;
     color: var(--light);
     border-radius: 20px;
-    font-weight: 700;
+    font-weight: 550;
+    width: 132px;
+    display: inline-block;
 }
 
-.content main .bottom-data .orders table tr td .status.completed{
+.content main .bottom-data .orders table tr td .status.success{
     background: var(--success);
 }
 
-.content main .bottom-data .orders table tr td .status.process{
-    background: var(--primary);
+.content main .bottom-data .orders table tr td .status.danger{
+    background: var(--danger);
 }
 
-.content main .bottom-data .orders table tr td .status.pending{
+.content main .bottom-data .orders table tr td .status.warning{
     background: var(--warning);
 }
+
+.content main .bottom-data .orders a {
+    text-align: center;
+    display: block;
+    margin: 1rem auto;
+    color: var(--primary);
+    cursor: pointer;
+  }
+
+/*New Users*/
+.content main .bottom-data .users{
+    flex-grow: 1;
+    flex-basis: 250px;
+}
+
+.content main .bottom-data .users table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content main .bottom-data .users table th{
+    padding-bottom: 12px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.content main .bottom-data .users table td{
+    padding: 16px 0;
+    text-align: center;
+    align-items: center;
+    height: 2.8rem;
+    color: var(--color-dark-variant);
+    font-size: 13px;
+}
+/* btn */
+.content main .bottom-data .header .allUser{
+    height: 25px;
+    padding: 0 16px;
+    font-size: 15px;
+    border-radius: 36px;
+    background: var(--primary);
+    color: var(--light);    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 3px;
+    font-weight: 500;
+}
+
+.content main .bottom-data .header .all-user{
+    font-size: 20px;
+}
+
+.content main .bottom-data .users table tr td:nth-child(2){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 12px;
+    padding-left: 6px;
+    padding-top: 23px;
+}
+
+.content main .bottom-data .users table td img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+
+}
+
+.content main .bottom-data .users table tbody tr{
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 0.5px solid var(--color-light);
+}
+
+.content main .bottom-data .users table tbody tr:last-child{
+    border: none;
+  }
+  
+.content main .bottom-data .users table tbody tr:hover{
+    background: var(--grey);
+}
+
+.content main .bottom-data .users table tr td .status{
+    font-size: 14px;
+    padding: 6px 16px;
+    color: var(--light);
+    border-radius: 20px;
+    font-weight: 550;
+    width: 132px;
+    display: inline-block;
+}
+
+.content main .bottom-data .users table tr td .status.success{
+    background: var(--success);
+}
+
+.content main .bottom-data .users table tr td .status.danger{
+    background: var(--danger);
+}
+
+.content main .bottom-data .users table tr td .status.warning{
+    background: var(--warning);
+}
+
+.content main .bottom-data .users a {
+    text-align: center;
+    display: block;
+    margin: 1rem auto;
+    color: var(--primary);
+    cursor: pointer;
+  }
 
 .content main .bottom-data .reminders{
     flex-grow: 1;
@@ -881,11 +1041,9 @@ nav .navbar .profile{
     position: relative;
     max-width: auto;
     width: 100%;
-    border-radius: 6px;
+    border-radius: 20px;
     padding: 30px;
-    margin-top: 30px;
     background-color: var(--light);
-    box-shadow: 0 15px 10px rgba(0,0,0,0.1);
 }
 
 .gencontainer{
@@ -934,7 +1092,7 @@ nav .navbar .profile{
     margin-top: 16px;
     min-height: 490px;
     background-color: var(--light);
-    overflow: hidden;
+
 }
 
 .formcontainer form .form{
@@ -983,8 +1141,8 @@ form .fields .input-field{
     flex-direction: column;
     margin: 4px 0;
 }
-.input-field .label{
-    font-size: 12px;
+.input-field .label, .label{
+    font-size: 13px;
     font-weight: 500;
     color: var(--dark);
 
@@ -999,6 +1157,17 @@ form .fields .input-field{
     padding: 0 15px;
     height: 42px;
     margin: 8px 0;
+    caret-color: var(--dark);
+}
+
+.input-field .mockinput, .mockinput{
+    outline: none;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--dark);
+    border-radius: 5px;
+    padding: 0 15px;
+    padding-bottom: 15px;
     caret-color: var(--dark);
 }
 
@@ -1104,6 +1273,233 @@ form .buttons button, .backBtn, .extrabutton{
     margin-right: 5px;
 }
 
+
+
+/*regform 2.0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+.formcontainer{
+    position: relative;
+    max-width: auto;
+    width: 100%;
+    border-radius: 20px;
+    padding: 30px;
+    background-color: var(--light);
+}
+
+.gencontainer{
+    position: relative;
+    max-width: auto;
+    width: 100%;
+    border-radius: 6px;
+    padding: 30px;
+    padding-bottom: 20px;
+    margin-top: 30px;
+    background-color: var(--light);
+    box-shadow: 0 15px 10px rgba(0,0,0,0.1);
+}
+
+.yellow{
+    position: relative;
+    max-width: auto;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 30px;
+    background-color: var(--light);
+    border: 2px solid var(--warning);
+    box-shadow: 0 15px 10px rgba(0,0,0,0.1);
+}
+
+.formcontainer header{
+    position: relative;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.formcontainer header::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 3px;
+    width: 27px;
+    border-radius: 8px;
+    background-color: var(--primary);
+}
+
+.formcontainer .flexform{
+    position: relative;
+    min-height: 250px;
+    background-color: var(--light);
+    overflow: hidden;
+}
+
+.formcontainer.flexform .form{
+    position: absolute;
+    width: 100%;
+    transition: 0.3s ease;
+}
+
+.formcontainer .flexform .form.second{
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%);
+}
+.flexform.secActive .form.second{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+
+}
+.flexform.secActive .form.first{
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-100%);
+
+}
+
+.formcontainer .flexform .title{
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 6px 0;
+    color: var(--dark);
+}
+
+.formcontainer .flexform .fields{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.flexform .fields .input-field{
+    display: flex;
+    width: calc(100% / 3 - 15px);
+    flex-direction: column;
+    margin: 4px 0;
+}
+.input-field .label{
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--dark);
+
+}
+.input-field .input{
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--dark);
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    height: 42px;
+    margin: 8px 0;
+    caret-color: var(--dark);
+}
+
+.input-field .input-textarea{
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--dark);
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    margin: 8px 0;
+    caret-color: var(--dark);
+}
+
+.input-field .input:is(:focus, :valid){
+    box-shadow: 0 3px 6px rgba(0,0,0,0.13);
+}
+
+.input-field .input[type="date"]{
+    color: var(--dark);
+}
+
+.input-field .input[type="date"]{
+    color:var(--dark);
+}
+
+.input-field .input[type="date"]:valid{
+    color: var(--dark);
+}
+
+.formcontainer .flexform button, .backBtn, .extrabutton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    max-width: 125px;
+    min-width: max-content;
+    width: 100%;
+    border: 0.16em solid rgba(255, 255, 255, 0);
+    outline: none;
+    color: #fff;
+    border-radius: 5px;
+    background-color: var(--primary);
+    transition: all 0.3s;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 3px;
+}
+
+.yellow-btn{
+    background-color:#ffbb00;
+}
+
+.grey-btn{
+    background-color:#414d65;
+}
+
+.red-btn{
+    background-color: #d21919;
+}
+
+.small-button{
+    max-width: fit-content;
+    height: 35px;
+    align-items: center;
+    padding-left: 6px;
+}
+
+.smallbtnText{
+    font-size: 13px;
+}
+
+.formcontainer .flexform button,
+.formcontainer .flexform .backBtn,
+.extrabutton{
+    font-size: 14px;
+    font-weight: 400;
+}
+
+
+
+.flexform button:hover, .extrabutton:hover{
+    border-color: var(--dark);
+}
+
+.flexform button i,
+.flexform .backBtn i,
+.flexform .extrabutton .extrai,
+.extrai{
+    margin: 0 6px;
+}
+.flexform .backBtn i{
+    transform: rotate(180deg);
+}
+.flexform .buttons, .buttons{
+    display: flex;
+    align-items: center;
+
+}
+
+.flexform .buttons button, .backBtn, .extrabutton{
+    margin-right: 5px;
+}
 /*flash message
 .toast{
     position: absolute;
@@ -1288,6 +1684,11 @@ form .buttons button, .backBtn, .extrabutton{
 
 
 @media screen and (max-width: 800px) {
+
+    .content main .bottom-data .orders .header .allPres{
+        margin-left: 1000px;
+    }
+
     .sidebar{
         width: 200px;
     }
@@ -1325,10 +1726,26 @@ form .buttons button, .backBtn, .extrabutton{
         width: calc(100% / 2 - 15px);
     }
 
+    .formcontainer .flexform{
+        overflow-y: scroll;
+    }
+    .formcontainer .flexform::-webkit-scrollbar{
+        display: none;
+    }
+
+    .flexform .fields .input-field{
+        width: calc(100% / 2 - 15px);
+    }
+
 }
 
 @media screen and (max-width: 700px) {
-    
+
+    .content main .bottom-data .users .header .allUser{
+        margin-left: 220px;
+    }
+
+      
     .content nav form .form-input input{
         display: none;
     }
@@ -1365,6 +1782,10 @@ form .buttons button, .backBtn, .extrabutton{
         grid-template-columns: 1fr;
     }
 
+    .content main .add-info{
+        grid-template-columns: 1fr;
+    }
+
     .content main .bottom-data .header{
         min-width: 340px;
     }
@@ -1391,6 +1812,20 @@ form .buttons button, .backBtn, .extrabutton{
     /*registration form*/
     form .fields .input-field{
         width:100%;
+    }
+
+    /*registration form*/
+    .flexform .fields .input-field{
+        width:100%;
+    }
+    
+    /*recent prescriptions*/
+    .content main .bottom-data .orders table tr td .status{
+        display: none;
+    }
+
+    .content main .bottom-data .orders table th:last-child{
+        display: none;
     }
 
 }

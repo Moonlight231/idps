@@ -56,21 +56,32 @@
                     <p>Fullstack Web Developer</p>-->
                 </span>
             </li>
-            
             <li>
                 <span class="info">
                     
                     <h3>
                         Dela Cruz, Juan P.
+                        <div class="text-muted" style="font-size: small;">
+                            <em>Account Type: <strong>Customer</strong></em>
+                            <br>
+                            <em>ID: <strong>001</strong></em>
+                        </div>
                     </h3>
-                    <p>
-                        <strong>Birthday:&nbsp;&nbsp;</strong> 01-01-2003<br>
-                        <strong>Blood Type:&nbsp;&nbsp;</strong> O+<br>
-                        <strong>Address:&nbsp;&nbsp;</strong> Alangilan, Batangas City, Batangas<br>
-                        <br>
-                        <strong>Email:&nbsp;&nbsp;</strong> juandelacruz@gmaul.com<br>
-                        <strong>Contact No:&nbsp;&nbsp;</strong> +63 921-346-5789
-                    </p>
+                    
+
+                        <p class="label">Sex:</p>
+                        <p class="mockinput"><strong>Male</strong></p>
+
+                        
+                        <p class="label">Blood Type:</p>
+                        <p class="mockinput"><strong>O+</strong></p>
+
+                        <p class="label">Birthdate:</p>
+                        <p class="mockinput"><strong>01-01-2003</strong></p>
+
+                        <p class="label">Address:</p>
+                        <p class="mockinput"><strong>Cuta, Batangas City, Batangas</strong></p>
+
                     
                 </span>
             </li>
@@ -78,53 +89,164 @@
             
         </ul>
     <!-- End of Insights -->
+
+    <ul class="add-info">
+    
+        <li>
+            <span class="info">
+                
+                <div class="header">
+                    <i class='bx bx-receipt'></i>
+                    <h3>Contact Information</h3>    
+                </div>
+                <br>
+                <div class="add-text">
+                    <p class="label">Email:</p>
+                    <p class="mockinput"><strong>juandelacruz@gmail.com</strong></p>
+
+                    <p class="label">Contact No:</p>
+                    <p class="mockinput"><strong>+63 948-086-9613</strong></p>
+                </div>
+                
+            </span>
+        </li>
+        <li>
+            <span class="info">
+                
+                <div class="header">
+                    <i class='bx bx-receipt'></i>
+                    <h3>Emergency Details</h3>    
+                </div>
+                <br>
+                <div class="add-text">
+                    <p class="label">Contact Person:</p>
+                    <p class="mockinput"><strong>Julian Dela Cruz</strong></p>
+
+                    <p class="label">Contact No:</p>
+                    <p class="mockinput"><strong>+63 959-013-1233</strong></p>
+                </div>
+                
+            </span>
+        </li>
+        
+        
+    </ul>
+
+    
     
     <div class="bottom-data">
         <div class="orders">
             <div class="header">
                 <i class='bx bx-receipt'></i>
-                <h3>Recent Orders</h3>
-                <i class='bx bx-filter'></i>
-                <i class='bx bx-search'></i>
+                <h3>Recent Prescriptions</h3>
+                <a href="#" class="allPres">
+                    <span>View All</span>
+                    <i class='bx bx-search all-pres'></i>
+                </a>      
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>User</th>
-                        <th>Order Date</th>
+                        <th>ID</th>
+                        <th>Prescribed by</th>
+                        <th>Date Prescribed</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>1</td>
                         <td>
-                            <img src="images/profile-1.jpg">
-                            <p>John Doe</p>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p> Dr. John Doe</p>
                         </td>
                         <td>14-08-2023</td>
-                        <td><span class="status completed">Completed</span></td>
+                        <td><span class="status success">Filled</span></td>
+                        
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>
+                        <td><span class="status warning">Partially Filled</span></td>
+                        
                     </tr>
                     <tr>
+                        <td>3</td>
                         <td>
-                            <img src="images/profile-1.jpg">
-                            <p>John Doe</p>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
                         </td>
                         <td>14-08-2023</td>
-                        <td><span class="status pending">Pending</span></td>
+                        <td><span class="status danger">Not Filled</span></td>
+                        
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="users">
+            <div class="header">
+                <i class='bx bx-receipt'></i>
+                <h3>New Users</h3>
+                <a href="#" class="allUser">
+                    <span>View All</span>
+                    <i class='bx bx-search all-user'></i>
+                </a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>                               
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>      
                     </tr>
                     <tr>
+                        <td>3</td>
                         <td>
-                            <img src="images/profile-1.jpg">
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
                             <p>John Doe</p>
                         </td>
                         <td>14-08-2023</td>
-                        <td><span class="status process">Processing</span></td>
                     </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>
+                    </tr>
+                    
                 </tbody>
             </table>
         </div>
     
-        <!-- Reminders -->
+        <!-- Reminders 
         <div class="reminders">
             <div class="header">
                 <i class='bx bx-note'></i>
@@ -157,9 +279,10 @@
             </ul>
         </div>
     
-        <!-- End of Reminders-->
+         End of Reminders-->
     
     </div>
+    <br><br>
 </main>
 
 {% endblock %}
