@@ -34,10 +34,10 @@
             <h1>Dashboard</h1>
             <ul class="breadcrumb">
                 <li><a href="#">
-                        Analytics
+                        Dashboard
                     </a></li>
                 /
-                <li><a href="#" class="active">Shop</a></li>
+                <li><a href="#" class="active">Profile</a></li>
             </ul>
         </div>
         <a href="#" class="report">
@@ -67,22 +67,19 @@
                             <em>ID: <strong>001</strong></em>
                         </div>
                     </h3>
+
+                    <p class="label">Birthdate:</p>
+                    <p class="mockinput"><strong>01-01-2003</strong></p>
                     
+                    <p class="label">Contact No:</p>
+                    <p class="mockinput"><strong>+63 948-086-9613</strong></p>
 
-                        <p class="label">Sex:</p>
-                        <p class="mockinput"><strong>Male</strong></p>
+                    <p class="label">Email:</p>
+                    <p class="mockinput"><strong>juandelacruz@gmail.com</strong></p>
 
-                        
-                        <p class="label">Blood Type:</p>
-                        <p class="mockinput"><strong>O+</strong></p>
+                    <p class="label">Address:</p>
+                    <p class="mockinput"><strong>Cuta, Batangas City, Batangas</strong></p>
 
-                        <p class="label">Birthdate:</p>
-                        <p class="mockinput"><strong>01-01-2003</strong></p>
-
-                        <p class="label">Address:</p>
-                        <p class="mockinput"><strong>Cuta, Batangas City, Batangas</strong></p>
-
-                    
                 </span>
             </li>
             
@@ -96,16 +93,19 @@
             <span class="info">
                 
                 <div class="header">
-                    <i class='bx bx-receipt'></i>
-                    <h3>Contact Information</h3>    
+                    <i class='bx bx-phone' style=" color:var(--success);"></i>
+                    <h3>Physical Information</h3>    
                 </div>
                 <br>
                 <div class="add-text">
-                    <p class="label">Email:</p>
-                    <p class="mockinput"><strong>juandelacruz@gmail.com</strong></p>
+                    <p class="label">Sex:</p>
+                    <p class="mockinput"><strong>Male</strong></p>
+ 
+                    <p class="label">Blood Type:</p>
+                    <p class="mockinput"><strong>O+</strong></p>
 
-                    <p class="label">Contact No:</p>
-                    <p class="mockinput"><strong>+63 948-086-9613</strong></p>
+                    <p class="label">Weight <em>(11-16-2023)</em> :</p>
+                    <p class="mockinput"><strong>54 KG</strong></p>
                 </div>
                 
             </span>
@@ -114,7 +114,7 @@
             <span class="info">
                 
                 <div class="header">
-                    <i class='bx bx-receipt'></i>
+                    <i class='bx bx-plus-medical' style="color: var(--danger);"></i>
                     <h3>Emergency Details</h3>    
                 </div>
                 <br>
@@ -124,6 +124,9 @@
 
                     <p class="label">Contact No:</p>
                     <p class="mockinput"><strong>+63 959-013-1233</strong></p>
+
+                    <p class="label">Email:</p>
+                    <p class="mockinput"><strong>juliandipapatinag@gmail.com</strong></p>
                 </div>
                 
             </span>
@@ -137,12 +140,13 @@
     <div class="bottom-data">
         <div class="orders">
             <div class="header">
-                <i class='bx bx-receipt'></i>
+                <i class="fa-solid fa-prescription" style="font-size: 24px; "></i>
                 <h3>Recent Prescriptions</h3>
-                <a href="#" class="allPres">
+                <i class='bx bx-layer' style="color: var(--primary);"></i>
+                <!-- <a href="#" class="allPres">
                     <span>View All</span>
                     <i class='bx bx-search all-pres'></i>
-                </a>      
+                </a>       -->
             </div>
             <table>
                 <thead>
@@ -191,6 +195,63 @@
         </div>
 
         <div class="users">
+            <div class="header">
+                <i class="bx bx-error-alt" style="color: var(--warning);"></i>
+                <h3>Allergies</h3>
+                <!-- <a href="#" class="allUser">
+                    <span>View All</span>
+                    <i class='bx bx-search all-user'></i>
+                </a> -->
+                <i class='bx bx-layer' style="color: var(--primary);"></i>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Allergic to</th>
+                        <th>Diagnosed by</th>
+                        <th>Date Added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cetirizine</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>                               
+                    </tr>
+
+                    <tr>
+                        <td>Amoxicillin</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>      
+                    </tr>
+                    <tr>
+                        <td>Desloratadine</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>
+                    </tr>
+                    <tr>
+                        <td>Levocetirizine</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <!--<div class="users">
             <div class="header">
                 <i class='bx bx-receipt'></i>
                 <h3>New Users</h3>
@@ -244,7 +305,7 @@
                     
                 </tbody>
             </table>
-        </div>
+        </div>-->
     
         <!-- Reminders 
         <div class="reminders">

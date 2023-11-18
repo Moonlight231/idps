@@ -48,7 +48,7 @@ def get_current_date():
 # Create Model
 class Customers(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
+    name = db.Column(db.String(200))
     email = db.Column(db.String(120), nullable=False, unique=True)
     blood_type = db.Column(db.String(120))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
@@ -101,6 +101,12 @@ class CustomerForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+class RegisterForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired()])
+    password_hash = PasswordField('Password', validators=[DataRequired(), EqualTo('password_hash2', message='Passwords must match')])
+    password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 # Create a Name Form Class
@@ -162,6 +168,8 @@ class PasswordForm(FlaskForm):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = LoginForm()
+    form2 = RegisterForm()
+    
     if form.validate_on_submit():
         customer = Customers.query.filter_by(email=form.email.data).first()
         if customer:
@@ -174,7 +182,20 @@ def index():
                 flash("Wrong password. Try Again.", "error")
         else:
             flash("That Email is not registered yet.")
-    return render_template('index.html', form=form)
+    
+    if form2.validate_on_submit():
+        customer = Customers.query.filter_by(email=form2.email.data).first()
+        if customer is None:
+            # Hash the password!
+            hashed_pw = generate_password_hash(form2.password_hash.data, "pbkdf2")
+            customer = Customers(email=form2.email.data, password_hash=hashed_pw)
+            db.session.add(customer)
+            db.session.commit()
+        form2.email.data = ''
+        form2.password_hash = ''
+        form2.password_hash2 = ''
+        flash("Account Created Successfully!")
+    return render_template('index.html', form=form, form2=RegisterForm())
 
 
 

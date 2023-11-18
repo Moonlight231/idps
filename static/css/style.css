@@ -862,8 +862,9 @@ nav .navbar .profile{
     color: var(--color-dark-variant);
     font-size: 13px;
 }
-/* btn */
+/* btn
 .content main .bottom-data .header .allUser{
+    margin-left: 70px;
     height: 25px;
     padding: 0 16px;
     font-size: 15px;
@@ -879,7 +880,14 @@ nav .navbar .profile{
 
 .content main .bottom-data .header .all-user{
     font-size: 20px;
+} */
+
+.content main .bottom-data .header .font-aws{
+    font-size: 24px;
 }
+
+
+
 
 .content main .bottom-data .users table tr td:nth-child(2){
     display: flex;
@@ -1041,16 +1049,19 @@ nav .navbar .profile{
     position: relative;
     max-width: auto;
     width: 100%;
+    height: 470px;
     border-radius: 20px;
     padding: 30px;
     background-color: var(--light);
+    overflow: hidden;
+    margin-top: 30px;
 }
 
 .gencontainer{
     position: relative;
     max-width: auto;
     width: 100%;
-    border-radius: 6px;
+    border-radius: 20px;
     padding: 30px;
     padding-bottom: 20px;
     margin-top: 30px;
@@ -1082,7 +1093,7 @@ nav .navbar .profile{
     left: 0;
     bottom: -2px;
     height: 3px;
-    width: 27px;
+    width: 282px;
     border-radius: 8px;
     background-color: var(--primary);
 }
@@ -1092,7 +1103,7 @@ nav .navbar .profile{
     margin-top: 16px;
     min-height: 490px;
     background-color: var(--light);
-
+    overflow: hidden;
 }
 
 .formcontainer form .form{
@@ -1122,6 +1133,7 @@ form.secActive .form.first{
 .formcontainer form .title{
     display: block;
     margin-bottom: 8px;
+    padding-bottom: 8px;
     font-size: 16px;
     font-weight: 500;
     margin: 6px 0;
@@ -1214,9 +1226,10 @@ form .fields .input-field{
     background-color: var(--primary);
     transition: all 0.3s;
     cursor: pointer;
-    padding-left: 10px;
-    padding-right: 3px;
+    /*padding-left: 10px;
+    padding-right: 3px;*/
 }
+
 
 .yellow-btn{
     background-color:#ffbb00;
@@ -1275,7 +1288,7 @@ form .buttons button, .backBtn, .extrabutton{
 
 
 
-/*regform 2.0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+/*regform 2.0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 .formcontainer{
     position: relative;
@@ -1688,8 +1701,11 @@ form .buttons button, .backBtn, .extrabutton{
 @media screen and (max-width: 800px) {
 
     .content main .bottom-data .orders .header .allPres{
-        margin-left: 1000px;
+        margin-left: 120px;
     }
+    /* .content main .bottom-data .users .header .allUser{
+        margin-left: 275px;
+    } */
 
     .sidebar{
         width: 200px;
@@ -1717,9 +1733,16 @@ form .buttons button, .backBtn, .extrabutton{
 
     /*registration form*/
 
+    .formcontainer{
+        height: 630px;
+    }
+
     .formcontainer form{
+        min-height: 600px;
         overflow-y: scroll;
     }
+
+
     .formcontainer form::-webkit-scrollbar{
         display: none;
     }
@@ -1811,9 +1834,18 @@ form .buttons button, .backBtn, .extrabutton{
         width: auto;
     }
 
+
     /*registration form*/
     form .fields .input-field{
         width:100%;
+    }
+
+    .formcontainer{
+        height: 800px;
+    }
+
+    .formcontainer form{
+        min-height: 700px;
     }
 
     /*registration form*/
@@ -1830,4 +1862,10 @@ form .buttons button, .backBtn, .extrabutton{
         display: none;
     }
 
+}
+
+@media screen and (max-width: 517px) {
+    .content main .bottom-data .users .header .allUser {
+        margin-left: 50px;
+    }
 }
