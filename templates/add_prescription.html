@@ -32,7 +32,7 @@
 
 
 
-<div class="formcontainer">
+<div class="gencontainer">
     <header>Name</header>
 
 {% if name %}
@@ -41,10 +41,10 @@
 
     <div class="formcontainer">
         {% for our_customer in our_customers %}
-                {{ our_customer.customer_id}} - 
-                <a href="{{url_for('update', customer_id=our_customer.customer_id)}}"> {{ our_customer.name }} </a> - 
+                {{ our_customer.id}} - 
+                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.name }} </a> - 
                 {{ our_customer.email}} - 
-                {{ our_customer.blood_type}} - <a href="{{url_for('delete', customer_id=our_customer.customer_id)}}"> Delete </a>
+                {{ our_customer.blood_type}} - <a href="{{url_for('delete', id=our_customer.id)}}"> Delete </a>
                 <br>
         
         {% endfor %}
@@ -82,6 +82,8 @@
         </div>
 
     </form>
+
+    
 
 </div>
 

@@ -20,15 +20,19 @@
             </span>
         </div>
         
+        {%if (current_user.last_name == None) and (current_user.first_name == None)%}
+
+        {%else%}
         <div class="profile">
             <div class="info">
-                <p>Hey, <b>John Rey</b></p>
-                <small class="text-muted">Admin</small>
+                <p>Hey, <b>{{current_user.first_name}}</b></p>
+                <small class="text-muted">{{current_user.account_type}}</small>
             </div>
             <div class="profile-photo">
                 <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
             </div>
         </div>
+        {%endif%}
     <div>
 </nav>
 <!-- End of Navbar -->

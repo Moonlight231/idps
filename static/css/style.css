@@ -75,7 +75,10 @@
 }
 
 
-
+.input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        display: none;
+      }
 
 *{
     margin: 0;
@@ -582,15 +585,43 @@ nav .navbar .profile{
     grid-gap: 10px;
     font-weight: 500;
 }
-
+/*  */
+/* .content main .editPro .Edit{
+    margin-bottom: 10px;
+    height: 30px;
+    width: fit-content;
+    padding: 0 16px;
+    font-size: 13px;
+    border-radius: 36px;
+    background: var(--primary);
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 10px;
+    font-weight: 500;
+} */
+.content main .insights .editPro .Edit i{
+    left: 400px;
+    float: left;
+    font-size: 30px;
+    color: var(--primary);
+    
+}
+/*  */
 
 .content main .insights{
     display: grid;
     /*grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));*/
-    grid-template-columns: 2fr 6fr;
+    grid-template-columns: 3fr 8fr;
     grid-gap: 24px;
     margin-top: 36px;
     width: 100%;
+    overflow:none;
+}
+
+.nameunder{
+    display: none;
 }
 
 .content main .add-info{
@@ -634,10 +665,20 @@ nav .navbar .profile{
 
 
 }
-.content main .insights li .info h3{
-    font-size: 30px;
-    font-weight: 600;
+
+.acc-info{
     padding-bottom: 1rem;
+    padding-top: -30px;
+}
+.content main .insights li .info h3{
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.content main .insights li .info h2{
+    font-size: 30px;
+    font-weight: 700;
     color: var(--primary);
 }
 
@@ -665,7 +706,7 @@ nav .navbar .profile{
 }
 
 .content main .user-profile img{
-    width: 20rem;
+    width: 22rem;
     height: auto;
     /*margin-bottom: 0.8rem;*/
     border-radius: 50%;
@@ -1057,6 +1098,18 @@ nav .navbar .profile{
     margin-top: 30px;
 }
 
+.regformcontainer{
+    position: relative;
+    max-width: auto;
+    width: 100%;
+    height: 520px;
+    border-radius: 20px;
+    padding: 30px;
+    background-color: var(--light);
+    overflow: hidden;
+    margin-top: 30px;
+}
+
 .gencontainer{
     position: relative;
     max-width: auto;
@@ -1080,14 +1133,14 @@ nav .navbar .profile{
     box-shadow: 0 15px 10px rgba(0,0,0,0.1);
 }
 
-.formcontainer header{
+.formcontainer header, .regformcontainer header{
     position: relative;
     font-size: 20px;
     font-weight: 600;
     color: var(--dark);
 }
 
-.formcontainer header::before{
+.formcontainer header::before, .regformcontainer header::before{
     content: "";
     position: absolute;
     left: 0;
@@ -1098,7 +1151,7 @@ nav .navbar .profile{
     background-color: var(--primary);
 }
 
-.formcontainer form{
+.formcontainer form, .regformcontainer form{
     position: relative;
     margin-top: 16px;
     min-height: 490px;
@@ -1106,13 +1159,13 @@ nav .navbar .profile{
     overflow: hidden;
 }
 
-.formcontainer form .form{
+.formcontainer form .form, .regformcontainer form .form{
     position: absolute;
     width: 100%;
     transition: 0.3s ease;
 }
 
-.formcontainer form .form.second{
+.formcontainer form .form.second, .regformcontainer form .form.second{
     opacity: 0;
     pointer-events: none;
     transform: translateX(100%);
@@ -1130,7 +1183,7 @@ form.secActive .form.first{
 
 }
 
-.formcontainer form .title{
+.formcontainer form .title, .regformcontainer form .title{
     display: block;
     margin-bottom: 8px;
     padding-bottom: 8px;
@@ -1140,7 +1193,7 @@ form.secActive .form.first{
     color: var(--dark);
 }
 
-.formcontainer form .fields{
+.formcontainer form .fields, .regformcontainer form .fields{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1211,7 +1264,7 @@ form .fields .input-field{
     color: var(--dark);
 }
 
-.formcontainer form button, .backBtn, .extrabutton{
+.formcontainer form button, .regformcontainer form button, .backBtn, .extrabutton{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1731,6 +1784,19 @@ form .buttons button, .backBtn, .extrabutton{
         grid-template-columns: 1fr 1fr;
     }
 
+    /*Names in dashboard*/
+    .nameunder{
+        display: flex;
+    }
+    .nameupper{
+        display: none;
+    }
+
+    .content main .user-profile img{
+        width: 18rem;
+        margin-bottom: 0.3rem;
+    }
+
     /*registration form*/
 
     .formcontainer{
@@ -1832,6 +1898,17 @@ form .buttons button, .backBtn, .extrabutton{
     .img-qr{
         height: 210px;
         width: auto;
+    }
+
+    /*names in dashboard*/
+    .nameunder{
+        display: none;
+    }
+    .nameupper{
+        display: flex;
+    }
+    .content main .insights li .info h3{
+        font-size: 30px;
     }
 
 

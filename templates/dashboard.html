@@ -28,7 +28,6 @@
         </div>
     </div>
 
-
     <div class="header">
         <div class="left">
             <h1>Dashboard</h1>
@@ -45,40 +44,176 @@
             <span>Profile QR</span>
         </a>
     </div>
+   
+
+
+    {%if (current_user.last_name == None) and (current_user.first_name == None)%}
     
+    <div class="regformcontainer">
+        <header>Allow us to know you better.</header>
+        <form action="/dashboard" method="post" id="regform">
+            <div class="form first">
+    
+                <div class="details name">
+                    <br>
+                    <span class="title">Personal Details</span>
+                    <div class="fields">
+                            {{ form.hidden_tag() }}
+                        <div class="input-field">
+                            {{ form.first_name.label(class="label") }}
+                            {{ form.first_name(class="input", placeholder="Enter firstname") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.middle_name.label(class="label") }}
+                            {{ form.middle_name(class="input", placeholder="Enter middle name") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.last_name.label(class="label") }}
+                            {{ form.last_name(class="input", placeholder="Enter lastname") }}
+                        </div>
+        
+                    </div>
+    
+                </div>  
+                <div class="details other">
+                    <br><br>       
+                    <div class="fields">
+                        <div class="input-field">
+                            {{ form.birthdate.label(class="label") }}
+                            {{ form.birthdate(class="input", placeholder="Enter birth date") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.contact_number.label(class="label") }}
+                            {{ form.contact_number(class="input", type="number", inputmode="numeric", placeholder="Enter mobile number") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.address.label(class="label") }}
+                            {{ form.address(class="input", placeholder="Barangay, Municipality, Province") }}
+                        </div> 
+    
+                    </div>
+                    <br><br><br>
+                    <div class="nextBtn extrabutton">
+                        <span class="btnText">Next&nbsp;</span>
+                        <i class="uil uil-navigator"></i>
+                    </div>
+                </div>
+            </div>
+    
+    
+            <div class="form second">
+    
+                <div class="details family">
+                    <br>
+                    <span class="title">Additional Information</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            {{ form.sex.label(class="label") }}
+                            {{ form.sex(class="input", placeholder="Male or Female") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.blood_type.label(class="label") }}
+                            {{ form.blood_type(class="input", placeholder="Enter blood type") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.weight.label(class="label") }}
+                            {{ form.weight(class="input", type="number", inputmode="numeric", step="0.01", placeholder="Enter current weight") }}
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="details emergency">
+                    <span class="title">Emergency Details</span>
+                    <div class="fields">      
+                        <div class="input-field">
+                            {{ form.emergency_person.label(class="label") }}
+                            {{ form.emergency_person(class="input", placeholder="Enter emergency contact") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.emergency_number.label(class="label") }}
+                            {{ form.emergency_number(class="input", type="number", inputmode="numeric", placeholder="Enter Emergency Number") }}
+                        </div>
+                        <div class="input-field">
+    
+                            {{ form.emergency_email.label(class="label") }}
+                            {{ form.emergency_email(class="input", placeholder="Emergency Email") }}
+                        </div> 
+                    </div>
+                    <br>
+                    <p class="label">By submitting this form, you agree to our <a href="#">Terms</a> and have read and acknowledge the <a href="#">Global Privacy Statement</a>.</p>
+                    <br>
+                    <div class="buttons">
+                        <div class="backBtn">
+                            <i class="uil uil-navigator"></i>
+                            <span class="btnText">Back</span>
+                        </div>
+                        <button class="nextBtn">    
+                            <span class="btnText">Submit</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div>
+    
+            </div>
+            <script>
+                const form = document.getElementById("regform"),
+                        nextBtn = form.querySelector(".nextBtn"),
+                        backBtn = form.querySelector(".backBtn"),
+                        allInput = form.querySelectorAll(".first .input");
+            
+            
+                nextBtn.addEventListener("click", ()=> {
+                    allInput.forEach(input =>{
+                        if(input.value != ""){
+                            form.classList.add('secActive');
+                        }else{
+                            form.classList.remove('secActive');
+                        }
+                    })
+                })
+            
+                backBtn.addEventListener("click",()=> form.classList.remove('secActive'));
+            </script>  
+        </form>
+        
+         
+    </div>
+
+    {%else%}
+
     <!-- Insights -->
         <ul class="insights">
-    
             <li class='user-profile'>
                 <span class="info">
                     <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
-                    <!--<h3>Geo B</h3>
-                    <p>Fullstack Web Developer</p>-->
+                    <h2 class="nameunder">Dela Cruz, Juan Peter Parker P. III</h2>
+                    <!--<p>Fullstack Web Developer</p>-->
                 </span>
             </li>
             <li>
-                <span class="info">
-                    
-                    <h3>
-                        Dela Cruz, Juan P.
-                        <div class="text-muted" style="font-size: small;">
-                            <em>Account Type: <strong>Customer</strong></em>
-                            <br>
-                            <em>ID: <strong>001</strong></em>
-                        </div>
+                <span class="info"> 
+                    <h3 class="nameupper">
+                        {{current_user.last_name}}, {{current_user.first_name}} {{current_user.middle_name[0]}}.
                     </h3>
+                    <div class="text-muted acc-info" style="font-size: small;">
+                        <em>Account Type: <strong>{{current_user.account_type}}</strong></em>
+                        <br>
+                        <em>Date Joined: <strong>{{current_user.date_added}}</strong></em>
+                        <br>
+                        <em>ID: <strong>{{current_user.id}}</strong></em>
+                    </div>
 
                     <p class="label">Birthdate:</p>
-                    <p class="mockinput"><strong>01-01-2003</strong></p>
+                    <p class="mockinput"><strong>{{current_user.birthdate}}</strong></p>
                     
                     <p class="label">Contact No:</p>
-                    <p class="mockinput"><strong>+63 948-086-9613</strong></p>
+                    <p class="mockinput"><strong>{{current_user.contact_number}}</strong></p>
 
                     <p class="label">Email:</p>
-                    <p class="mockinput"><strong>juandelacruz@gmail.com</strong></p>
+                    <p class="mockinput"><strong>{{current_user.email}}</strong></p>
 
                     <p class="label">Address:</p>
-                    <p class="mockinput"><strong>Cuta, Batangas City, Batangas</strong></p>
+                    <p class="mockinput"><strong>{{current_user.address}}</strong></p>
 
                 </span>
             </li>
@@ -94,18 +229,18 @@
                 
                 <div class="header">
                     <i class='bx bx-phone' style=" color:var(--success);"></i>
-                    <h3>Physical Information</h3>    
+                    <h3>More Information</h3>    
                 </div>
                 <br>
                 <div class="add-text">
                     <p class="label">Sex:</p>
-                    <p class="mockinput"><strong>Male</strong></p>
+                    <p class="mockinput"><strong>{{current_user.sex}}</strong></p>
  
                     <p class="label">Blood Type:</p>
-                    <p class="mockinput"><strong>O+</strong></p>
+                    <p class="mockinput"><strong>{{current_user.blood_type}}</strong></p>
 
-                    <p class="label">Weight <em>(11-16-2023)</em> :</p>
-                    <p class="mockinput"><strong>54 KG</strong></p>
+                    <p class="label">Weight <em>({{current_user.weight_update}})</em> :</p>
+                    <p class="mockinput"><strong>{{current_user.weight}} kg</strong></p>
                 </div>
                 
             </span>
@@ -120,13 +255,13 @@
                 <br>
                 <div class="add-text">
                     <p class="label">Contact Person:</p>
-                    <p class="mockinput"><strong>Julian Dela Cruz</strong></p>
+                    <p class="mockinput"><strong>{{current_user.emergency_person}}</strong></p>
 
                     <p class="label">Contact No:</p>
-                    <p class="mockinput"><strong>+63 959-013-1233</strong></p>
+                    <p class="mockinput"><strong>{{current_user.emergency_number}}</strong></p>
 
                     <p class="label">Email:</p>
-                    <p class="mockinput"><strong>juliandipapatinag@gmail.com</strong></p>
+                    <p class="mockinput"><strong>{{current_user.emergency_email}}</strong></p>
                 </div>
                 
             </span>
@@ -343,6 +478,9 @@
          End of Reminders-->
     
     </div>
+
+    {%endif%}
+
     <br><br>
 
 </main>

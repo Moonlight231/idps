@@ -32,17 +32,17 @@
 
 
 
-<div class="formcontainer">
+<div class="gencontainer">
     <header>Name</header>
 
 {% if name %}
     <br>
     <h1>Customer Added!</h1>
 
-    <div class="formcontainer">
+    <div class="gencontainer">
         {% for our_customer in our_customers %}
                 {{ our_customer.id}} - 
-                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.name }} </a> - 
+                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.email }} </a> - 
                 {{ our_customer.email}} - 
                 {{ our_customer.blood_type}} - <a href="{{url_for('delete', id=our_customer.id)}}"> Delete </a>
                 <br>
@@ -66,7 +66,7 @@
                         {{ form.name(class="input") }}
 
                         {{ form.email.label(class="label") }}
-                        {{ form.email(class="input") }}
+                        {{ form.email(class="input")}}
 
                         {{ form.password_hash.label(class="label") }}
                         {{ form.password_hash(class="input") }}
@@ -88,7 +88,7 @@
     <div class="formcontainer">
         {% for our_customer in our_customers %}
                 {{ our_customer.id}} - 
-                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.name }} </a> - 
+                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.email }} </a> - 
                 {{ our_customer.email}} - 
                 {{ our_customer.blood_type}} - 
                 PW: {{ our_customer.password_hash}} - 

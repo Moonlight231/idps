@@ -1,13 +1,14 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
+from wtforms import StringField, SubmitField, PasswordField, DateField, SelectField, FloatField, BooleanField, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Length
 from wtforms.widgets import TextArea
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy import and_, or_, not_
 
 from datetime import datetime, date
 
@@ -48,10 +49,22 @@ def get_current_date():
 # Create Model
 class Customers(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200))
+    account_type = db.Column(db.String(200), default="Customer")
     email = db.Column(db.String(120), nullable=False, unique=True)
+    first_name = db.Column(db.String(200))
+    middle_name = db.Column(db.String(200))
+    last_name = db.Column(db.String(200))
+    birthdate = db.Column(db.Date)
     blood_type = db.Column(db.String(120))
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    weight = db.Column(db.Float)
+    weight_update = db.Column(db.Date)
+    sex = db.Column(db.String(120))
+    contact_number = db.Column(db.String(100))
+    address = db.Column(db.String(500))
+    emergency_person = db.Column(db.String(200))
+    emergency_number = db.Column(db.String(200))
+    emergency_email = db.Column(db.String(200))
+    date_added = db.Column(db.Date, default=date.today)
     
     # Do some password hashing and verification!
     password_hash = db.Column(db.String(128))
@@ -77,7 +90,7 @@ class Prescriptions(db.Model):
     type = db.Column(db.String(255))
     content = db.Column(db.Text)
     doctor = db.Column(db.String(255))
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    date_added = db.Column(db.Date, default=date.today)
 
 # Create a Prescription Form
 class PrescriptionForm(FlaskForm):
@@ -107,6 +120,21 @@ class RegisterForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired()])
     password_hash = PasswordField('Password', validators=[DataRequired(), EqualTo('password_hash2', message='Passwords must match')])
     password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+class UpdateForm(FlaskForm):
+    first_name = StringField("First Name", validators=[DataRequired()])
+    middle_name = StringField("Middle Name", validators=[DataRequired()])
+    last_name = StringField("Last Name", validators=[DataRequired()])
+    birthdate = DateField("Date of Birth", format='%Y-%m-%d', validators=[DataRequired()])
+    blood_type = SelectField("Blood Type", choices=["AB+","AB-","A+","A-","B+","B-","0+","O-"] , validators=[DataRequired()])
+    weight = FloatField("Weight in kg", validators=[DataRequired()])
+    sex = SelectField("Sex", choices=["Male", "Female"] , validators=[DataRequired()])
+    contact_number = StringField("Contact Number", validators=[DataRequired()])
+    address = StringField("Address", validators=[DataRequired()])
+    emergency_person = StringField("Contact Person", validators=[DataRequired()])
+    emergency_number = StringField("Contact Number", validators=[DataRequired()])
+    emergency_email = StringField("Email", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 # Create a Name Form Class
@@ -202,7 +230,35 @@ def index():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+
+    form = UpdateForm()
+    id = current_user.id
+    name_to_update = Customers.query.get_or_404(id)
+    if request.method == "POST":
+        name_to_update.first_name = request.form['first_name']
+        name_to_update.middle_name = request.form['middle_name']
+        name_to_update.last_name = request.form['last_name']
+        name_to_update.birthdate = request.form['birthdate']
+        name_to_update.blood_type = request.form['blood_type']
+        name_to_update.weight = request.form['weight']
+        name_to_update.weight_update = datetime.now()
+        name_to_update.sex = request.form['sex']
+        name_to_update.contact_number = request.form['contact_number']
+        name_to_update.address = request.form['address']
+        name_to_update.emergency_person = request.form['emergency_person']
+        name_to_update.emergency_number = request.form['emergency_number']
+        name_to_update.emergency_email = request.form['emergency_email']
+        
+        try:
+            db.session.commit()
+            flash("Update Successful")
+            return render_template("dashboard.html", form=form, name_to_update=name_to_update)
+        except:
+            flash("Error! Looks like there's a problem.")
+            return render_template("dashboard.html", form=form, name_to_update=name_to_update)
+    else:
+        return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id)
+
 
 #Create Logout function
 @app.route('/logout', methods=['GET', 'POST'])
@@ -280,6 +336,37 @@ def add_customer():
 # Create Update Database Record
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
+    form = UpdateForm()
+    name_to_update = Customers.query.get_or_404(id)
+    if request.method == "POST":
+        name_to_update.first_name = request.form['first_name']
+        name_to_update.middle_name = request.form['middle_name']
+        name_to_update.last_name = request.form['last_name']
+        name_to_update.birthdate = request.form['birthdate']
+        name_to_update.blood_type = request.form['blood_type']
+        name_to_update.weight = request.form['weight']
+        name_to_update.weight_update = datetime.now()
+        name_to_update.sex = request.form['sex']
+        name_to_update.contact_number = request.form['contact_number']
+        name_to_update.address = request.form['address']
+        name_to_update.emergency_person = request.form['emergency_person']
+        name_to_update.emergency_number = request.form['emergency_number']
+        name_to_update.emergency_email = request.form['emergency_email']
+        
+        try:
+            db.session.commit()
+            flash("Update Successful")
+            return render_template("update.html", form=form, name_to_update=name_to_update)
+        except:
+            flash("Error! Looks like there's a problem.")
+            return render_template("update.html", form=form, name_to_update=name_to_update)
+    else:
+        return render_template("update.html", form=form, name_to_update=name_to_update, id=id)
+
+
+'''# Create Update Database Record
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
     form = CustomerForm()
     name_to_update = Customers.query.get_or_404(id)
     if request.method == "POST":
@@ -295,7 +382,7 @@ def update(id):
             return render_template("update.html", form=form, name_to_update=name_to_update)
     else:
         return render_template("update.html", form=form, name_to_update=name_to_update,id=id)
-
+'''
 
 # Create Delete Records
 @app.route('/delete/<int:id>')

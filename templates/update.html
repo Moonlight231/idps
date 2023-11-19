@@ -28,72 +28,242 @@
 
 
 
-
-
-
-
 <div class="formcontainer">
-    <header>Name</header>
-
-{% if name %}
-    <br>
-    <h1>Update Customer:</h1>
-
-    <div class="formcontainer">
-        {% for our_customer in our_customers %}
-                {{ our_customer.customer_id}} - 
-                <a href="{{url_for('update', customer_id=our_customer.customer_id)}}"> {{ our_customer.name }} </a> - 
-                {{ our_customer.email}} - 
-                {{ our_customer.blood_type }}
-                <br>
-        
-        {% endfor %}
-    </div>
-
-{% else %}
-    <br>
-    <h1>Update User:</h1>
-    <br>
-    <form action="/update/{{name_to_update.customer_id}}" method="post">
+    <header>Allow us to know you better.</header>
+    <form action="/update/{{name_to_update.id}}" method="post" id="regform">
         <div class="form first">
-            <div class="details personal">
+
+            <div class="details name">
+                <br>
                 <span class="title">Personal Details</span>
                 <div class="fields">
-                    <div class="input-field">
                         {{ form.hidden_tag() }}
-
-                        {{ form.name.label(class="label") }}
-                        {{ form.name(class="input", value=name_to_update.name) }}
-
-                        {{ form.email.label(class="label") }}
-                        {{ form.email(class="input", value=name_to_update.email) }}
-
-                        {{ form.blood_type.label(class="label") }}
-                        {{ form.blood_type(class="input", value=name_to_update.blood_type) }}
+                    <div class="input-field">
+                        {{ form.first_name.label(class="label") }}
+                        {{ form.first_name(class="input", placeholder="Enter firstname", value=name_to_update.first_name) }}
                     </div>
+                    <div class="input-field">
+                        {{ form.middle_name.label(class="label") }}
+                        {{ form.middle_name(class="input", placeholder="Enter middle name", value=name_to_update.middle_name) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.last_name.label(class="label") }}
+                        {{ form.last_name(class="input", placeholder="Enter lastname", value=name_to_update.last_name) }}
+                    </div>
+    
                 </div>
-                <div class="buttons">
-                    <button>
-                        <span>Update</span>
-                        <i class="uil uil-navigator"></i>
-                    </button>
-                    <br>
-                    <a href="{{url_for('delete', customer_id=customer_id)}}" class="extrabutton" style="background-color: var(--danger);" >
-                        <span class="btnText">Delete</span>
-                        <i class="uil uil-navigator extrai"></i>
-                    </a>
+
+            </div>  
+            <div class="details other">
+                <br>       
+                <div class="fields">
+                    <div class="input-field">
+                        {{ form.birthdate.label(class="label") }}
+                        {{ form.birthdate(class="input", placeholder="Enter birth date", value=name_to_update.birthdate) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.contact_number.label(class="label") }}
+                        {{ form.contact_number(class="input", type="number", inputmode="numeric", placeholder="Enter mobile number", value=name_to_update.contact_number) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.address.label(class="label") }}
+                        {{ form.address(class="input", placeholder="Barangay, Municipality, Province", value=name_to_update.address) }}
+                    </div> 
+
                 </div>
-                
+                <br><br>
+                <div class="nextBtn extrabutton">
+                    <span class="btnText">Next&nbsp;</span>
+                    <i class="uil uil-navigator"></i>
+                </div>
             </div>
         </div>
 
+
+        <div class="form second">
+
+            <div class="details family">
+                <br>
+                <span class="title">Additional Information</span>
+                <div class="fields">
+                    <div class="input-field">
+                        {{ form.sex.label(class="label") }}
+                        {{ form.sex(class="input", placeholder="Male or Female", value=name_to_update.sex) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.blood_type.label(class="label") }}
+                        {{ form.blood_type(class="input", placeholder="Enter blood type", value=name_to_update.blood_type) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.weight.label(class="label") }}
+                        {{ form.weight(class="input", type="number", inputmode="numeric", step="0.01", placeholder="Enter current weight", value=name_to_update.weight) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="details emergency">
+                <span class="title">Emergency Details</span>
+                <div class="fields">      
+                    <div class="input-field">
+                        {{ form.emergency_person.label(class="label") }}
+                        {{ form.emergency_person(class="input", placeholder="Enter emergency contact", value=name_to_update.emergency_person) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.emergency_number.label(class="label") }}
+                        {{ form.emergency_number(class="input", type="number", inputmode="numeric", placeholder="Enter Emergency Number", value=name_to_update.emergency_number) }}
+                    </div>
+                    <div class="input-field">
+
+                        {{ form.emergency_email.label(class="label") }}
+                        {{ form.emergency_email(class="input", placeholder="Emergency Email", value=name_to_update.emergency_email) }}
+                    </div> 
+                </div>
+                <br>
+                <div class="buttons">
+                    <div class="backBtn">
+                        <i class="uil uil-navigator"></i>
+                        <span class="btnText">Back</span>
+                    </div>
+                    <button class="nextBtn">    
+                        <span class="btnText">Submit</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <script>
+            const form = document.getElementById("regform"),
+                    nextBtn = form.querySelector(".nextBtn"),
+                    backBtn = form.querySelector(".backBtn"),
+                    allInput = form.querySelectorAll(".first .input");
+        
+        
+            nextBtn.addEventListener("click", ()=> {
+                allInput.forEach(input =>{
+                    if(input.value != ""){
+                        form.classList.add('secActive');
+                    }else{
+                        form.classList.remove('secActive');
+                    }
+                })
+            })
+        
+            backBtn.addEventListener("click",()=> form.classList.remove('secActive'));
+        </script>  
     </form>
+    
+     
 </div>
+<br>
 
-{% endif %}
+<div class="formcontainer">
+    <header>Allow us to know you better.</header>
+    <form action="" id="regform">
+        <div class="form first">
+
+            <div class="details name">
+                <br>
+                <span class="title">Personal Details</span>
+                <div class="fields">
+
+                    <div class="input-field">
+                        <label class="label">First Name</label>
+                        <input class="input" placeholder="Enter firstname" required>
+                    </div>
+                    <div class="input-field">
+                        <label class="label">Middle Name</label>
+                        <input class="input" type="text" placeholder="Enter middle name" required>
+                    </div>
+                    <div class="input-field">
+                        <label class="label">Last Name</label>
+                        <input class="input" type="text" placeholder="Enter lastname" required>
+                    </div>
+    
+                </div>
+
+            </div>  
+            <div class="details other">
+                <br>       
+                <div class="fields">
+                    <div class="input-field">
+                        <label class="label">Date of Birth</label>
+                        <input class="input" type="date" placeholder="Enter birth date" required>
+                    </div>
+                    <div class="input-field">
+                        <label class="label">Mobile Number</label>
+                        <input class="input" type="number" placeholder="Enter mobile number" required>
+                    </div>
+                    <div class="input-field">
+                        <label class="label">Address</label>
+                        <input class="input" type="text" placeholder="Enter current address" required>
+                    </div> 
+
+                </div>
+                <br><br>
+                <button class="nextBtn extrabutton">
+                    <span class="btnText">Next&nbsp;</span>
+                    <i class="uil uil-navigator"></i>
+                </button>
+            </div>
+        </div>
 
 
+        <div class="form second">
 
+            <div class="details family">
+                <br>
+                <span class="title">Additional Information</span>
+                <div class="fields">
+                    <div class="input-field">
+                        <label class="label">Sex</label>
+                        <input class="input" type="text" placeholder="Male or Female" required>
+                    </div>
+                    <div class="input-field">
+                        <label class="label">Blood Type</label>
+                        <input class="input" type="text" placeholder="Enter blood type" required>
+                    </div>
+                    <div class="input-field">
+                        <label class="label">Weight</label>
+                        <input class="input" type="text" placeholder="Enter current weight " required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details emergency">
+                <span class="title">Emergency Details</span>
+                <div class="fields">
+                    <div class="input-field">
+                        <label class="label">Contact Person</label>
+                        <input class="input" type="text" placeholder="Enter emergency contact" required>
+                    </div>
+                    <div class="input-field">
+                        <label class="label">Mobile Number</label>
+                        <input class="input" type="text" placeholder="Emergency mobile number" required>
+                    </div>
+                    <div class="input-field">
+                        <label class="label">Email</label>
+                        <input class="input" type="date" placeholder="Emergency Email" required>
+                    </div> 
+                </div>
+                <br>
+                <div class="buttons">
+                    <div class="backBtn">
+                        <i class="uil uil-navigator"></i>
+                        <span class="btnText">Back</span>
+                    </div>
+                    <button class="nextBtn">    
+                        <span class="btnText">Submit</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    
+     
+</div>
 
 </main>
 
