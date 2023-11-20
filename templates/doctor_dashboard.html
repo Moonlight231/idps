@@ -25,10 +25,13 @@
                 <li><a href="#" class="active">Profile</a></li>
             </ul>
         </div>
+        {%if (current_user.last_name == None) and (current_user.first_name == None)%}
+        {%else%}
         <a href="#" class="report">
             <i class='bx bx-qr'></i>
             <span>Profile QR</span>
         </a>
+        {%endif%}
     </div>
    
 
