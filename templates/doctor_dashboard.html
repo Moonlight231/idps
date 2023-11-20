@@ -40,7 +40,7 @@
     
     <div class="regformcontainer">
         <header>Allow us to know you better.</header>
-        <form action="/dashboard" method="post" id="regform">
+        <form action="/doctor/dashboard" method="post" id="regform">
             <div class="form first">
     
                 <div class="details name">
@@ -96,36 +96,27 @@
                     <br>
                     <span class="title">Additional Information</span>
                     <div class="fields">
-                        <div class="input-field">
-                            {{ form.sex.label(class="label") }}
-                            {{ form.sex(class="input", placeholder="Male or Female") }}
-                        </div>
-                        <div class="input-field">
-                            {{ form.blood_type.label(class="label") }}
-                            {{ form.blood_type(class="input", placeholder="Enter blood type") }}
-                        </div>
-                        <div class="input-field">
-                            {{ form.weight.label(class="label") }}
-                            {{ form.weight(class="input", type="number", inputmode="numeric", step="0.01", placeholder="Enter current weight") }}
-                        </div>
+                        <div class="doctor-input-field">
+                            {{ form.ptr_number.label(class="label") }}
+                            {{ form.ptr_number(class="input", placeholder="Professional Tax Receipt Number") }}
+                        </div> 
+                        <div class="doctor-input-field">
+                            {{ form.specialty.label(class="label") }}
+                            {{ form.specialty(class="input", placeholder="Specialty 1, Specialty 2, etc.") }}
+                        </div> 
                     </div>
                 </div>
     
                 <div class="details emergency">
-                    <span class="title">Emergency Details</span>
-                    <div class="fields">      
-                        <div class="input-field">
-                            {{ form.emergency_person.label(class="label") }}
-                            {{ form.emergency_person(class="input", placeholder="Enter emergency contact") }}
+                    <span class="title">Licenses</span>
+                    <div class="fields">    
+                        <div class="doctor-input-field">
+                            {{ form.prc_lic_number.label(class="label") }}
+                            {{ form.prc_lic_number(class="input", placeholder="PRC License Number") }}
                         </div>
-                        <div class="input-field">
-                            {{ form.emergency_number.label(class="label") }}
-                            {{ form.emergency_number(class="input", type="number", inputmode="numeric", placeholder="Enter Emergency Number") }}
-                        </div>
-                        <div class="input-field">
-    
-                            {{ form.emergency_email.label(class="label") }}
-                            {{ form.emergency_email(class="input", placeholder="Emergency Email") }}
+                        <div class="doctor-input-field">
+                            {{ form.s2_lic_number.label(class="label") }}
+                            {{ form.s2_lic_number(class="input", placeholder="S2 License Number") }}
                         </div> 
                     </div>
                     <br>
@@ -173,14 +164,14 @@
             <li class='user-profile'>
                 <span class="info">
                     <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
-                    <h2 class="nameunder">Dela Cruz, Juan Peter Parker P. III</h2>
+                    <h2 class="nameunder">Dr. {{current_user.last_name}}, {{current_user.first_name}} {{current_user.middle_name[0]}}.</h2>
                     <!--<p>Fullstack Web Developer</p>-->
                 </span>
             </li>
             <li>
                 <span class="info">
                     <h3 class="nameupper">
-                        {{current_user.last_name}}, {{current_user.first_name}} {{current_user.middle_name[0]}}.
+                        Dr. {{current_user.last_name}}, {{current_user.first_name}} {{current_user.middle_name[0]}}.
                     </h3>
                     <div class="text-muted acc-info" style="font-size: small;">
                         <em>Account Type: <strong>{{current_user.account_type}}</strong></em>
@@ -190,14 +181,14 @@
                         <em>ID: <strong>{{current_user.id}}</strong></em>
                     </div>
 
-                    <p class="label">Birthdate:</p>
-                    <p class="mockinput"><strong>{{current_user.birthdate}}</strong></p>
+                    <p class="label">Specialization/s:</p>
+                    <p class="mockinput"><strong>{{current_user.specialty}}</strong></p>
                     
-                    <p class="label">Contact No:</p>
-                    <p class="mockinput"><strong>{{current_user.contact_number}}</strong></p>
+                    <p class="label">PTR Number:</p>
+                    <p class="mockinput"><strong>{{current_user.ptr_number}}</strong></p>
 
-                    <p class="label">Email:</p>
-                    <p class="mockinput"><strong>{{current_user.email}}</strong></p>
+                    <p class="label">Date of Birth:</p>
+                    <p class="mockinput"><strong>{{current_user.birthdate}}</strong></p>
 
                     <p class="label">Address:</p>
                     <p class="mockinput"><strong>{{current_user.address}}</strong></p>
@@ -215,18 +206,16 @@
                 
                 <div class="header">
                     <i class='bx bx-phone' style=" color:var(--success);"></i>
-                    <h3>More Information</h3>    
+                    <h3>Contact Information</h3>    
                 </div>
                 <br>
                 <div class="add-text">
-                    <p class="label">Sex:</p>
-                    <p class="mockinput"><strong>{{current_user.sex}}</strong></p>
+                    <p class="label">Contact Number:</p>
+                    <p class="mockinput"><strong>{{current_user.contact_number}}</strong></p>
  
-                    <p class="label">Blood Type:</p>
-                    <p class="mockinput"><strong>{{current_user.blood_type}}</strong></p>
+                    <p class="label">Email:</p>
+                    <p class="mockinput"><strong>{{current_user.email}}</strong></p>
 
-                    <p class="label">Weight <em>({{current_user.weight_update}})</em> :</p>
-                    <p class="mockinput"><strong>{{current_user.weight}} kg</strong></p>
                 </div>
                 
             </span>
@@ -236,18 +225,16 @@
                 
                 <div class="header">
                     <i class='bx bx-plus-medical' style="color: var(--danger);"></i>
-                    <h3>Emergency Details</h3>    
+                    <h3>Licenses</h3>    
                 </div>
                 <br>
                 <div class="add-text">
-                    <p class="label">Contact Person:</p>
-                    <p class="mockinput"><strong>{{current_user.emergency_person}}</strong></p>
 
-                    <p class="label">Contact No:</p>
-                    <p class="mockinput"><strong>{{current_user.emergency_number}}</strong></p>
+                    <p class="label">PRC License Number:</p>
+                    <p class="mockinput"><strong>{{current_user.prc_lic_number}}</strong></p>
 
-                    <p class="label">Email:</p>
-                    <p class="mockinput"><strong>{{current_user.emergency_email}}</strong></p>
+                    <p class="label">S2 License Number:</p>
+                    <p class="mockinput"><strong>{{current_user.s2_lic_number}}</strong></p>
                 </div>
                 
             </span>

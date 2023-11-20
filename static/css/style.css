@@ -586,13 +586,14 @@ nav .navbar .profile{
     font-weight: 500;
 }
 /*  */
-/* .content main .editPro .Edit{
+.content main .edit{
+    cursor: pointer;
     margin-bottom: 10px;
     height: 30px;
-    width: fit-content;
+    width: 20px;
     padding: 0 16px;
     font-size: 13px;
-    border-radius: 36px;
+    border-radius: 5px;
     background: var(--primary);
     color: var(--light);
     display: flex;
@@ -600,14 +601,8 @@ nav .navbar .profile{
     justify-content: center;
     grid-gap: 10px;
     font-weight: 500;
-} */
-.content main .insights .editPro .Edit i{
-    left: 400px;
-    float: left;
-    font-size: 30px;
-    color: var(--primary);
-    
-}
+    float: right;
+} 
 /*  */
 
 .content main .insights{
@@ -662,8 +657,6 @@ nav .navbar .profile{
 .container{
     display: flex;
     height: 100%;
-
-
 }
 
 .acc-info{
@@ -677,6 +670,7 @@ nav .navbar .profile{
 }
 
 .content main .insights li .info h2{
+    
     font-size: 30px;
     font-weight: 700;
     color: var(--primary);
@@ -1097,6 +1091,16 @@ nav .navbar .profile{
     overflow: hidden;
     margin-top: 30px;
 }
+.gencontainer{
+    position: relative;
+    max-width: auto;
+    width: 100%;
+    border-radius: 20px;
+    padding: 30px;
+    background-color: var(--light);
+    overflow: hidden;
+    margin-top: 30px;
+}
 
 .regformcontainer{
     position: relative;
@@ -1110,10 +1114,11 @@ nav .navbar .profile{
     margin-top: 30px;
 }
 
-.gencontainer{
+.presformcontainer{
     position: relative;
     max-width: auto;
     width: 100%;
+    min-height: 700px;
     border-radius: 20px;
     padding: 30px;
     padding-bottom: 20px;
@@ -1126,27 +1131,58 @@ nav .navbar .profile{
     position: relative;
     max-width: auto;
     width: 100%;
-    border-radius: 6px;
     margin-top: 30px;
     background-color: var(--light);
     border: 2px solid var(--warning);
     box-shadow: 0 15px 10px rgba(0,0,0,0.1);
 }
 
-.formcontainer header, .regformcontainer header{
+.white{
+    position: relative;
+    max-width: auto;
+    width: 100%;
+    margin-top: 30px;
+    background-color: var(--light);
+    border: 1px solid var(--dark-grey);
+    box-shadow: 0 15px 10px rgba(0,0,0,0.1);
+}
+
+.formcontainer header, .regformcontainer header, .presformcontainer header{
     position: relative;
     font-size: 20px;
     font-weight: 600;
     color: var(--dark);
 }
 
-.formcontainer header::before, .regformcontainer header::before{
+.formcontainer header::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 3px;
+    width: 256px;
+    border-radius: 8px;
+    background-color: var(--primary);
+}
+
+.regformcontainer header::before{
     content: "";
     position: absolute;
     left: 0;
     bottom: -2px;
     height: 3px;
     width: 282px;
+    border-radius: 8px;
+    background-color: var(--primary);
+}
+
+.presformcontainer header::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 3px;
+    width: 222px;
     border-radius: 8px;
     background-color: var(--primary);
 }
@@ -1159,13 +1195,21 @@ nav .navbar .profile{
     overflow: hidden;
 }
 
-.formcontainer form .form, .regformcontainer form .form{
+.presformcontainer form{
+    position: relative;
+    margin-top: 16px;
+    min-height: 490px;
+    background-color: var(--light);
+    overflow: hidden;
+}
+
+.formcontainer form .form, .regformcontainer form .form, .presformcontainer form .form{
     position: absolute;
     width: 100%;
     transition: 0.3s ease;
 }
 
-.formcontainer form .form.second, .regformcontainer form .form.second{
+.formcontainer form .form.second, .regformcontainer form .form.second, .presformcontainer form .form.second{
     opacity: 0;
     pointer-events: none;
     transform: translateX(100%);
@@ -1183,7 +1227,7 @@ form.secActive .form.first{
 
 }
 
-.formcontainer form .title, .regformcontainer form .title{
+.formcontainer form .title, .regformcontainer form .title, .presformcontainer form .title{
     display: block;
     margin-bottom: 8px;
     padding-bottom: 8px;
@@ -1193,7 +1237,7 @@ form.secActive .form.first{
     color: var(--dark);
 }
 
-.formcontainer form .fields, .regformcontainer form .fields{
+.formcontainer form .fields, .regformcontainer form .fields, .presformcontainer form .fields{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1206,13 +1250,20 @@ form .fields .input-field{
     flex-direction: column;
     margin: 4px 0;
 }
+
+.doctor-input-field{
+    display: flex;
+    width: calc(100% / 2 - 15px);
+    flex-direction: column;
+    margin: 4px 0;
+}
 .input-field .label, .label{
     font-size: 13px;
     font-weight: 500;
     color: var(--dark);
 
 }
-.input-field .input{
+.input-field .input, .doctor-input-field .input{
     outline: none;
     font-size: 14px;
     font-weight: 400;
@@ -1236,16 +1287,19 @@ form .fields .input-field{
     caret-color: var(--dark);
 }
 
-.input-field .input-textarea{
+.input-field .input-textarea, .input-textarea{
     outline: none;
     font-size: 14px;
     font-weight: 400;
     color: var(--dark);
     border-radius: 5px;
     border: 1px solid #aaa;
-    padding: 0 15px;
+    padding: 15px;
     margin: 8px 0;
     caret-color: var(--dark);
+    display: flex;
+    width: 100%;
+    max-width: 100%
 }
 
 .input-field .input:is(:focus, :valid){
@@ -1264,7 +1318,7 @@ form .fields .input-field{
     color: var(--dark);
 }
 
-.formcontainer form button, .regformcontainer form button, .backBtn, .extrabutton{
+.formcontainer form button, .regformcontainer form button, .presformcontainer form button, .backBtn, .extrabutton{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1799,17 +1853,26 @@ form .buttons button, .backBtn, .extrabutton{
 
     /*registration form*/
 
-    .formcontainer{
+    .formcontainer, .regformcontainer{
         height: 630px;
     }
 
-    .formcontainer form{
+    .formcontainer form, .regformcontainer form{
         min-height: 600px;
         overflow-y: scroll;
     }
 
+    .regformcontainer{
+        height: 700px;
+    }
 
-    .formcontainer form::-webkit-scrollbar{
+    .regformcontainer form{
+        min-height: 680px;
+        overflow-y: scroll;
+    }
+
+
+    .formcontainer form::-webkit-scrollbar, .regformcontainer form::-webkit-scrollbar{
         display: none;
     }
 
@@ -1921,8 +1984,20 @@ form .buttons button, .backBtn, .extrabutton{
         height: 800px;
     }
 
+    .regformcontainer{
+        height: 900px;
+    }
+
+    .formcontainer{
+        height: 800px;
+    }
+
     .formcontainer form{
         min-height: 700px;
+    }
+
+    .regformcontainer form{
+        min-height: 800px;
     }
 
     /*registration form*/

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, request, redirect, url_for
+from flask import Flask, render_template, flash, request, redirect, url_for, session
 from flask_wtf import FlaskForm
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from wtforms import StringField, SubmitField, PasswordField, DateField, SelectField, FloatField, BooleanField, ValidationError
@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired, EqualTo, Length
 from wtforms.widgets import TextArea
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import and_, or_, not_
@@ -15,6 +16,11 @@ from datetime import datetime, date
 
 # Create Flask Instance
 app = Flask(__name__)
+
+#Session Config
+SESSION_TYPE = "filesystem"
+app.config.from_object(__name__)
+Session(app)
 # Add MySQL Database
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://username:password@localhost/db_name'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/rxpress'
@@ -33,7 +39,11 @@ login_manager.login_view = '/'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Customers.query.get(int(user_id))
+    stored_session = session.get("account_type")
+    if stored_session == "Customer":
+        return Customers.query.get(int(user_id))
+    if stored_session == "Doctor":
+        return Doctors.query.get(int(user_id))
 
 #Json Thing
 @app.route('/date')
@@ -46,26 +56,11 @@ def get_current_date():
     }
     return blood_type
 
-# Create Model
-class Customers(db.Model, UserMixin):
+#Create User Class
+class Users(db.Model):
+    __abstract__ = True
     id = db.Column(db.Integer, primary_key=True)
-    account_type = db.Column(db.String(200), default="Customer")
     email = db.Column(db.String(120), nullable=False, unique=True)
-    first_name = db.Column(db.String(200))
-    middle_name = db.Column(db.String(200))
-    last_name = db.Column(db.String(200))
-    birthdate = db.Column(db.Date)
-    blood_type = db.Column(db.String(120))
-    weight = db.Column(db.Float)
-    weight_update = db.Column(db.Date)
-    sex = db.Column(db.String(120))
-    contact_number = db.Column(db.String(100))
-    address = db.Column(db.String(500))
-    emergency_person = db.Column(db.String(200))
-    emergency_number = db.Column(db.String(200))
-    emergency_email = db.Column(db.String(200))
-    date_added = db.Column(db.Date, default=date.today)
-    
     # Do some password hashing and verification!
     password_hash = db.Column(db.String(128))
 
@@ -84,6 +79,54 @@ class Customers(db.Model, UserMixin):
     def __repr__(self):
         return '<Name %r>' % self.name
 
+# Create Model
+class Customers(Users, UserMixin):
+
+    account_type = db.Column(db.String(200), default="Customer")
+    
+    first_name = db.Column(db.String(200))
+    middle_name = db.Column(db.String(200))
+    last_name = db.Column(db.String(200))
+    birthdate = db.Column(db.Date)
+    blood_type = db.Column(db.String(120))
+    weight = db.Column(db.Float)
+    weight_update = db.Column(db.Date)
+    sex = db.Column(db.String(120))
+    contact_number = db.Column(db.String(100))
+    address = db.Column(db.String(500))
+    emergency_person = db.Column(db.String(200))
+    emergency_number = db.Column(db.String(200))
+    emergency_email = db.Column(db.String(200))
+    date_added = db.Column(db.Date, default=date.today)
+    
+    # Create a String
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
+# Create Model
+class Doctors(Users, UserMixin):
+    account_type = db.Column(db.String(200), default="Doctor")
+    
+    first_name = db.Column(db.String(200))
+    middle_name = db.Column(db.String(200))
+    last_name = db.Column(db.String(200))
+
+    ptr_number = db.Column(db.String(120))
+    specialty = db.Column(db.String(200))
+    birthdate = db.Column(db.Date)
+    address = db.Column(db.String(500))
+
+    contact_number = db.Column(db.String(100))
+
+    prc_lic_number = db.Column(db.String(120))
+    s2_lic_number = db.Column(db.String(120))
+
+    date_added = db.Column(db.Date, default=date.today)
+    
+    # Create a String
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
 # Create Prescription Model
 class Prescriptions(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -94,7 +137,7 @@ class Prescriptions(db.Model):
 
 # Create a Prescription Form
 class PrescriptionForm(FlaskForm):
-    type = StringField("Prescription Type", validators=[DataRequired()])
+    type = SelectField("Prescription Type", choices=["White", "Yellow"] , validators=[DataRequired()])
     content = StringField("Content", validators=[DataRequired()], widget=TextArea())
     doctor = StringField("Prescriber's Name", validators=[DataRequired()])
     submit = SubmitField("Create")
@@ -136,6 +179,20 @@ class UpdateForm(FlaskForm):
     emergency_number = StringField("Contact Number", validators=[DataRequired()])
     emergency_email = StringField("Email", validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+class UpdateDoctorForm(FlaskForm):
+    first_name = StringField("First Name", validators=[DataRequired()])
+    middle_name = StringField("Middle Name", validators=[DataRequired()])
+    last_name = StringField("Last Name", validators=[DataRequired()])
+    birthdate = DateField("Date of Birth", format='%Y-%m-%d', validators=[DataRequired()])
+    ptr_number = StringField("PTR Number", validators=[DataRequired()])
+    specialty = StringField("Specialization", validators=[DataRequired()])
+    address = StringField("Address", validators=[DataRequired()])
+    contact_number = StringField("Contact Number", validators=[DataRequired()])
+    prc_lic_number = StringField("PRC License Number", validators=[DataRequired()])
+    s2_lic_number = StringField("S2 License Number")
+    submit = SubmitField("Submit")
+
 
 # Create a Name Form Class
 class NamerForm(FlaskForm):
@@ -197,10 +254,15 @@ class PasswordForm(FlaskForm):
 def index():
     form = LoginForm()
     form2 = RegisterForm()
+
+    
     
     if form.validate_on_submit():
         customer = Customers.query.filter_by(email=form.email.data).first()
+        doctor = Doctors.query.filter_by(email=form.email.data).first()
         if customer:
+            #storing session
+            session["account_type"] = customer.account_type
             #Check the hash
             if check_password_hash(customer.password_hash, form.password.data):
                 login_user(customer)
@@ -208,21 +270,36 @@ def index():
                 return redirect(url_for('dashboard'))
             else:
                 flash("Wrong password. Try Again.", "error")
+        elif doctor:
+            #storing session
+            session["account_type"] = doctor.account_type
+            #Check the hash
+            if check_password_hash(doctor.password_hash, form.password.data):
+                login_user(doctor)
+                flash("Logged in successfully.")
+                return redirect(url_for('doctor_dashboard'))
+            else:
+                flash("Wrong password. Try Again.", "error")
         else:
             flash("That Email is not registered yet.")
     
     if form2.validate_on_submit():
         customer = Customers.query.filter_by(email=form2.email.data).first()
-        if customer is None:
+        doctors = Doctors.query.filter_by(email=form2.email.data).first()
+        if (customer is None) and (doctors is None):
             # Hash the password!
             hashed_pw = generate_password_hash(form2.password_hash.data, "pbkdf2")
             customer = Customers(email=form2.email.data, password_hash=hashed_pw)
             db.session.add(customer)
             db.session.commit()
-        form2.email.data = ''
-        form2.password_hash = ''
-        form2.password_hash2 = ''
-        flash("Account Created Successfully!")
+            form2.email.data = ''
+            form2.password_hash = ''
+            form2.password_hash2 = ''
+            flash("Account Created Successfully!")
+        else:
+            form2.password_hash = ''
+            form2.password_hash2 = ''
+            flash("That Email is already in use.")
     return render_template('index.html', form=form, form2=RegisterForm())
 
 
@@ -259,6 +336,38 @@ def dashboard():
     else:
         return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id)
 
+@app.route('/doctor/dashboard', methods=['GET', 'POST'])
+@login_required
+def doctor_dashboard():
+    form = UpdateDoctorForm()
+    id = current_user.id
+    name_to_update = Doctors.query.get_or_404(id)
+    if request.method == "POST":
+        name_to_update.first_name = request.form['first_name']
+        name_to_update.middle_name = request.form['middle_name']
+        name_to_update.last_name = request.form['last_name']
+        name_to_update.birthdate = request.form['birthdate']
+
+        name_to_update.ptr_number = request.form['ptr_number']
+        name_to_update.specialty = request.form['specialty']
+
+
+        name_to_update.contact_number = request.form['contact_number']
+        name_to_update.address = request.form['address']
+
+        name_to_update.prc_lic_number = request.form['prc_lic_number']
+        name_to_update.s2_lic_number = request.form['s2_lic_number']
+
+        
+        try:
+            db.session.commit()
+            flash("Update Successful")
+            return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update)
+        except:
+            flash("Error! Looks like there's a problem.")
+            return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update)
+    else:
+        return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update, id=id)
 
 #Create Logout function
 @app.route('/logout', methods=['GET', 'POST'])
@@ -332,6 +441,30 @@ def add_customer():
         flash("Customer Added Successfully!")
     our_customers = Customers.query.order_by(Customers.date_added)
     return render_template("add_customer.html", form=form, name=name, our_customers=our_customers)
+
+@app.route('/doctor/add', methods=['get', 'post'])
+def add_doctor():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        doctor = Doctors.query.filter_by(email=form.email.data).first()
+        customer = Customers.query.filter_by(email=form.email.data).first()
+        if (doctor is None) and (customer is None):
+            # Hash the password!
+            hashed_pw = generate_password_hash(form.password_hash.data, "pbkdf2")
+            doctor = Doctors(email=form.email.data, password_hash=hashed_pw)
+            db.session.add(doctor)
+            db.session.commit()
+            form.email = ''
+            form.password_hash = ''
+            form.password_hash2 = ''
+            flash("Doctor Added Successfully!")
+        else:
+            form.password_hash = ''
+            form.password_hash2 = ''
+            flash("That Email is already in use.")
+    our_doctors = Doctors.query.order_by(Doctors.date_added)
+    return render_template("add_doctor.html", form=RegisterForm(), our_doctors=our_doctors)
+
 
 # Create Update Database Record
 @app.route('/update/<int:id>', methods=['GET', 'POST'])

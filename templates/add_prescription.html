@@ -8,86 +8,49 @@
 
 
 <main>
-{% for message in get_flashed_messages() %}
-    
-    <div class="toast">
-        <div class="toast-content">
-            <i class="fas fa-solid fa-check check"></i>
-            <div class="message">
-                {{message}}
-            </div>
+
+
+<div class="presformcontainer">
+    <header>CREATE PRESCRIPTION</header>
+
+
+   
+    <br>
+
+    <div class="fields">
+    {{ form.hidden_tag() }}
+
+        <div class="input-field">
+        {{ form.type.label(class="label") }} <br>
+        {{ form.type(class="input") }}
         </div>
-        <i class="fa-solid fa-xmark close"></i>
-        <div class="progress"></div>
+
+        <div class="input-field">
+        {{ form.doctor.label(class="label") }} <br>
+        {{ form.doctor(class="input") }}
+        </div>
+                            
+        <div class="input-field">
+        {{ form.content.label(class="label") }}
+        {{ form.content(class="input-textarea", rows="10") }}
+        </div>
+
     </div>
-    
-{% endfor %}
 
-
-
-
-
-
-
-
-
-
-<div class="gencontainer">
-    <header>Name</header>
-
-{% if name %}
-    <br>
-    <h1>Customer Added!</h1>
-
-    <div class="formcontainer">
-        {% for our_customer in our_customers %}
-                {{ our_customer.id}} - 
-                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.name }} </a> - 
-                {{ our_customer.email}} - 
-                {{ our_customer.blood_type}} - <a href="{{url_for('delete', id=our_customer.id)}}"> Delete </a>
-                <br>
-        
-        {% endfor %}
-        </div>
-
-{% else %}
-    <br>
-    <h1>Create Prescription...</h1>
-    <br>
-    <form method="post">
-        <div class="form first">
-            <div class="details personal">
-                <span class="title">Personal Details</span>
-                <div class="fields">
-                    <div class="input-field">
-                        {{ form.hidden_tag() }}
-
-                        {{ form.type.label(class="label") }}
-                        {{ form.type(class="input") }}
-
-                        {{ form.doctor.label(class="label") }}
-                        {{ form.doctor(class="input") }}
-
-                        {{ form.content.label(class="label") }}
-                        {{ form.content(class="input-textarea", rows="10") }}
-
-                    </div>
-                </div>
-                <button class="nextBtn">
-                    <span class="btnText">Create</span>
-                    <i class="uil uil-navigator"></i>
-                </button>
+    <button class="nextBtn">
+        <span class="btnText">Create</span>
+        <i class="uil uil-navigator"></i>
+    </button>
                 
-            </div>
-        </div>
+        
 
-    </form>
+    
 
     
 
 </div>
 
-{% endif %}
+
 
 
 
