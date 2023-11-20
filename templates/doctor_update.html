@@ -35,7 +35,7 @@
                 </a>
             </li>
             /
-            <li><a href="{{url_for('dashboard')}}">
+            <li><a href="{{url_for('doctor_dashboard')}}">
                 Profile
                 </a>
             </li>
@@ -48,10 +48,9 @@
     </div>
 
 </div>
-
 <div class="formcontainer">
     <header>KEEP YOUR INFORMATION UP-TO-DATE.</header>
-    <form action="/dashboard" method="post" id="regform">
+    <form action="/doctor/dashboard" method="post" id="regform">
         <div class="form first">
 
             <div class="details name">
@@ -89,7 +88,8 @@
                     <div class="input-field">
                         {{ form.address.label(class="label") }}
                         {{ form.address(class="input", placeholder="Barangay, Municipality, Province", value=name_to_update.address) }}
-                    </div> 
+                    </div>
+                    
 
                 </div>
                 <br><br>
@@ -107,36 +107,28 @@
                 <br>
                 <span class="title">Additional Information</span>
                 <div class="fields">
-                    <div class="input-field">
-                        {{ form.sex.label(class="label") }}
-                        {{ form.sex(class="input", placeholder="Male or Female", value=name_to_update.sex) }}
-                    </div>
-                    <div class="input-field">
-                        {{ form.blood_type.label(class="label") }}
-                        {{ form.blood_type(class="input", placeholder="Enter blood type", value=name_to_update.blood_type) }}
-                    </div>
-                    <div class="input-field">
-                        {{ form.weight.label(class="label") }}
-                        {{ form.weight(class="input", type="number", inputmode="numeric", step="0.01", placeholder="Enter current weight", value=name_to_update.weight) }}
-                    </div>
+                    <div class="doctor-input-field">
+                        {{ form.ptr_number.label(class="label") }}
+                        {{ form.ptr_number(class="input", placeholder="Professional Tax Receipt Number", value=name_to_update.ptr_number) }}
+                    </div> 
+                    <div class="doctor-input-field">
+                        {{ form.specialty.label(class="label") }}
+                        {{ form.specialty(class="input", placeholder="Specialty 1, Specialty 2, etc.", value=name_to_update.specialty) }}
+                    </div> 
                 </div>
             </div>
 
             <div class="details emergency">
-                <span class="title">Emergency Details</span>
+                <span class="title">Licenses</span>
                 <div class="fields">      
-                    <div class="input-field">
-                        {{ form.emergency_person.label(class="label") }}
-                        {{ form.emergency_person(class="input", placeholder="Enter emergency contact", value=name_to_update.emergency_person) }}
+                    
+                    <div class="doctor-input-field">
+                        {{ form.prc_lic_number.label(class="label") }}
+                        {{ form.prc_lic_number(class="input", placeholder="PRC License Number", value=name_to_update.prc_lic_number) }}
                     </div>
-                    <div class="input-field">
-                        {{ form.emergency_number.label(class="label") }}
-                        {{ form.emergency_number(class="input", type="number", inputmode="numeric", placeholder="Enter Emergency Number", value=name_to_update.emergency_number) }}
-                    </div>
-                    <div class="input-field">
-
-                        {{ form.emergency_email.label(class="label") }}
-                        {{ form.emergency_email(class="input", placeholder="Emergency Email", value=name_to_update.emergency_email) }}
+                    <div class="doctor-input-field">
+                        {{ form.s2_lic_number.label(class="label") }}
+                        {{ form.s2_lic_number(class="input", placeholder="S2 License Number", value=name_to_update.s2_lic_number) }}
                     </div> 
                 </div>
                 <br>
@@ -176,56 +168,55 @@
     
      
 </div>
-<br>
-<!--
-<div class="formcontainer">
-    <header>Allow us to know you better.</header>
-    <form action="" id="regform">
+
+<!--<div class="regformcontainer">
+    <header>KEEP YOUR INFORMATION UP-TO-DATE.</header>
+    <form action="/doctor/dashboard" method="post" id="regform">
         <div class="form first">
 
             <div class="details name">
                 <br>
                 <span class="title">Personal Details</span>
                 <div class="fields">
-
+                        {{ form.hidden_tag() }}
                     <div class="input-field">
-                        <label class="label">First Name</label>
-                        <input class="input" placeholder="Enter firstname" required>
+                        {{ form.first_name.label(class="label") }}
+                        {{ form.first_name(class="input", placeholder="Enter firstname") }}
                     </div>
                     <div class="input-field">
-                        <label class="label">Middle Name</label>
-                        <input class="input" type="text" placeholder="Enter middle name" required>
+                        {{ form.middle_name.label(class="label") }}
+                        {{ form.middle_name(class="input", placeholder="Enter middle name") }}
                     </div>
                     <div class="input-field">
-                        <label class="label">Last Name</label>
-                        <input class="input" type="text" placeholder="Enter lastname" required>
+                        {{ form.last_name.label(class="label") }}
+                        {{ form.last_name(class="input", placeholder="Enter lastname") }}
                     </div>
     
                 </div>
 
             </div>  
             <div class="details other">
-                <br>       
+                <br><br>       
                 <div class="fields">
                     <div class="input-field">
-                        <label class="label">Date of Birth</label>
-                        <input class="input" type="date" placeholder="Enter birth date" required>
+                        {{ form.birthdate.label(class="label") }}
+                        {{ form.birthdate(class="input", placeholder="Enter birth date") }}
                     </div>
                     <div class="input-field">
-                        <label class="label">Mobile Number</label>
-                        <input class="input" type="number" placeholder="Enter mobile number" required>
+                        {{ form.contact_number.label(class="label") }}
+                        {{ form.contact_number(class="input", type="number", inputmode="numeric", placeholder="Enter mobile number") }}
                     </div>
                     <div class="input-field">
-                        <label class="label">Address</label>
-                        <input class="input" type="text" placeholder="Enter current address" required>
+                        {{ form.address.label(class="label") }}
+                        {{ form.address(class="input", placeholder="Barangay, Municipality, Province") }}
                     </div> 
 
                 </div>
-                <br><br>
-                <button class="nextBtn extrabutton">
+                <br><br><br>
+                <div class="nextBtn extrabutton">
                     <span class="btnText">Next&nbsp;</span>
                     <i class="uil uil-navigator"></i>
-                </button>
+                </div>
             </div>
         </div>
 
@@ -236,37 +227,31 @@
                 <br>
                 <span class="title">Additional Information</span>
                 <div class="fields">
-                    <div class="input-field">
-                        <label class="label">Sex</label>
-                        <input class="input" type="text" placeholder="Male or Female" required>
-                    </div>
-                    <div class="input-field">
-                        <label class="label">Blood Type</label>
-                        <input class="input" type="text" placeholder="Enter blood type" required>
-                    </div>
-                    <div class="input-field">
-                        <label class="label">Weight</label>
-                        <input class="input" type="text" placeholder="Enter current weight " required>
-                    </div>
-                </div>
-            </div>
-
-            <div class="details emergency">
-                <span class="title">Emergency Details</span>
-                <div class="fields">
-                    <div class="input-field">
-                        <label class="label">Contact Person</label>
-                        <input class="input" type="text" placeholder="Enter emergency contact" required>
-                    </div>
-                    <div class="input-field">
-                        <label class="label">Mobile Number</label>
-                        <input class="input" type="text" placeholder="Emergency mobile number" required>
-                    </div>
-                    <div class="input-field">
-                        <label class="label">Email</label>
-                        <input class="input" type="date" placeholder="Emergency Email" required>
+                    <div class="doctor-input-field">
+                        {{ form.ptr_number.label(class="label") }}
+                        {{ form.ptr_number(class="input", placeholder="Professional Tax Receipt Number") }}
+                    </div> 
+                    <div class="doctor-input-field">
+                        {{ form.specialty.label(class="label") }}
+                        {{ form.specialty(class="input", placeholder="Specialty 1, Specialty 2, etc.") }}
                     </div> 
                 </div>
+            </div>
+            <br>
+            <div class="details emergency">
+                <span class="title">Licenses</span>
+                <div class="fields">    
+                    <div class="doctor-input-field">
+                        {{ form.prc_lic_number.label(class="label") }}
+                        {{ form.prc_lic_number(class="input", placeholder="PRC License Number") }}
+                    </div>
+                    <div class="doctor-input-field">
+                        {{ form.s2_lic_number.label(class="label") }}
+                        {{ form.s2_lic_number(class="input", placeholder="S2 License Number") }}
+                    </div> 
+                </div>
+                <br>
+                <p class="label">By submitting this form, you agree to our <a href="#">Terms</a> and have read and acknowledge the <a href="#">Global Privacy Statement</a>.</p>
                 <br>
                 <div class="buttons">
                     <div class="backBtn">
@@ -281,11 +266,29 @@
             </div>
 
         </div>
-    </form>
-    
-     
-</div>
--->
+        <script>
+            const form = document.getElementById("regform"),
+                    nextBtn = form.querySelector(".nextBtn"),
+                    backBtn = form.querySelector(".backBtn"),
+                    allInput = form.querySelectorAll(".first .input");
+        
+        
+            nextBtn.addEventListener("click", ()=> {
+                allInput.forEach(input =>{
+                    if(input.value != ""){
+                        form.classList.add('secActive');
+                    }else{
+                        form.classList.remove('secActive');
+                    }
+                })
+            })
+        
+            backBtn.addEventListener("click",()=> form.classList.remove('secActive'));
+        </script>
+    </form>  
+</div>-->
+<br>
+
 </main>
 
 

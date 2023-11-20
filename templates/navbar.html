@@ -22,10 +22,12 @@
         
         {%if (current_user.last_name == None) and (current_user.first_name == None)%}
 
+        {%elif (current_user.company == None) and (current_user.branch == None)%}
+
         {%else%}
         <div class="profile">
             <div class="info">
-                <p>Hey, <b>{{current_user.first_name}}</b></p>
+                <p><b>{{current_user.first_name}}{{current_user.company}}</b></p>
                 <small class="text-muted">{{current_user.account_type}}</small>
             </div>
             <div class="profile-photo">

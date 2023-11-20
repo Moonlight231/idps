@@ -1,0 +1,188 @@
+{% extends 'base.html'%}
+{% block content %}
+
+
+
+
+
+
+
+<main>
+{% for message in get_flashed_messages() %}
+    
+    <div class="toast">
+        <div class="toast-content">
+            <i class="fas fa-solid fa-check check"></i>
+            <div class="message">
+                {{message}}
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress"></div>
+    </div>
+    
+{% endfor %}
+
+
+
+
+<div class="header">
+    <div class="left">
+        <h1>Dashboard</h1>
+        <ul class="breadcrumb">
+            <li><a href="#" style="pointer-events: none;">
+                    Dashboard
+                </a>
+            </li>
+            /
+            <li><a href="{{url_for('pharmacy_dashboard')}}">
+                Profile
+                </a>
+            </li>
+            /
+            <li><a href="#" class="active">
+                Update
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div class="formcontainer">
+    <header>KEEP YOUR INFORMATION UP-TO-DATE.</header>
+    <form action="/pharmacy/dashboard" method="post" id="regform">
+        <div class="form first">
+
+            <div class="details name">
+                <br>
+                <span class="title">Branch Details</span>
+                <div class="fields">
+                    {{ form.hidden_tag() }}
+                    <div class="input-field">
+                        {{ form.company.label(class="label") }}
+                        {{ form.company(class="input", placeholder="Enter Company Name", value=name_to_update.company) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.branch.label(class="label") }}
+                        {{ form.branch(class="input", placeholder="Enter Branch", value=name_to_update.branch) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.branch_code.label(class="label") }}
+                        {{ form.branch_code(class="input", placeholder="Enter Branch Code or ID", value=name_to_update.branch_code) }}
+                    </div>
+                    
+                </div>
+
+            </div>  
+            <div class="details other">   
+                <span class="title">Business Hours</span>       
+                    <div class="fields">
+                        <div class="doctor-input-field">
+                            {{ form.store_open.label(class="label") }}
+                            {{ form.store_open(class="input", placeholder="Enter Opening Time", value=name_to_update.store_open) }}
+                        </div>
+                        <div class="doctor-input-field">
+                            {{ form.store_close.label(class="label") }}
+                            {{ form.store_close(class="input", placeholder="Enter Closing Time", value=name_to_update.store_close) }}
+                        </div>
+                    </div>
+                <br>
+                <div class="nextBtn extrabutton">
+                    <span class="btnText">Next&nbsp;</span>
+                    <i class="uil uil-navigator"></i>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form second">
+
+            <div class="details family">
+                <br>
+                <span class="title">More Information</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            {{ form.contact_number.label(class="label") }}
+                            {{ form.contact_number(class="input", type="number", inputmode="numeric", placeholder="Enter contact number", value=name_to_update.contact_number) }}
+                        </div> 
+                        <div class="input-field">
+                            {{ form.region.label(class="label") }}
+                            {{ form.region(class="input", placeholder="Enter Region", value=name_to_update.region) }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.province.label(class="label") }}
+                            {{ form.province(class="input", placeholder="Enter Province", value=name_to_update.province) }}
+                        </div>
+                    </div>
+            </div>
+
+            <div class="details emergency">
+                <span class="title">Licenses</span>
+                <div class="fields">      
+                    
+                    <div class="input-field">
+                        {{ form.city.label(class="label") }}
+                        {{ form.city(class="input", placeholder="Enter City/Municipality/Town", value=name_to_update.city) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.brgy.label(class="label") }}
+                        {{ form.brgy(class="input", placeholder="Enter Barangay", value=name_to_update.brgy) }}
+                    </div>
+                    <div class="input-field">
+                        {{ form.st_or_bldg.label(class="label") }}
+                        {{ form.st_or_bldg(class="input", placeholder="Enter Street or Building", value=name_to_update.st_or_bldg) }}
+                    </div>
+                </div>
+                <br>
+                <div class="buttons">
+                    <div class="backBtn">
+                        <i class="uil uil-navigator"></i>
+                        <span class="btnText">Back</span>
+                    </div>
+                    <button class="nextBtn">    
+                        <span class="btnText">Submit</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <script>
+            const form = document.getElementById("regform"),
+                    nextBtn = form.querySelector(".nextBtn"),
+                    backBtn = form.querySelector(".backBtn"),
+                    allInput = form.querySelectorAll(".first .input");
+        
+        
+            nextBtn.addEventListener("click", ()=> {
+                allInput.forEach(input =>{
+                    if(input.value != ""){
+                        form.classList.add('secActive');
+                    }else{
+                        form.classList.remove('secActive');
+                    }
+                })
+            })
+        
+            backBtn.addEventListener("click",()=> form.classList.remove('secActive'));
+        </script>  
+    </form>
+    
+     
+</div>
+
+
+<br>
+
+</main>
+
+
+
+
+{% endblock %}
+
+{% block sidebar_script %}
+<script>
+    document.getElementById('dashboard-link').classList.toggle('active');
+</script>
+{% endblock %}

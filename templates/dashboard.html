@@ -3,43 +3,45 @@
 
 <main>
 
-    <div class="modal-bg">
-        <div class="modal"  transition-style="in:custom:circle-swoop">
-            <span class="close-modal" onclick="closeModal()"><i class="bx bx-x"></i></span>
-            <img class="img-qr" src="{{url_for('static', filename= '/images/qr-sample.png')}}" alt="QR Code">
-            <a href="#" class="download-button" style="color: white;
-            background-color: var(--success);">
-                Download QR
-            </a>
-        </div>
-    </div>
+    
 
     <div class="header">
         <div class="left">
             <h1>Dashboard</h1>
             <ul class="breadcrumb">
-                <li><a href="#">
+                <li><a href="#" style="pointer-events: none;">
                         Dashboard
                     </a></li>
                 /
                 <li><a href="#" class="active">Profile</a></li>
             </ul>
         </div>
+        {%if (current_user.last_name == None) and (current_user.first_name == None)%}
+        {%else%}
         <a href="#" class="report">
-            <i class='bx bx-qr'></i>
-            <span>Profile QR</span>
+            <i class='bx bx-qr' style="color: white;"></i>
+            <span style="color: white;">Profile QR</span>
         </a>
+        {%endif%}
     </div>
-    <div class="edit">
-        <i class='bx bx-edit'></i>
+    <div class="modal-bg">
+        <div class="modal"  transition-style="in:custom:circle-swoop">
+            <span class="close-modal" onclick="closeModal()"><i class="bx bx-x"></i></span>
+            <img class="img-qr" src="{{url_for('static', filename= '/images/qr-sample.png')}}" alt="QR Code">
+            <a href="#" class="download-button" style=" color: white;
+            background-color:var(--success)">
+                Download QR
+            </a>
+        </div>
     </div>
+    
    
 
 
     {%if (current_user.last_name == None) and (current_user.first_name == None)%}
     
     <div class="regformcontainer">
-        <header>Allow us to know you better.</header>
+        <header>ALLOW US TO KNOW YOU BETTER.</header>
         <form action="/dashboard" method="post" id="regform">
             <div class="form first">
     
@@ -168,12 +170,17 @@
 
     {%else%}
 
+        <a href="{{url_for('update', id=name_to_update.id)}}" class="edit">
+            <span>Update Profile</span>
+            <i class='bx bx-edit'></i>
+        </a>
     <!-- Insights -->
+        
         <ul class="insights">
             <li class='user-profile'>
                 <span class="info">
                     <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
-                    <h2 class="nameunder">Dela Cruz, Juan Peter Parker P. III</h2>
+                    <h2 class="nameunder">{{current_user.last_name}}, {{current_user.first_name}} {{current_user.middle_name[0]}}.</h2>
                     <!--<p>Fullstack Web Developer</p>-->
                 </span>
             </li>

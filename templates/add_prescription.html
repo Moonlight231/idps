@@ -16,32 +16,34 @@
 
    
     <br>
+    <form method="post">
+        
+        
+        {{ form.hidden_tag() }}
 
-    <div class="fields">
-    {{ form.hidden_tag() }}
+            <div class="input-field">
+            {{ form.type.label(class="label") }} <br>
+            {{ form.type(class="input") }}
+            </div>
 
-        <div class="input-field">
-        {{ form.type.label(class="label") }} <br>
-        {{ form.type(class="input") }}
-        </div>
+            <div class="input-field">
+            {{ form.doctor.label(class="label") }} <br>
+            {{ form.doctor(class="input") }}
+            </div>
+                                
+            <div class="input-field">
+            {{ form.content.label(class="label") }}
+            {{ form.content(class="input-textarea", rows="10") }}
+            </div>
 
-        <div class="input-field">
-        {{ form.doctor.label(class="label") }} <br>
-        {{ form.doctor(class="input") }}
-        </div>
-                            
-        <div class="input-field">
-        {{ form.content.label(class="label") }}
-        {{ form.content(class="input-textarea", rows="10") }}
-        </div>
-
-    </div>
+        
+    
 
     <button class="nextBtn">
         <span class="btnText">Create</span>
         <i class="uil uil-navigator"></i>
     </button>
-                
+    </form>            
         
 
     

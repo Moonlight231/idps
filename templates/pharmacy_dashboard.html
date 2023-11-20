@@ -25,58 +25,56 @@
                 <li><a href="#" class="active">Profile</a></li>
             </ul>
         </div>
-        <a href="#" class="report">
-            <i class='bx bx-qr'></i>
-            <span>Profile QR</span>
-        </a>
+        {%if (current_user.company == None) and (current_user.branch == None)%}
+        {%else%}
+            <a href="#" class="report">
+                <i class='bx bx-qr'></i>
+                <span>Profile QR</span>
+            </a>
+        {%endif%}
     </div>
-   
 
 
-    {%if (current_user.last_name == None) and (current_user.first_name == None)%}
+    {%if (current_user.company == None) and (current_user.branch == None)%}
     
     <div class="regformcontainer">
         <header>ALLOW US TO KNOW YOU BETTER.</header>
-        <form action="/doctor/dashboard" method="post" id="regform">
+        <form action="/pharmacy/dashboard" method="post" id="regform">
             <div class="form first">
     
                 <div class="details name">
                     <br>
-                    <span class="title">Personal Details</span>
+                    <span class="title">Branch Details</span>
                     <div class="fields">
                             {{ form.hidden_tag() }}
                         <div class="input-field">
-                            {{ form.first_name.label(class="label") }}
-                            {{ form.first_name(class="input", placeholder="Enter firstname") }}
+                            {{ form.company.label(class="label") }}
+                            {{ form.company(class="input", placeholder="Enter Company Name") }}
                         </div>
                         <div class="input-field">
-                            {{ form.middle_name.label(class="label") }}
-                            {{ form.middle_name(class="input", placeholder="Enter middle name") }}
+                            {{ form.branch.label(class="label") }}
+                            {{ form.branch(class="input", placeholder="Enter Branch") }}
                         </div>
                         <div class="input-field">
-                            {{ form.last_name.label(class="label") }}
-                            {{ form.last_name(class="input", placeholder="Enter lastname") }}
+                            {{ form.branch_code.label(class="label") }}
+                            {{ form.branch_code(class="input", placeholder="Enter Branch Code/ID") }}
                         </div>
         
                     </div>
     
                 </div>  
                 <div class="details other">
-                    <br><br>       
+                    <br>
+                    <span class="title">Business Hours</span>       
                     <div class="fields">
-                        <div class="input-field">
-                            {{ form.birthdate.label(class="label") }}
-                            {{ form.birthdate(class="input", placeholder="Enter birth date") }}
+                        <div class="doctor-input-field">
+                            {{ form.store_open.label(class="label") }}
+                            {{ form.store_open(class="input", placeholder="Enter Opening Time") }}
                         </div>
-                        <div class="input-field">
-                            {{ form.contact_number.label(class="label") }}
-                            {{ form.contact_number(class="input", type="number", inputmode="numeric", placeholder="Enter mobile number") }}
+                        <div class="doctor-input-field">
+                            {{ form.store_close.label(class="label") }}
+                            {{ form.store_close(class="input", placeholder="Enter Closing Time") }}
                         </div>
-                        <div class="input-field">
-                            {{ form.address.label(class="label") }}
-                            {{ form.address(class="input", placeholder="Barangay, Municipality, Province") }}
-                        </div> 
-    
                     </div>
                     <br><br><br>
                     <div class="nextBtn extrabutton">
@@ -91,29 +89,36 @@
     
                 <div class="details family">
                     <br>
-                    <span class="title">Additional Information</span>
+                    <span class="title">More Information</span>
                     <div class="fields">
-                        <div class="doctor-input-field">
-                            {{ form.ptr_number.label(class="label") }}
-                            {{ form.ptr_number(class="input", placeholder="Professional Tax Receipt Number") }}
+                        <div class="input-field">
+                            {{ form.contact_number.label(class="label") }}
+                            {{ form.contact_number(class="input", type="number", inputmode="numeric", placeholder="Enter contact number") }}
                         </div> 
-                        <div class="doctor-input-field">
-                            {{ form.specialty.label(class="label") }}
-                            {{ form.specialty(class="input", placeholder="Specialty 1, Specialty 2, etc.") }}
-                        </div> 
+                        <div class="input-field">
+                            {{ form.region.label(class="label") }}
+                            {{ form.region(class="input", placeholder="Enter Region") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.province.label(class="label") }}
+                            {{ form.province(class="input", placeholder="Enter Province") }}
+                        </div>
                     </div>
                 </div>
-    
                 <div class="details emergency">
-                    <span class="title">Licenses</span>
+                    <br><br>
                     <div class="fields">    
-                        <div class="doctor-input-field">
-                            {{ form.prc_lic_number.label(class="label") }}
-                            {{ form.prc_lic_number(class="input", placeholder="PRC License Number") }}
+                        <div class="input-field">
+                            {{ form.city.label(class="label") }}
+                            {{ form.city(class="input", placeholder="Enter City/Municipality/Town") }}
                         </div>
-                        <div class="doctor-input-field">
-                            {{ form.s2_lic_number.label(class="label") }}
-                            {{ form.s2_lic_number(class="input", placeholder="S2 License Number") }}
+                        <div class="input-field">
+                            {{ form.brgy.label(class="label") }}
+                            {{ form.brgy(class="input", placeholder="Enter Barangay") }}
+                        </div>
+                        <div class="input-field">
+                            {{ form.st_or_bldg.label(class="label") }}
+                            {{ form.st_or_bldg(class="input", placeholder="Enter Street or Building") }}
                         </div> 
                     </div>
                     <br>
@@ -157,7 +162,7 @@
     {%else%}
 
     <!-- Insights -->
-        <a href="{{url_for('doctor_update', id=name_to_update.id)}}" class="edit">
+        <a href="{{url_for('pharmacy_update', id=name_to_update.id)}}" class="edit">
             <span>Update Profile</span>
             <i class='bx bx-edit'></i>
         </a>
@@ -165,14 +170,14 @@
             <li class='user-profile'>
                 <span class="info">
                     <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
-                    <h2 class="nameunder">Dr. {{current_user.last_name}}, {{current_user.first_name}} {{current_user.middle_name[0]}}.</h2>
+                    <h2 class="nameunder"> {{current_user.company}} - {{current_user.branch}}</h2>
                     <!--<p>Fullstack Web Developer</p>-->
                 </span>
             </li>
             <li>
                 <span class="info">
                     <h3 class="nameupper">
-                        Dr. {{current_user.last_name}}, {{current_user.first_name}} {{current_user.middle_name[0]}}.
+                        {{current_user.company}} - {{current_user.branch}}
                     </h3>
                     <div class="text-muted acc-info" style="font-size: small;">
                         <em>Account Type: <strong>{{current_user.account_type}}</strong></em>
@@ -182,17 +187,17 @@
                         <em>ID: <strong>{{current_user.id}}</strong></em>
                     </div>
 
-                    <p class="label">Specialization/s:</p>
-                    <p class="mockinput"><strong>{{current_user.specialty}}</strong></p>
+                    <p class="label">Branch Code:</p>
+                    <p class="mockinput"><strong>{{current_user.branch_code}}</strong></p>
                     
-                    <p class="label">PTR Number:</p>
-                    <p class="mockinput"><strong>{{current_user.ptr_number}}</strong></p>
+                    <p class="label">Region:</p>
+                    <p class="mockinput"><strong>{{current_user.region}}</strong></p>
 
-                    <p class="label">Date of Birth:</p>
-                    <p class="mockinput"><strong>{{current_user.birthdate}}</strong></p>
+                    <p class="label">Province:</p>
+                    <p class="mockinput"><strong>{{current_user.province}}</strong></p>
 
                     <p class="label">Address:</p>
-                    <p class="mockinput"><strong>{{current_user.address}}</strong></p>
+                    <p class="mockinput"><strong>{{current_user.st_or_bldg}}, {{current_user.brgy}}, {{current_user.city}}</strong></p>
                 </span>
             </li>
             
@@ -226,16 +231,16 @@
                 
                 <div class="header">
                     <i class='bx bx-plus-medical' style="color: var(--danger);"></i>
-                    <h3>Licenses</h3>    
+                    <h3>Business Hours</h3>    
                 </div>
                 <br>
                 <div class="add-text">
 
-                    <p class="label">PRC License Number:</p>
-                    <p class="mockinput"><strong>{{current_user.prc_lic_number}}</strong></p>
+                    <p class="label">Opening Time:</p>
+                    <p class="mockinput"><strong>{{current_user.store_open.strftime('%I:%M %p')}}</strong></p>
 
-                    <p class="label">S2 License Number:</p>
-                    <p class="mockinput"><strong>{{current_user.s2_lic_number}}</strong></p>
+                    <p class="label">Closing Time:</p>
+                    <p class="mockinput"><strong>{{current_user.store_close.strftime('%I:%M %p')}}</strong></p>
                 </div>
                 
             </span>
