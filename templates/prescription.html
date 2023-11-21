@@ -8,20 +8,7 @@
 
 
 <main>
-{% for message in get_flashed_messages() %}
-    
-    <div class="toast">
-        <div class="toast-content">
-            <i class="fas fa-solid fa-check check"></i>
-            <div class="message">
-                {{message}}
-            </div>
-        </div>
-        <i class="fa-solid fa-xmark close"></i>
-        <div class="progress"></div>
-    </div>
-    
-{% endfor %}
+
 <div class="header">
     <div class="left">
         <h1>Prescriptions</h1>
@@ -36,17 +23,39 @@
     </div>
 </div>
 
-{% if prescription.type == "Yellow" %}
 
 
-    <div class="gencontainer yellow"> 
 
+    <div class="gencontainer {{prescription.type}}"> 
+
+        <small class="text-muted"><em>Date prescribed: {{prescription.date_added}}</em></small> <br>
+        <small class="text-muted"><em>Type: {{prescription.type}}</em></small> <br>
+        <small class="text-muted"><em>Status: <status class="{{prescription.status}}">{{prescription.status}}</status></em></small>
+        <br>
+        <br>
+        <header class="presheader">{{prescription.hospital_name}}</header>
+        <header class="text-muted">{{prescription.hospital_address}}</header>  <br> <br>
         
-        Prescribed by: {{prescription.doctor}} <br>
             
-        <small><em>{{prescription.date_added}}</em></small> <br>
-        <small><em>Type: {{prescription.type}}</em></small> <br><br>
-        {{prescription.content}} <br>
+        
+        <p class="mockinput">{{prescription.content}}</p> <br>
+        <br>
+        
+        <p class="text-muted">Instructions to patient:</p>
+        <p class="mockinput">{{prescription.instructions_customer}}</p>
+        <p class="text-muted">Instructions to pharmacist:</p>
+        <p class="mockinput">{{prescription.instructions_pharmacy}}</p>
+        <br>
+
+        <br>
+        <a href="#" class="presheader-primary">Dr. {{prescription.prescriber.first_name}} {{prescription.prescriber.middle_name}} {{prescription.prescriber.last_name}}</a>
+        <p class="label-muted">PRC License #</p>
+        <p class="mockinput-nogap">{{prescription.prescriber.prc_lic_number}}</p>
+        <p class="label-muted">S2 License #</p>
+        <p class="mockinput-nogap">{{prescription.prescriber.s2_lic_number}}</p>
+        <p class="label-muted">PTR #</p>
+        <p class="mockinput-nogap">{{prescription.prescriber.ptr_number}}</p>
+
 
         
 
@@ -57,6 +66,7 @@
             <span class="smallbtnText">Go Back</span>
             <i class="uil uil-navigator extrai"></i>
         </a>
+        {%if prescription.prescriber_id == current_user.id%}
         <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button" >
             <span class="smallbtnText">Edit</span>
             <i class="uil uil-navigator extrai"></i>
@@ -65,41 +75,11 @@
             <span class="smallbtnText">Delete</span>
             <i class="uil uil-navigator extrai"></i>
         </a>
+        {%endif%}
     </div>
+    <br><br><br>
 
-    {% else %}
 
-        <div class="gencontainer">
-
-            
-            Prescribed by: {{prescription.doctor}} <br>
-                
-            <small><em>{{prescription.date_added}}</em></small> <br>
-            <small><em>Type: {{prescription.type}}</em></small> <br><br>
-            {{prescription.content}} <br>
-
-            
-
-        </div>
-        <br>
-        <div class="buttons">
-            <a href="{{url_for('prescriptions')}}" class="extrabutton small-button grey-btn" >
-                <span class="smallbtnText">Go Back</span>
-                <i class="uil uil-navigator extrai"></i>
-            </a>
-            <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button" >
-                <span class="smallbtnText">Edit</span>
-                <i class="uil uil-navigator extrai"></i>
-            </a>
-            <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
-                <span class="smallbtnText">Delete</span>
-                <i class="uil uil-navigator extrai"></i>
-            </a>
-        </div>
-
-        
-
-{%endif%}
 
    
 

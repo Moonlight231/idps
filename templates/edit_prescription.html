@@ -38,81 +38,78 @@
     </div>
 </div>
 
-{% if prescription.type == "Yellow" %}
+<div class="presformcontainer {{prescription.type}}">
+    <header>UPDATE PRESCRIPTION</header>
 
 
-    <div class="gencontainer yellow"> 
+   
+    <br>
+    <form method="post">
+        
+        
+            {{ form.hidden_tag() }}
 
-        <form method="post">
-            <div class="form first">
-                <div class="details personal">
-                    <span class="title">Personal Details</span>
-                    <div class="fields">
-                        <div class="input-field">
-                            {{ form.hidden_tag() }}
-    
-                            {{ form.type.label(class="label") }}
-                            {{ form.type(class="input") }}
-    
-                            {{ form.doctor.label(class="label") }}
-                            {{ form.doctor(class="input") }}
-    
-                            {{ form.content.label(class="label") }}
-                            {{ form.content(class="input-textarea", rows="10") }}
-    
-                        </div>
-                    </div>
-                    <br>
-                    <button class="extrabutton">
-                        <span class="btnText">Save Changes</span>
-                        <i class="uil uil-navigator"></i>
-                    </button>
-                    
-                </div>
+            <div class="pres-input-field">
+                {{ form.hospital_name.label(class="label") }} <br>
+                {{ form.hospital_name(class="input", placeholder="Enter Hospital / Clinic Name") }}
             </div>
-    
-        </form>
-
-    </div>
-
-    {% else %}
-
-    <div class="gencontainer">
-
-        <form method="post">
-            <div class="form first">
-                <div class="details personal">
-                    <span class="title">Personal Details</span>
-                    <div class="fields">
-                        <div class="input-field">
-                            {{ form.hidden_tag() }}
-
-                            {{ form.type.label(class="label") }}
-                            {{ form.type(class="input") }}
-
-                            {{ form.doctor.label(class="label") }}
-                            {{ form.doctor(class="input") }}
-
-                            {{ form.content.label(class="label") }}
-                            {{ form.content(class="input-textarea", rows="10") }}
-
-                        </div>
-                    
-                    </div>
-                    <br>
-                    <button class="extrabutton">
-                        <span class="btnText">Save Changes</span>
-                        <i class="uil uil-navigator"></i>
-                    </button>
-                    
-                </div>
+            <div class="pres-input-field">
+                {{ form.hospital_address.label(class="label") }} <br>
+                {{ form.hospital_address(class="input", placeholder="Street or Building, Barangay, City, Province") }}
+            </div>
+            <div class="pres-input-field">
+                {{ form.type.label(class="label") }} <br>
+                {{ form.type(class="input-small") }}
             </div>
 
-        </form>
+            
+            <br><br>                    
+            <div class="pres-input-field">
+                {{ form.content.label(class="label") }}
+                {{ form.content(class="input-textarea", rows="10", placeholder="Feel Free to Resize if needed") }}
+            </div>
 
-    </div>
+            <div class="pres-input-field">
+                {{ form.instructions_customer.label(class="label") }}
+                {{ form.instructions_customer(class="input-textarea", rows="3", placeholder="Additional Instructions for the patient") }}
+            </div>
+            
+            <div class="pres-input-field">
+                {{ form.instructions_pharmacy.label(class="label") }}
+                {{ form.instructions_pharmacy(class="input-textarea", rows="3", placeholder="Additional Instructions for the pharmacist") }}
+            </div>
 
-{% endif %}
+            
+
+            <div class="pres-input-field">
+                <br>
+                <p class="presheader-primary">Dr. {{current_user.first_name}} {{current_user.middle_name}} {{current_user.last_name}}</p>
+                <p class="label">PTR #</p>
+                <p class="mockinput-muted">{{current_user.ptr_number}}</p>
+                <p class="label">PRC License #</p>
+                <p class="mockinput-muted">{{current_user.prc_lic_number}}</p>
+                <p class="label">S2 License #</p>
+                <p class="mockinput-muted">{{current_user.s2_lic_number}}</p>
+                
+            </div>
+
+        
+    
+    <br>
+    <button class="nextBtn button-save-changes">
+        <span class="btnText">Save Changes</span>
+        <i class="uil uil-navigator"></i>
+    </button>
+    </form>            
+        
+
+    
+
+    
+
+</div>
+
+<br><br>
 
    
 

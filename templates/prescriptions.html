@@ -34,19 +34,21 @@
 
     {%for prescription in prescriptions [::-1]%}
 
-    {% if prescription.type == "Yellow"%}
+    
 
-    <div class="gencontainer yellow">
-        Prescribed by: {{prescription.doctor}} <br>
+    <div class="gencontainer {{prescription.type}}">
+        Dr. {{prescription.prescriber.first_name}} {{prescription.prescriber.middle_name}} {{prescription.prescriber.last_name}} <br>
         
-        <small><em>{{prescription.date_added}}</em></small> <br>
-        <small><em>Type: {{prescription.type}}</em></small> <br><br><br>
+        <small><em>{{prescription.date_added}}</em></small> <br> <br>
+        <!--<small><em> <p class="text-muted">Type:</p> <p class="mockinput-preslist">{{prescription.type}}</p></em></small>-->
+        <small><em> <p class="text-muted">Status:</p> <p class="{{prescription.status}} mockinput-preslist">{{prescription.status}}</p></em></small> <br>
 
         <div class="buttons">
             <a href="{{url_for('prescription', id=prescription.id)}}" class="extrabutton small-button" >
                 <span class="btnText">View Prescription</span>
                 <i class="uil uil-navigator extrai"></i>
             </a>
+            {%if prescription.prescriber_id == current_user.id%}
             <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button grey-btn" >
                 <span class="smallbtnText">Edit</span>
                 <i class="uil uil-navigator extrai"></i>
@@ -55,34 +57,9 @@
                 <span class="smallbtnText">Delete</span>
                 <i class="uil uil-navigator extrai"></i>
             </a>
+            {%endif%}
         </div>
     </div>
-
-    {% else %}
-
-    <div class="gencontainer white">
-        Prescribed by: {{prescription.doctor}} <br>
-        
-        <small><em>{{prescription.date_added}}</em></small> <br>
-        <small><em>Type: {{prescription.type}}</em></small> <br><br><br>
-
-        <div class="buttons">
-            <a href="{{url_for('prescription', id=prescription.id)}}" class="extrabutton small-button" >
-                <span class="smallbtnText">View Prescription</span>
-                <i class="uil uil-navigator extrai"></i>
-            </a>
-            <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button grey-btn" >
-                <span class="smallbtnText">Edit</span>
-                <i class="uil uil-navigator extrai"></i>
-            </a>
-            <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
-                <span class="smallbtnText">Delete</span>
-                <i class="uil uil-navigator extrai"></i>
-            </a>
-        </div>
-    </div>
-
-    {%endif%}
 
     {% endfor %}
 

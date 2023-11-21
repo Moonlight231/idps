@@ -19,26 +19,55 @@
     <form method="post">
         
         
-        {{ form.hidden_tag() }}
+            {{ form.hidden_tag() }}
 
-            <div class="input-field">
-            {{ form.type.label(class="label") }} <br>
-            {{ form.type(class="input") }}
+            <div class="pres-input-field">
+                {{ form.hospital_name.label(class="label") }} <br>
+                {{ form.hospital_name(class="input", placeholder="Enter Hospital / Clinic Name") }}
+            </div>
+            <div class="pres-input-field">
+                {{ form.hospital_address.label(class="label") }} <br>
+                {{ form.hospital_address(class="input", placeholder="Street or Building, Barangay, City, Province") }}
+            </div>
+            <div class="pres-input-field">
+                {{ form.type.label(class="label") }} <br>
+                {{ form.type(class="input-small") }}
             </div>
 
-            <div class="input-field">
-            {{ form.doctor.label(class="label") }} <br>
-            {{ form.doctor(class="input") }}
+            
+            <br><br>                    
+            <div class="pres-input-field">
+                {{ form.content.label(class="label") }}
+                {{ form.content(class="input-textarea", rows="10", placeholder="Feel Free to Resize if needed") }}
             </div>
-                                
-            <div class="input-field">
-            {{ form.content.label(class="label") }}
-            {{ form.content(class="input-textarea", rows="10") }}
+
+            <div class="pres-input-field">
+                {{ form.instructions_customer.label(class="label") }}
+                {{ form.instructions_customer(class="input-textarea", rows="3", placeholder="Additional Instructions for the patient") }}
+            </div>
+            
+            <div class="pres-input-field">
+                {{ form.instructions_pharmacy.label(class="label") }}
+                {{ form.instructions_pharmacy(class="input-textarea", rows="3", placeholder="Additional Instructions for the pharmacist") }}
+            </div>
+
+            
+
+            <div class="pres-input-field">
+                <br>
+                <p class="presheader-primary">Dr. {{current_user.first_name}} {{current_user.middle_name}} {{current_user.last_name}}</p>
+                <p class="label">PTR #</p>
+                <p class="mockinput-muted">{{current_user.ptr_number}}</p>
+                <p class="label">PRC License #</p>
+                <p class="mockinput-muted">{{current_user.prc_lic_number}}</p>
+                <p class="label">S2 License #</p>
+                <p class="mockinput-muted">{{current_user.s2_lic_number}}</p>
+                
             </div>
 
         
     
-
+    <br>
     <button class="nextBtn">
         <span class="btnText">Create</span>
         <i class="uil uil-navigator"></i>
@@ -54,7 +83,7 @@
 
 
 
-
+<br><br>
 
 
 </main>

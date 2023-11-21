@@ -9,7 +9,13 @@ from wtforms.widgets import TextArea
 class PrescriptionForm(FlaskForm):
     type = SelectField("Prescription Type", choices=["White", "Yellow"] , validators=[DataRequired()])
     content = StringField("Content", validators=[DataRequired()], widget=TextArea())
-    doctor = StringField("Prescriber's Name", validators=[DataRequired()])
+    instructions_pharmacy = StringField("Instructions for Pharmacist", widget=TextArea())
+    instructions_customer = StringField("Instructions for Patient", widget=TextArea())
+    hospital_name = StringField("Hospital / Clinic")
+    hospital_address = StringField("Address")
+
+    #doctor = StringField("Prescriber's Name")
+
     submit = SubmitField("Create")
 
 

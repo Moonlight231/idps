@@ -54,7 +54,7 @@
                 <a href="{{url_for('update', id=our_doctor.id)}}"> {{ our_doctor.email }} </a> - 
                 {{ our_doctor.email}} - 
                 PW: {{ our_doctor.password_hash}} - 
-                <a href="{{url_for('delete', id=our_doctor.id)}}"> Delete </a>
+                <a href="{{url_for('delete_doctor', id=our_doctor.id)}}"> Delete </a>
                 <br>
         
         {% endfor %}

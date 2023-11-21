@@ -48,6 +48,7 @@
     </div>
 
 </div>
+{% if id == current_user.id%}
 <div class="formcontainer">
     <header>KEEP YOUR INFORMATION UP-TO-DATE.</header>
     <form action="/doctor/dashboard" method="post" id="regform">
@@ -168,7 +169,21 @@
     
      
 </div>
-
+{%else%}
+<div class="toast">
+    <div class="toast-content">
+        <i class="fas fa-solid fa-check check"></i>
+        <div class="message">
+            You cannot access this page!
+        </div>
+    </div>
+    <i class="fa-solid fa-xmark close"></i>
+    <div class="progress"></div>
+</div>
+<br>
+<br>
+<h1 style="text-align: center;">Access Denied!</h1>
+{%endif%}
 <!--<div class="regformcontainer">
     <header>KEEP YOUR INFORMATION UP-TO-DATE.</header>
     <form action="/doctor/dashboard" method="post" id="regform">

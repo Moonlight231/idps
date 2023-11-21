@@ -97,6 +97,9 @@ class Customers(Users, UserMixin):
     emergency_number = db.Column(db.String(200))
     emergency_email = db.Column(db.String(200))
     date_added = db.Column(db.Date, default=date.today)
+
+    #Customers can have many prescriptions
+    prescriptions = db.relationship('Prescriptions', backref='patient')
     
     # Create a String
     def __repr__(self):
@@ -121,6 +124,9 @@ class Doctors(Users, UserMixin):
     s2_lic_number = db.Column(db.String(120))
 
     date_added = db.Column(db.Date, default=date.today)
+
+    #Doctors can have many prescribed prescriptions
+    prescriptions = db.relationship('Prescriptions', backref='prescriber')
     
     # Create a String
     def __repr__(self):
@@ -156,8 +162,16 @@ class Prescriptions(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     type = db.Column(db.String(255))
     content = db.Column(db.Text)
-    doctor = db.Column(db.String(255))
+    instructions_pharmacy = db.Column(db.Text)
+    instructions_customer = db.Column(db.Text)
+    status = db.Column(db.String(255), default="Not Filled")
+    hospital_name = db.Column(db.String(500))
+    hospital_address = db.Column(db.String(500))
+    #doctor = db.Column(db.String(255))
     date_added = db.Column(db.Date, default=date.today)
+    #foreign key
+    prescriber_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
+    patient_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
 
 
 # Create a route decorator
@@ -449,6 +463,7 @@ def add_pharmacy():
 
 # Create Update Database Record
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
+@login_required
 def update(id):
     form = UpdateForm()
     name_to_update = Customers.query.get_or_404(id)
@@ -479,6 +494,7 @@ def update(id):
 
 # Create Update Database Record
 @app.route('/doctor_update/<int:id>', methods=['GET', 'POST'])
+@login_required
 def doctor_update(id):
     form = UpdateDoctorForm()
     name_to_update = Doctors.query.get_or_404(id)
@@ -510,6 +526,7 @@ def doctor_update(id):
 
 # Create Update Database Record
 @app.route('/pharmacy_update/<int:id>', methods=['GET', 'POST'])
+@login_required
 def pharmacy_update(id):
     form = UpdatePharmacyForm()
     name_to_update = Pharmacies.query.get_or_404(id)
@@ -563,7 +580,6 @@ def update(id):
 # Create Delete Records
 @app.route('/delete/<int:id>')
 def delete(id):
-    name = None
     form = CustomerForm()
     user_to_delete = Customers.query.get_or_404(id)
     try:
@@ -571,10 +587,25 @@ def delete(id):
         db.session.commit()
         flash("User Deleted Successfully!")
         our_customers = Customers.query.order_by(Customers.date_added)
-        return render_template("add_customer.html", form=form, name=name, our_customers=our_customers)
+        return render_template("add_customer.html", form=form, our_customers=our_customers)
     except:
         flash("Whoops! There was a problem deleting user, try again.")
-        return render_template("add_customer.html", form=form, name=name, our_customers=our_customers)
+        return render_template("add_customer.html", form=form, our_customers=our_customers)
+
+# Delete Doctor Records
+@app.route('/doctor/delete/<int:id>')
+def delete_doctor(id):
+    form = RegisterForm()
+    user_to_delete = Doctors.query.get_or_404(id)
+    try:
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash("User Deleted Successfully!")
+        our_doctors = Doctors.query.order_by(Doctors.date_added)
+        return render_template("add_doctor.html", form=form, our_doctors=our_doctors)
+    except:
+        flash("Whoops! There was a problem deleting user, try again.")
+        return render_template("add_doctor.html", form=form, our_doctors=our_doctors)
     
 
 # Create Prescription Page
@@ -583,11 +614,21 @@ def add_prescription():
     form = PrescriptionForm()
 
     if form.validate_on_submit():
-        prescription = Prescriptions(type=form.type.data, content=form.content.data, doctor=form.doctor.data)
+        prescriber = current_user.id
+        prescription = Prescriptions(type=form.type.data, 
+                                     content=form.content.data,
+                                     instructions_pharmacy=form.instructions_pharmacy.data, 
+                                     instructions_customer=form.instructions_customer.data,
+                                     hospital_name=form.hospital_name.data, 
+                                     hospital_address=form.hospital_address.data,   
+                                     prescriber_id=prescriber)
         #Clear the form
         form.type.data = ''
         form.content.data = ''
-        form.doctor.data = ''
+        form.instructions_pharmacy.data = ''
+        form.instructions_customer.data = ''
+        form.hospital_name.data = ''
+        form.hospital_address.data = ''
 
         #Add prescription to the database
         db.session.add(prescription)
@@ -611,13 +652,17 @@ def prescription(id):
     return render_template('prescription.html', prescription=prescription)
 
 @app.route('/prescriptions/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_prescription(id):
     prescription = Prescriptions.query.get_or_404(id)
     form = PrescriptionForm()
     if form.validate_on_submit():
         prescription.type = form.type.data
-        prescription.doctor = form.doctor.data
         prescription.content = form.content.data
+        prescription.instructions_pharmacy = form.instructions_pharmacy.data
+        prescription.instructions_customer = form.instructions_customer.data
+        prescription.hospital_name = form.hospital_name.data
+        prescription.hospital_address = form.hospital_address.data
 
         #Update database record
         db.session.add(prescription)
@@ -625,10 +670,16 @@ def edit_prescription(id):
         flash("Prescription has been updated.")
         return redirect(url_for('prescription', id=prescription.id))
     
-    form.type.data = prescription.type
-    form.doctor.data = prescription.doctor
-    form.content.data = prescription.content
-    return render_template('edit_prescription.html', form=form, prescription=prescription)
+    if current_user.id == prescription.prescriber_id:
+        form.type.data = prescription.type
+        form.content.data = prescription.content
+        form.instructions_pharmacy.data = prescription.instructions_pharmacy
+        form.instructions_customer.data = prescription.instructions_customer
+        form.hospital_name.data = prescription.hospital_name
+        form.hospital_address.data = prescription.hospital_address
+        return render_template('edit_prescription.html', form=form, prescription=prescription)
+    else:
+        flash("You are not authorized to edit this prescription.")
 
 @app.route('/prescriptions/delete/<int:id>')
 def delete_prescription(id):

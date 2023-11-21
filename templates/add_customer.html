@@ -22,22 +22,6 @@
 <div class="gencontainer">
     <header>Name</header>
 
-{% if name %}
-    <br>
-    <h1>Customer Added!</h1>
-
-    <div class="gencontainer">
-        {% for our_customer in our_customers %}
-                {{ our_customer.id}} - 
-                <a href="{{url_for('update', id=our_customer.id)}}"> {{ our_customer.email }} </a> - 
-                {{ our_customer.email}} - 
-                {{ our_customer.blood_type}} - <a href="{{url_for('delete', id=our_customer.id)}}"> Delete </a>
-                <br>
-        
-        {% endfor %}
-        </div>
-
-{% else %}
     <br>
     <h1>Customer List:</h1>
     <br>
@@ -86,7 +70,6 @@
     </div>
 </div>
 
-{% endif %}
 
 
 
