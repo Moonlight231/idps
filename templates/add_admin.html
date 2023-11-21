@@ -23,12 +23,12 @@
     <header>Name</header>
 
     <br>
-    <h1>Doctor List:</h1>
+    <h1>Admin List:</h1>
     <br>
     <form method="post">
         <div class="form first">
             <div class="details personal">
-                <span class="title">Register Doctor</span>
+                <span class="title">Register an Administrator</span>
                 <div class="fields">
                     <div class="input-field">
                         {{ form.hidden_tag() }}
@@ -49,12 +49,12 @@
     </form>
 
     <div class="formcontainer">
-        {% for our_doctor in our_doctors %}
-                {{ our_doctor.id}} - 
-                <a href="{{url_for('update', id=our_doctor.id)}}"> {{ our_doctor.email }} </a> - 
-                {{ our_doctor.email}} - 
-                PW: {{ our_doctor.password_hash}} - 
-                <a href="{{url_for('delete_doctor', id=our_doctor.id)}}"> Delete </a>
+        {% for our_admin in our_admins %}
+                {{ our_admin.id}} - 
+                <a href="{{url_for('update', id=our_admin.id)}}"> {{ our_admin.email }} </a> - 
+                {{ our_admin.email}} - 
+                PW: {{ our_admin.password_hash}} - 
+                <a href="{{url_for('delete_admin', id=our_admin.id)}}"> Delete </a>
                 <br>
         
         {% endfor %}
@@ -74,6 +74,6 @@
 
 {% block sidebar_script %}
 <script>
-    document.getElementById('add_doctor-link').classList.toggle('active');
+    document.getElementById('add_admin-link').classList.toggle('active');
 </script>
 {% endblock %}

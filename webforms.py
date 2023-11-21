@@ -1,14 +1,21 @@
 from flask_wtf import FlaskForm
 
 from wtforms import StringField, SubmitField, PasswordField, DateField, SelectField, FloatField, TimeField ,BooleanField, ValidationError
-from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.validators import DataRequired, EqualTo, Length, InputRequired
 from wtforms.widgets import TextArea
+from flask_ckeditor import CKEditorField
 
+#Create a Search Form
+class SearchForm(FlaskForm):
+    searched = StringField("Searched", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 # Create a Prescription Form
 class PrescriptionForm(FlaskForm):
     type = SelectField("Prescription Type", choices=["White", "Yellow"] , validators=[DataRequired()])
+    status = SelectField("Status", choices=["Not Filled", "Partially Filled", "Filled"], validators=[DataRequired()])
     content = StringField("Content", validators=[DataRequired()], widget=TextArea())
+    #content = CKEditorField('Content', validators=[DataRequired()])
     instructions_pharmacy = StringField("Instructions for Pharmacist", widget=TextArea())
     instructions_customer = StringField("Instructions for Patient", widget=TextArea())
     hospital_name = StringField("Hospital / Clinic")
@@ -18,6 +25,9 @@ class PrescriptionForm(FlaskForm):
 
     submit = SubmitField("Create")
 
+class StatusForm(FlaskForm):
+    status = SelectField("Status", choices=["Not Filled", "Partially Filled", "Filled"], validators=[DataRequired()])
+    submit = SubmitField("Create")
 
 
 # Create a User Form Class

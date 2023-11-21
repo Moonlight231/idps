@@ -1,0 +1,283 @@
+{% extends 'base.html'%}
+{% block content %}
+
+<main>
+
+    
+
+    <div class="header">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li><a href="#" style="pointer-events: none;">
+                        Dashboard
+                    </a></li>
+                /
+                <li><a href="#" class="active">Analytics</a></li>
+            </ul>
+        </div>
+   
+
+
+    
+
+
+    <!-- Insights -->
+        
+    <ul class="insights analytics">
+        <li>
+            <i class='bx bx-plus-medical'></i>
+            <span class="info">
+                <h3 class="orig-h3">
+                    {{doctors_count}}
+                </h3>
+                <p>Doctors Joined</p>
+            </span>
+        </li>
+        <li><i class='bx bx-group'></i>
+            <span class="info">
+                <h3 class="orig-h3">
+                    {{customers_count}}
+                </h3>
+                <p>Customers / Patients</p>
+            </span>
+        </li>
+        <li><i class='bx bx-capsule'></i>
+            <span class="info">
+                <h3 class="orig-h3">
+                    {{pharmacies_count}}
+                </h3>
+                <p>Pharmacies</p>
+            </span>
+        </li>
+        <li><i class='bx bx-file'></i>
+            <span class="info">
+                <h3 class="orig-h3">
+                    {{prescriptions_count}}
+                </h3>
+                <p>Digital Prescriptions</p>
+            </span>
+        </li>
+    </ul>
+    <!-- End of Insights -->
+
+    <!--<ul class="add-info">
+    
+        <li>
+            <span class="info">
+                
+                <div class="header">
+                    <i class='bx bx-phone' style=" color:var(--success);"></i>
+                    <h3>More Information</h3>    
+                </div>
+                <br>
+                <div class="add-text">
+                    <p class="label">Sex:</p>
+                    <p class="mockinput"><strong>{{current_user.sex}}</strong></p>
+ 
+                    <p class="label">Blood Type:</p>
+                    <p class="mockinput"><strong>{{current_user.blood_type}}</strong></p>
+
+                    <p class="label">Weight <em>({{current_user.weight_update}})</em> :</p>
+                    <p class="mockinput"><strong>{{current_user.weight}} kg</strong></p>
+                </div>
+                
+            </span>
+        </li>
+        <li>
+            <span class="info">
+                
+                <div class="header">
+                    <i class='bx bx-plus-medical' style="color: var(--danger);"></i>
+                    <h3>Emergency Details</h3>    
+                </div>
+                <br>
+                <div class="add-text">
+                    <p class="label">Contact Person:</p>
+                    <p class="mockinput"><strong>{{current_user.emergency_person}}</strong></p>
+
+                    <p class="label">Contact No:</p>
+                    <p class="mockinput"><strong>{{current_user.emergency_number}}</strong></p>
+
+                    <p class="label">Email:</p>
+                    <p class="mockinput"><strong>{{current_user.emergency_email}}</strong></p>
+                </div>
+                
+            </span>
+        </li>
+        
+        
+    </ul>-->
+
+    
+    
+    <div class="bottom-data">
+        <div class="orders">
+            <div class="header">
+                <i class="fa-solid fa-prescription" style="font-size: 24px; "></i>
+                <h3>Recent Prescriptions</h3>
+                <i class='bx bx-layer' style="color: var(--primary);"></i>
+                <!-- <a href="#" class="allPres">
+                    <span>View All</span>
+                    <i class='bx bx-search all-pres'></i>
+                </a>       -->
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Prescribed by</th>
+                        <th>Date Prescribed</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for prescription in prescriptions [:6:-1]%}
+                    <tr>
+                        <td>{{prescription.id}}</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p> Dr. {{prescription.prescriber.first_name}} {{prescription.prescriber.last_name}}</p>
+                        </td>
+                        <td>{{prescription.date_added}}</td>
+                        <td><span class="status {{prescription.status}}">{{prescription.status}}</span></td>
+                    </tr>
+                {%endfor%}
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <!--<div class="users">
+            <div class="header">
+                <i class="bx bx-error-alt" style="color: var(--warning);"></i>
+                <h3>Allergies</h3>
+                 <a href="#" class="allUser">
+                    <span>View All</span>
+                    <i class='bx bx-search all-user'></i>
+                </a> 
+                <i class='bx bx-layer' style="color: var(--primary);"></i>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Allergic to</th>
+                        <th>Diagnosed by</th>
+                        <th>Date Added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cetirizine</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>                               
+                    </tr>
+
+                    <tr>
+                        <td>Amoxicillin</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>      
+                    </tr>
+                    <tr>
+                        <td>Desloratadine</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>
+                    </tr>
+                    <tr>
+                        <td>Levocetirizine</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>Dr. John Doe</p>
+                        </td>
+                        <td>14-08-2023</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>-->
+
+        <div class="users">
+            <div class="header">
+                <i class='bx bxs-user-account'></i>
+                <h3>New Users</h3>
+                <i class='bx bx-layer' style="color: var(--primary);"></i>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for customer in customers [:6:-1]%}
+                    <tr>
+                        <td>{{customer.id}}</td>
+                        <td>
+                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                            <p>{{customer.first_name}} {{customer.last_name}}</p>
+                        </td>
+                        <td>{{customer.date_added}}</td>                               
+                    </tr>
+                {%endfor%}
+                    
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Reminders 
+        <div class="reminders">
+            <div class="header">
+                <i class='bx bx-note'></i>
+                <h3>Remiders</h3>
+                <i class='bx bx-filter'></i>
+                <i class='bx bx-plus'></i>
+            </div>
+            <ul class="task-list">
+                <li class="completed">
+                    <div class="task-title">
+                        <i class='bx bx-check-circle'></i>
+                        <p>Start Our Meeting</p>
+                    </div>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </li>
+                <li class="completed">
+                    <div class="task-title">
+                        <i class='bx bx-check-circle'></i>
+                        <p>Analyse Our Site</p>
+                    </div>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </li>
+                <li class="not-completed">
+                    <div class="task-title">
+                        <i class='bx bx-x-circle'></i>
+                        <p>Play Footbal</p>
+                    </div>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </li>
+            </ul>
+        </div>
+    
+         End of Reminders-->
+    
+    </div>
+
+</main>
+
+{% endblock %}
+
+{% block sidebar_script %}
+<script>
+    document.getElementById('dashboard-link').classList.toggle('active');
+</script>
+{% endblock %}

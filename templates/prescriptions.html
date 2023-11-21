@@ -31,6 +31,77 @@
     </div>
 </div>
 
+{% if current_user.account_type == "Doctor" %}
+
+    {%for prescription in prescriptions [::-1] if prescription.prescriber.id == current_user.id%}
+
+    
+
+    <div class="gencontainer {{prescription.type}}">
+        Dr. {{prescription.prescriber.first_name}} {{prescription.prescriber.middle_name}} {{prescription.prescriber.last_name}} <br>
+        
+        <small><em>{{prescription.date_added}}</em></small> <br> <br>
+        <!--<small><em> <p class="text-muted">Type:</p> <p class="mockinput-preslist">{{prescription.type}}</p></em></small>-->
+        <small><em> <p class="text-muted">Status:</p> <p class="{{prescription.status}} mockinput-preslist">{{prescription.status}}</p></em></small> <br>
+
+        <div class="buttons">
+            <a href="{{url_for('prescription', id=prescription.id)}}" class="extrabutton small-button" >
+                <span class="btnText">View Prescription</span>
+                <i class="uil uil-eye" style="margin: 5px; font-size: 20px;"></i>
+                
+            </a>
+            {%if prescription.prescriber_id == current_user.id%}
+            <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button grey-btn" >
+                <span class="smallbtnText">Edit</span>
+                <i class="uil uil-edit-alt" style="margin: 5px; font-size: 15px;"></i>
+            </a>
+            <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
+                <span class="smallbtnText">Delete</span>
+                <i class="uil uil-trash-alt" style="margin: 5px; font-size: 15px;"></i>
+            </a>
+            {%endif%}
+        </div>
+    </div>
+
+    {% endfor %}
+{%endif%}
+
+{% if current_user.account_type == "Customer" %}
+
+    {%for prescription in prescriptions [::-1] if prescription.patient.id == current_user.id%}
+
+    
+
+    <div class="gencontainer {{prescription.type}}">
+        Dr. {{prescription.prescriber.first_name}} {{prescription.prescriber.middle_name}} {{prescription.prescriber.last_name}} <br>
+        
+        <small><em>{{prescription.date_added}}</em></small> <br> <br>
+        <!--<small><em> <p class="text-muted">Type:</p> <p class="mockinput-preslist">{{prescription.type}}</p></em></small>-->
+        <small><em> <p class="text-muted">Status:</p> <p class="{{prescription.status}} mockinput-preslist">{{prescription.status}}</p></em></small> <br>
+
+        <div class="buttons">
+            <a href="{{url_for('prescription', id=prescription.id)}}" class="extrabutton small-button" >
+                <span class="btnText">View Prescription</span>
+                <i class="uil uil-eye" style="margin: 5px; font-size: 20px;"></i>
+                
+            </a>
+            {%if prescription.prescriber_id == current_user.id%}
+            <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button grey-btn" >
+                <span class="smallbtnText">Edit</span>
+                <i class="uil uil-edit-alt" style="margin: 5px; font-size: 15px;"></i>
+            </a>
+            <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
+                <span class="smallbtnText">Delete</span>
+                <i class="uil uil-trash-alt" style="margin: 5px; font-size: 15px;"></i>
+            </a>
+            {%endif%}
+        </div>
+    </div>
+
+    {% endfor %}
+{%endif%}
+
+{% if current_user.account_type == "Admin" %}
 
     {%for prescription in prescriptions [::-1]%}
 
@@ -46,28 +117,28 @@
         <div class="buttons">
             <a href="{{url_for('prescription', id=prescription.id)}}" class="extrabutton small-button" >
                 <span class="btnText">View Prescription</span>
-                <i class="uil uil-navigator extrai"></i>
+                <i class="uil uil-eye" style="margin: 5px; font-size: 20px;"></i>
+                
             </a>
-            {%if prescription.prescriber_id == current_user.id%}
+            {%if prescription.prescriber_id == current_user.id or current_user.account_type == "Admin"%}
             <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button grey-btn" >
                 <span class="smallbtnText">Edit</span>
-                <i class="uil uil-navigator extrai"></i>
+                <i class="uil uil-edit-alt" style="margin: 5px; font-size: 15px;"></i>
             </a>
             <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
                 <span class="smallbtnText">Delete</span>
-                <i class="uil uil-navigator extrai"></i>
+                <i class="uil uil-trash-alt" style="margin: 5px; font-size: 15px;"></i>
             </a>
             {%endif%}
         </div>
     </div>
 
     {% endfor %}
-
+{%endif%}
     <br><br>
 
 
-
-
+<!--<a class="button fixed-btn"><i class="fa-solid fa-plus" style="font-size: 50px; font-weight: 900; padding-top: 15px;"></i></i></a>-->
 
 
 </main>
@@ -79,6 +150,6 @@
 
 {% block sidebar_script %}
 <script>
-    document.getElementById('add_customer-link').classList.toggle('active');
+    document.getElementById('prescriptions-link').classList.toggle('active');
 </script>
 {% endblock %}

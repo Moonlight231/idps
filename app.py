@@ -5,15 +5,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_ckeditor import CKEditor
+
 from flask_migrate import Migrate
 from sqlalchemy import and_, or_, not_
 
 from datetime import datetime, date
 
-from webforms import LoginForm, RegisterForm, UpdateForm, UpdateDoctorForm, UpdatePharmacyForm, NamerForm, PasswordForm, CustomerForm, PrescriptionForm
+from webforms import LoginForm, RegisterForm, UpdateForm, UpdateDoctorForm, UpdatePharmacyForm, NamerForm, PasswordForm, CustomerForm, PrescriptionForm, SearchForm, StatusForm
 # Create Flask Instance
 app = Flask(__name__)
 
+#Add CKEditor
+#app.config['CKEDITOR_PKG_TYPE'] = 'full'
+ckeditor = CKEditor(app)
 #Session Config
 SESSION_TYPE = "filesystem"
 app.config.from_object(__name__)
@@ -43,6 +48,8 @@ def load_user(user_id):
         return Doctors.query.get(int(user_id))
     if stored_session == "Pharmacy":
         return Pharmacies.query.get(int(user_id))
+    if stored_session == "Admin":
+        return Admins.query.get(int(user_id))
 
 #Json Thing
 @app.route('/date')
@@ -74,9 +81,7 @@ class Users(db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    # Create a String
-    def __repr__(self):
-        return '<Name %r>' % self.name
+
 
 # Create Model
 class Customers(Users, UserMixin):
@@ -101,9 +106,7 @@ class Customers(Users, UserMixin):
     #Customers can have many prescriptions
     prescriptions = db.relationship('Prescriptions', backref='patient')
     
-    # Create a String
-    def __repr__(self):
-        return '<Name %r>' % self.name
+
 
 # Create Model
 class Doctors(Users, UserMixin):
@@ -128,9 +131,7 @@ class Doctors(Users, UserMixin):
     #Doctors can have many prescribed prescriptions
     prescriptions = db.relationship('Prescriptions', backref='prescriber')
     
-    # Create a String
-    def __repr__(self):
-        return '<Name %r>' % self.name
+
 
 # Create Model
 class Pharmacies(Users, UserMixin):
@@ -153,9 +154,7 @@ class Pharmacies(Users, UserMixin):
 
     date_added = db.Column(db.Date, default=date.today)
     
-    # Create a String
-    def __repr__(self):
-        return '<Name %r>' % self.name
+
     
 # Create Prescription Model
 class Prescriptions(db.Model):
@@ -173,6 +172,12 @@ class Prescriptions(db.Model):
     prescriber_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
     patient_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
 
+# Create Admin Model
+class Admins(Users, UserMixin):
+    account_type = db.Column(db.String(200), default="Admin")
+    date_added = db.Column(db.Date, default=date.today)
+
+
 
 # Create a route decorator
 @app.route('/', methods=['GET', 'POST'])
@@ -186,6 +191,7 @@ def index():
         customer = Customers.query.filter_by(email=form.email.data).first()
         doctor = Doctors.query.filter_by(email=form.email.data).first()
         pharmacy = Pharmacies.query.filter_by(email=form.email.data).first()
+        admin = Admins.query.filter_by(email=form.email.data).first()
         if customer:
             #storing session
             session["account_type"] = customer.account_type
@@ -216,8 +222,19 @@ def index():
                 return redirect(url_for('pharmacy_dashboard'))
             else:
                 flash("Wrong password. Try Again.", "error")
+        elif admin:
+            #storing session
+            session["account_type"] = admin.account_type
+            #Check the hash
+            if check_password_hash(admin.password_hash, form.password.data):
+                login_user(admin)
+                flash("Logged in successfully.")
+                return redirect(url_for('admin_dashboard'))
+            else:
+                flash("Wrong password. Try Again.", "error")
         else:
             flash("That Email is not registered yet.")
+        
     
     if form2.validate_on_submit():
         customer = Customers.query.filter_by(email=form2.email.data).first()
@@ -239,12 +256,146 @@ def index():
             flash("That Email is already in use.")
     return render_template('index.html', form=form, form2=RegisterForm())
 
+#Pass Stuff to Navbar
+@app.context_processor
+def base():
+    form =  SearchForm()
+    return dict(form=form)
+
+#Create Search Function
+@app.route('/search', methods=["POST"])
+def search():
+    form = SearchForm()
+    customers = Customers.query
+    if form.validate_on_submit():
+        #Get Data from submitted form
+        customer.searched = form.searched.data
+        #Query the Database
+        customers = customers.filter(Customers.id.like(customer.searched))
+        customers = customers.order_by(Customers.last_name).first()
+        if customers is None:
+            flash("Customer ID do not exist.")
+            return render_template("search.html", form=form, searched=customer.searched, customers=customers)
+            
+        else:
+            return redirect(url_for('customer_profile', id=customer.searched))
+    
+
+#Create Customer profile
+@app.route('/customer/<int:id>')
+@login_required
+def customer_profile(id):
+    id = Customers.query.get_or_404(id)
+    prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
+    return render_template("customer_profile.html", prescriptions=prescriptions, id=id)
+
+@app.route('/doctor/<int:id>')
+@login_required
+def doctor_profile(id):
+    id = Doctors.query.get_or_404(id)
+    prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
+    return render_template("doctor_profile.html", prescriptions=prescriptions, id=id)
+
+
+@app.route('/customer/<int:id>/prescriptions')
+def customer_prescriptions(id):
+    id = Customers.query.get_or_404(id)
+    #Grab all prescriptions in the database
+    prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
+    return render_template("customer_prescriptions.html", prescriptions=prescriptions, id=id)
+
+# Create Prescription Page
+@app.route('/customer/<int:id>/add-prescription', methods=['GET', 'POST'])
+def add_prescription(id):
+    form = PrescriptionForm()
+    id = Customers.query.get_or_404(id)
+    if form.validate_on_submit():
+        prescriber = current_user.id
+        patient = id.id
+        prescription = Prescriptions(type=form.type.data, 
+                                     content=form.content.data,
+                                     instructions_pharmacy=form.instructions_pharmacy.data, 
+                                     instructions_customer=form.instructions_customer.data,
+                                     hospital_name=form.hospital_name.data, 
+                                     hospital_address=form.hospital_address.data,   
+                                     prescriber_id=prescriber,
+                                     patient_id=patient)
+        #Clear the form
+        form.type.data = ''
+        form.content.data = ''
+        form.instructions_pharmacy.data = ''
+        form.instructions_customer.data = ''
+        form.hospital_name.data = ''
+        form.hospital_address.data = ''
+
+        #Add prescription to the database
+        db.session.add(prescription)
+        db.session.commit()
+
+        #Return a message
+        flash("Prescription Created Successfully")
+
+    #Redirect to the webpage
+    return render_template("add_prescription.html", form=form, id=id)
+
+'''# Create Prescription Page
+@app.route('/add-prescription', methods=['GET', 'POST'])
+def add_prescription():
+    form = PrescriptionForm()
+
+    if form.validate_on_submit():
+        prescriber = current_user.id
+        prescription = Prescriptions(type=form.type.data, 
+                                     content=form.content.data,
+                                     instructions_pharmacy=form.instructions_pharmacy.data, 
+                                     instructions_customer=form.instructions_customer.data,
+                                     hospital_name=form.hospital_name.data, 
+                                     hospital_address=form.hospital_address.data,   
+                                     prescriber_id=prescriber)
+        #Clear the form
+        form.type.data = ''
+        form.content.data = ''
+        form.instructions_pharmacy.data = ''
+        form.instructions_customer.data = ''
+        form.hospital_name.data = ''
+        form.hospital_address.data = ''
+
+        #Add prescription to the database
+        db.session.add(prescription)
+        db.session.commit()
+
+        #Return a message
+        flash("Prescription Created Successfully")
+
+    #Redirect to the webpage
+    return render_template("add_prescription.html", form=form)'''
+
+
+
+@app.route('/admin/dashboard', methods=['GET', 'POST'])
+@login_required
+def admin_dashboard():
+    customers_count = Customers.query.count()
+    doctors_count = Doctors.query.count()
+    pharmacies_count = Pharmacies.query.count()
+    prescriptions_count = Prescriptions.query.count()
+    
+
+    customers = Customers.query.order_by(Customers.date_added)
+    prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
+    return render_template("admin_dashboard.html",
+                           customers_count=customers_count,
+                           doctors_count=doctors_count,
+                           pharmacies_count=pharmacies_count,
+                           prescriptions_count=prescriptions_count,
+                           customers=customers,
+                           prescriptions=prescriptions)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-
+    prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
     form = UpdateForm()
     id = current_user.id
     name_to_update = Customers.query.get_or_404(id)
@@ -266,18 +417,21 @@ def dashboard():
         try:
             db.session.commit()
             flash("Update Successful")
-            return render_template("dashboard.html", form=form, name_to_update=name_to_update)
+            return render_template("dashboard.html", form=form, name_to_update=name_to_update, prescriptions=prescriptions)
         except:
             flash("Error! Looks like there's a problem.")
-            return render_template("dashboard.html", form=form, name_to_update=name_to_update)
+            return render_template("dashboard.html", form=form, name_to_update=name_to_update, prescriptions=prescriptions)
     else:
-        return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id)
+        return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id, prescriptions=prescriptions)
+
+
 
 @app.route('/doctor/dashboard', methods=['GET', 'POST'])
 @login_required
 def doctor_dashboard():
     form = UpdateDoctorForm()
     id = current_user.id
+    prescriptions = Prescriptions.query.order_by(Prescriptions.date_added)
     name_to_update = Doctors.query.get_or_404(id)
     if request.method == "POST":
         name_to_update.first_name = request.form['first_name']
@@ -299,12 +453,12 @@ def doctor_dashboard():
         try:
             db.session.commit()
             flash("Update Successful")
-            return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update)
+            return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update, prescriptions=prescriptions)
         except:
             flash("Error! Looks like there's a problem.")
-            return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update)
+            return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update, prescriptions=prescriptions)
     else:
-        return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update, id=id)
+        return render_template("doctor_dashboard.html", form=form, name_to_update=name_to_update, id=id, prescriptions=prescriptions)
     
 
 @app.route('/pharmacy/dashboard', methods=['GET', 'POST'])
@@ -397,8 +551,11 @@ def add_customer():
     name = None
     form = CustomerForm()
     if form.validate_on_submit():
+        admin= Admins.query.filter_by(email=form.email.data).first()
+        pharmacy = Pharmacies.query.filter_by(email=form.email.data).first()
+        doctor = Doctors.query.filter_by(email=form.email.data).first()
         customer = Customers.query.filter_by(email=form.email.data).first()
-        if customer is None:
+        if (doctor is None) and (customer is None) and (admin is None) and (pharmacy is None):
             # Hash the password!
             hashed_pw = generate_password_hash(form.password_hash.data, "pbkdf2")
             customer = Customers(name=form.name.data, email=form.email.data, blood_type=form.blood_type.data, password_hash=hashed_pw)
@@ -417,9 +574,11 @@ def add_customer():
 def add_doctor():
     form = RegisterForm()
     if form.validate_on_submit():
+        admin= Admins.query.filter_by(email=form.email.data).first()
+        pharmacy = Pharmacies.query.filter_by(email=form.email.data).first()
         doctor = Doctors.query.filter_by(email=form.email.data).first()
         customer = Customers.query.filter_by(email=form.email.data).first()
-        if (doctor is None) and (customer is None):
+        if (doctor is None) and (customer is None) and (admin is None) and (pharmacy is None):
             # Hash the password!
             hashed_pw = generate_password_hash(form.password_hash.data, "pbkdf2")
             doctor = Doctors(email=form.email.data, password_hash=hashed_pw)
@@ -436,14 +595,41 @@ def add_doctor():
     our_doctors = Doctors.query.order_by(Doctors.date_added)
     return render_template("add_doctor.html", form=RegisterForm(), our_doctors=our_doctors)
 
+@app.route('/admin/add', methods=['get', 'post'])
+def add_admin():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        admin= Admins.query.filter_by(email=form.email.data).first()
+        pharmacy = Pharmacies.query.filter_by(email=form.email.data).first()
+        doctor = Doctors.query.filter_by(email=form.email.data).first()
+        customer = Customers.query.filter_by(email=form.email.data).first()
+        if (doctor is None) and (customer is None) and (admin is None) and (pharmacy is None):
+            # Hash the password!
+            hashed_pw = generate_password_hash(form.password_hash.data, "pbkdf2")
+            admin = Admins(email=form.email.data, password_hash=hashed_pw)
+            db.session.add(admin)
+            db.session.commit()
+            form.email = ''
+            form.password_hash = ''
+            form.password_hash2 = ''
+            flash("Admin Added Successfully!")
+        else:
+            form.password_hash = ''
+            form.password_hash2 = ''
+            flash("That Email is already in use.")
+    our_admins = Admins.query.order_by(Admins.date_added)
+    return render_template("add_admin.html", form=RegisterForm(), our_admins=our_admins)
+
+
 @app.route('/pharmacy/add', methods=['get', 'post'])
 def add_pharmacy():
     form = RegisterForm()
     if form.validate_on_submit():
+        admin= Admins.query.filter_by(email=form.email.data).first()
+        pharmacy = Pharmacies.query.filter_by(email=form.email.data).first()
         doctor = Doctors.query.filter_by(email=form.email.data).first()
         customer = Customers.query.filter_by(email=form.email.data).first()
-        pharmacy = Pharmacies.query.filter_by(email=form.email.data).first()
-        if (doctor is None) and (customer is None) and (pharmacy is None):
+        if (doctor is None) and (customer is None) and (admin is None) and (pharmacy is None):
             # Hash the password!
             hashed_pw = generate_password_hash(form.password_hash.data, "pbkdf2")
             pharmacy = Pharmacies(email=form.email.data, password_hash=hashed_pw)
@@ -606,39 +792,22 @@ def delete_doctor(id):
     except:
         flash("Whoops! There was a problem deleting user, try again.")
         return render_template("add_doctor.html", form=form, our_doctors=our_doctors)
-    
 
-# Create Prescription Page
-@app.route('/add-prescription', methods=['GET', 'POST'])
-def add_prescription():
-    form = PrescriptionForm()
-
-    if form.validate_on_submit():
-        prescriber = current_user.id
-        prescription = Prescriptions(type=form.type.data, 
-                                     content=form.content.data,
-                                     instructions_pharmacy=form.instructions_pharmacy.data, 
-                                     instructions_customer=form.instructions_customer.data,
-                                     hospital_name=form.hospital_name.data, 
-                                     hospital_address=form.hospital_address.data,   
-                                     prescriber_id=prescriber)
-        #Clear the form
-        form.type.data = ''
-        form.content.data = ''
-        form.instructions_pharmacy.data = ''
-        form.instructions_customer.data = ''
-        form.hospital_name.data = ''
-        form.hospital_address.data = ''
-
-        #Add prescription to the database
-        db.session.add(prescription)
+# Delete Doctor Records
+@app.route('/admin/delete/<int:id>')
+def delete_admin(id):
+    form = RegisterForm()
+    user_to_delete = Admins.query.get_or_404(id)
+    try:
+        db.session.delete(user_to_delete)
         db.session.commit()
+        flash("User Deleted Successfully!")
+        our_admins = Admins.query.order_by(Admins.date_added)
+        return render_template("add_admin.html", form=form, our_admins=our_admins)
+    except:
+        flash("Whoops! There was a problem deleting user, try again.")
+        return render_template("add_admin.html", form=form, our_admins=our_admins)
 
-        #Return a message
-        flash("Prescription Created Successfully")
-
-    #Redirect to the webpage
-    return render_template("add_prescription.html", form=form)
 
 @app.route('/prescriptions')
 def prescriptions():
@@ -650,6 +819,11 @@ def prescriptions():
 def prescription(id):
     prescription = Prescriptions.query.get_or_404(id)
     return render_template('prescription.html', prescription=prescription)
+
+@app.route('/customers/<int:id>')
+def customer(id):
+    customer = Customers.query.get_or_404(id)
+    return render_template('customer.html', customer=customer)
 
 @app.route('/prescriptions/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -680,6 +854,28 @@ def edit_prescription(id):
         return render_template('edit_prescription.html', form=form, prescription=prescription)
     else:
         flash("You are not authorized to edit this prescription.")
+
+@app.route('/prescriptions/<int:id>/edit_status', methods=['GET', 'POST'])
+@login_required
+def edit_status(id):
+    prescription = Prescriptions.query.get_or_404(id)
+    form = StatusForm()
+    if form.validate_on_submit():
+        prescription.status = form.status.data
+
+        #Update database record
+        db.session.add(prescription)
+        db.session.commit()
+        flash("Prescription Status has been updated.")
+        return render_template('edit_status.html', form=form, prescription=prescription, id=id)
+    
+    if current_user.account_type == "Pharmacy":
+        form.status.data = prescription.status
+
+        return render_template('edit_status.html', form=form, prescription=prescription, id=id)
+    else:
+        flash("You are not authorized to edit this prescription.")
+
 
 @app.route('/prescriptions/delete/<int:id>')
 def delete_prescription(id):

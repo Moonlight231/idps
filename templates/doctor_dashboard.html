@@ -228,7 +228,7 @@
             <span class="info">
                 
                 <div class="header">
-                    <i class='bx bx-plus-medical' style="color: var(--danger);"></i>
+                    <i class='bx bx-id-card' style="color: var(--danger);"></i>
                     <h3>Licenses</h3>    
                 </div>
                 <br>
@@ -254,7 +254,9 @@
             <div class="header">
                 <i class="fa-solid fa-prescription" style="font-size: 24px; "></i>
                 <h3>Recent Prescriptions</h3>
-                <i class='bx bx-layer' style="color: var(--primary);"></i>
+                <div>
+                    <a href="{{url_for('prescriptions')}}"><i class='bx bx-layer' style="color: var(--primary);"></i></a>
+                </div>
                 <!-- <a href="#" class="allPres">
                     <span>View All</span>
                     <i class='bx bx-search all-pres'></i>
@@ -264,43 +266,27 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Prescribed by</th>
+                        <th>Prescribed To</th>
                         <th>Date Prescribed</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
-                            <p> Dr. John Doe</p>
-                        </td>
-                        <td>14-08-2023</td>
-                        <td><span class="status success">Filled</span></td>
-                        
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>
-                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
-                            <p>Dr. John Doe</p>
-                        </td>
-                        <td>14-08-2023</td>
-                        <td><span class="status warning">Partially Filled</span></td>
-                        
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>
-                            <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
-                            <p>Dr. John Doe</p>
-                        </td>
-                        <td>14-08-2023</td>
-                        <td><span class="status danger">Not Filled</span></td>
-                        
-                    </tr>
+                {%for prescription in prescriptions [::-1] if prescription.prescriber.id == current_user.id%}
+                    
+                        <tr>
+                            <td>{{prescription.id}}</td>
+                            <td>
+                                <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                                <p> {{prescription.patient.first_name}} {{prescription.patient.last_name}}</p>
+                            </td>
+                            <td>{{prescription.date_added}}</td>
+                            <td><span class="status {{prescription.status}}">{{prescription.status}}</span></td>
+                        </tr>
+                    
+                    
+                {%endfor%}
+                
                     
                 </tbody>
             </table>

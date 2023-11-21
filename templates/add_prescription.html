@@ -6,7 +6,6 @@
 
 
 
-
 <main>
 
 
@@ -38,8 +37,9 @@
             <br><br>                    
             <div class="pres-input-field">
                 {{ form.content.label(class="label") }}
-                {{ form.content(class="input-textarea", rows="10", placeholder="Feel Free to Resize if needed") }}
+                {{ form.content(class="input-textarea", rows="15", placeholder="Feel Free to Resize if needed") }}
             </div>
+            <br><br>
 
             <div class="pres-input-field">
                 {{ form.instructions_customer.label(class="label") }}
@@ -73,8 +73,9 @@
         <i class="uil uil-navigator"></i>
     </button>
     </form>            
-        
-
+    <!--{{ ckeditor.load() }}
+    {{ ckeditor.config(custom_config="uiColor: '#1976D2', height: 400 ",name='content') }}
+    --->
     
 
     
@@ -95,6 +96,6 @@
 
 {% block sidebar_script %}
 <script>
-    document.getElementById('add_customer-link').classList.toggle('active');
+    document.getElementById('add_prescription-link').classList.toggle('active');
 </script>
 {% endblock %}

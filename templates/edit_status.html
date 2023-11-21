@@ -24,13 +24,15 @@
 </div>
 
 
-
+<form  method="post">
 
     <div class="gencontainer {{prescription.type}}"> 
 
         <small ><em><strong>Date prescribed:</strong> {{prescription.date_added}}</em></small> <br>
         <small ><em><strong>Type:</strong> {{prescription.type}}</em></small> <br>
-        <small ><em><strong>Status:</strong> <status class="{{prescription.status}}">{{prescription.status}}</status></em></small>
+        {{ form.hidden_tag() }}
+            
+        <small ><em><strong>Status: &nbsp;&nbsp; </strong> <status class="{{prescription.status}}">{{ form.status(class="input") }}</status></em></small>
         <br>
         <br>
         <header class="presheader"><strong>{{prescription.hospital_name}}</strong></header>
@@ -78,25 +80,16 @@
             <span class="smallbtnText">Go Back</span>
             <i class="uil uil-navigator extrai"></i>
         </a>
-        {%if prescription.prescriber_id == current_user.id%}
-        <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button" >
-            <span class="smallbtnText">Edit</span>
-            <i class="uil uil-navigator extrai"></i>
-        </a>
-        <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
-            <span class="smallbtnText">Delete</span>
-            <i class="uil uil-navigator extrai"></i>
-        </a>
-        {%endif%}
-        {%if current_user.account_type == "Pharmacy" %}
-            <a href="{{url_for('edit_status', id=prescription.id)}}" class="extrabutton small-button" >
-                <span class="smallbtnText">Edit Status</span>
+        
+            <button class="extrabutton small-button" >
+                <span class="smallbtnText">Save Status</span>
                 <i class="uil uil-navigator extrai"></i>
-            </a>
-        {%endif%}
+            </buttton>
+
+        
     </div>
     <br><br><br>
-
+</form>
 
 
    
