@@ -13,7 +13,6 @@ class SearchForm(FlaskForm):
 # Create a Prescription Form
 class PrescriptionForm(FlaskForm):
     type = SelectField("Prescription Type", choices=["White", "Yellow"] , validators=[DataRequired()])
-    status = SelectField("Status", choices=["Not Filled", "Partially Filled", "Filled"], validators=[DataRequired()])
     content = StringField("Content", validators=[DataRequired()], widget=TextArea())
     #content = CKEditorField('Content', validators=[DataRequired()])
     instructions_pharmacy = StringField("Instructions for Pharmacist", widget=TextArea())

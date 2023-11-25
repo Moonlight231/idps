@@ -25,13 +25,13 @@
                 <li><a href="#" class="active">Profile</a></li>
             </ul>
         </div>
-        {%if (current_user.company == None) and (current_user.branch == None)%}
+        <!--{%if (current_user.company == None) and (current_user.branch == None)%}
         {%else%}
             <a href="#" class="report">
                 <i class='bx bx-qr'></i>
                 <span>Profile QR</span>
             </a>
-        {%endif%}
+        {%endif%}-->
     </div>
 
 
@@ -169,7 +169,7 @@
         <ul class="insights">
             <li class='user-profile'>
                 <span class="info">
-                    <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                    <img src="{{url_for('static', filename= '/images/SDD.jpg')}}">
                     <h2 class="nameunder"> {{current_user.company}} - {{current_user.branch}}</h2>
                     <!--<p>Fullstack Web Developer</p>-->
                 </span>
