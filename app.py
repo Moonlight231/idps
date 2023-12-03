@@ -13,6 +13,9 @@ from sqlalchemy import and_, or_, not_
 from datetime import datetime, date
 
 from webforms import LoginForm, RegisterForm, UpdateForm, UpdateDoctorForm, UpdatePharmacyForm, NamerForm, PasswordForm, CustomerForm, PrescriptionForm, SearchForm, StatusForm
+
+from flask_qrcode import QRcode
+
 # Create Flask Instance
 app = Flask(__name__)
 
@@ -26,6 +29,9 @@ Session(app)
 # Add MySQL Database
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://username:password@localhost/db_name'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/rxpress'
+
+#Add QRCode
+QRcode(app)
 
 # Secret Key!
 app.config['SECRET_KEY'] = "moonlight"
@@ -185,76 +191,85 @@ def index():
     form = LoginForm()
     form2 = RegisterForm()
 
+    if current_user.is_authenticated:
+        if current_user.account_type == "Customer":
+            return redirect(url_for('dashboard'))
+        elif current_user.account_type == "Doctor":
+            return redirect(url_for('doctor_dashboard'))
+        elif current_user.account_type == "Pharmacy":
+            return redirect(url_for('pharmacy_dashboard'))
+        elif current_user.account_type == "Admin":
+            return redirect(url_for('admin_dashboard'))
+    else:
     
-    
-    if form.validate_on_submit():
-        customer = Customers.query.filter_by(email=form.email.data).first()
-        doctor = Doctors.query.filter_by(email=form.email.data).first()
-        pharmacy = Pharmacies.query.filter_by(email=form.email.data).first()
-        admin = Admins.query.filter_by(email=form.email.data).first()
-        if customer:
-            #storing session
-            session["account_type"] = customer.account_type
-            #Check the hash
-            if check_password_hash(customer.password_hash, form.password.data):
-                login_user(customer)
-                flash("Logged in successfully.")
-                return redirect(url_for('dashboard'))
+        if form.validate_on_submit():
+            customer = Customers.query.filter_by(email=form.email.data).first()
+            doctor = Doctors.query.filter_by(email=form.email.data).first()
+            pharmacy = Pharmacies.query.filter_by(email=form.email.data).first()
+            admin = Admins.query.filter_by(email=form.email.data).first()
+            if customer:
+                #storing session
+                session["account_type"] = customer.account_type
+                #Check the hash
+                if check_password_hash(customer.password_hash, form.password.data):
+                    login_user(customer)
+                    flash("Logged in successfully.")
+                    return redirect(url_for('dashboard'))
+                else:
+                    flash("Wrong password. Try Again.", "error")
+            elif doctor:
+                #storing session
+                session["account_type"] = doctor.account_type
+                #Check the hash
+                if check_password_hash(doctor.password_hash, form.password.data):
+                    login_user(doctor)
+                    flash("Logged in successfully.")
+                    return redirect(url_for('doctor_dashboard'))
+                else:
+                    flash("Wrong password. Try Again.", "error")
+            elif pharmacy:
+                #storing session
+                session["account_type"] = pharmacy.account_type
+                #Check the hash
+                if check_password_hash(pharmacy.password_hash, form.password.data):
+                    login_user(pharmacy)
+                    flash("Logged in successfully.")
+                    return redirect(url_for('pharmacy_dashboard'))
+                else:
+                    flash("Wrong password. Try Again.", "error")
+            elif admin:
+                #storing session
+                session["account_type"] = admin.account_type
+                #Check the hash
+                if check_password_hash(admin.password_hash, form.password.data):
+                    login_user(admin)
+                    flash("Logged in successfully.")
+                    return redirect(url_for('admin_dashboard'))
+                else:
+                    flash("Wrong password. Try Again.", "error")
             else:
-                flash("Wrong password. Try Again.", "error")
-        elif doctor:
-            #storing session
-            session["account_type"] = doctor.account_type
-            #Check the hash
-            if check_password_hash(doctor.password_hash, form.password.data):
-                login_user(doctor)
-                flash("Logged in successfully.")
-                return redirect(url_for('doctor_dashboard'))
-            else:
-                flash("Wrong password. Try Again.", "error")
-        elif pharmacy:
-            #storing session
-            session["account_type"] = pharmacy.account_type
-            #Check the hash
-            if check_password_hash(pharmacy.password_hash, form.password.data):
-                login_user(pharmacy)
-                flash("Logged in successfully.")
-                return redirect(url_for('pharmacy_dashboard'))
-            else:
-                flash("Wrong password. Try Again.", "error")
-        elif admin:
-            #storing session
-            session["account_type"] = admin.account_type
-            #Check the hash
-            if check_password_hash(admin.password_hash, form.password.data):
-                login_user(admin)
-                flash("Logged in successfully.")
-                return redirect(url_for('admin_dashboard'))
-            else:
-                flash("Wrong password. Try Again.", "error")
-        else:
-            flash("That Email is not registered yet.")
+                flash("That Email is not registered yet.")
+            
         
-    
-    if form2.validate_on_submit():
-        customer = Customers.query.filter_by(email=form2.email.data).first()
-        doctors = Doctors.query.filter_by(email=form2.email.data).first()
-        pharmacies = Pharmacies.query.filter_by(email=form2.email.data).first()
-        if (customer is None) and (doctors is None) and (pharmacies is None):
-            # Hash the password!
-            hashed_pw = generate_password_hash(form2.password_hash.data, "pbkdf2")
-            customer = Customers(email=form2.email.data, password_hash=hashed_pw)
-            db.session.add(customer)
-            db.session.commit()
-            form2.email.data = ''
-            form2.password_hash = ''
-            form2.password_hash2 = ''
-            flash("Account Created Successfully!")
-        else:
-            form2.password_hash = ''
-            form2.password_hash2 = ''
-            flash("That Email is already in use.")
-    return render_template('index.html', form=form, form2=RegisterForm())
+        if form2.validate_on_submit():
+            customer = Customers.query.filter_by(email=form2.email.data).first()
+            doctors = Doctors.query.filter_by(email=form2.email.data).first()
+            pharmacies = Pharmacies.query.filter_by(email=form2.email.data).first()
+            if (customer is None) and (doctors is None) and (pharmacies is None):
+                # Hash the password!
+                hashed_pw = generate_password_hash(form2.password_hash.data, "pbkdf2")
+                customer = Customers(email=form2.email.data, password_hash=hashed_pw)
+                db.session.add(customer)
+                db.session.commit()
+                form2.email.data = ''
+                form2.password_hash = ''
+                form2.password_hash2 = ''
+                flash("Account Created Successfully!")
+            else:
+                form2.password_hash = ''
+                form2.password_hash2 = ''
+                flash("That Email is already in use.")
+        return render_template('index.html', form=form, form2=RegisterForm())
 
 #Pass Stuff to Navbar
 @app.context_processor

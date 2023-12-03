@@ -1148,6 +1148,51 @@ nav .navbar .profile{
     color: var(--dark);
 }
 
+
+#reader { 
+    padding: 20px !important; 
+    border: 1.5px solid var(--dark-grey) !important; 
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--dark)!important;
+}
+
+
+
+#reader img[alt="Info icon"] { 
+    display: none;
+}
+ 
+#reader img[alt="Camera based scan"] { 
+    width: 265.5px !important; 
+    height: 265.5px !important;
+    content: url('/static/images/qrscan.png') !important;
+}
+
+#reader img[alt="Fule based scan"] { 
+    width: 200px !important; 
+    height: 200px !important;
+    content: url('/static/images/filescan.png') !important;
+}
+
+#reader button{ 
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    max-width: fit-content;
+    min-width: fit-content;
+    border: 0.16em solid rgba(255, 255, 255, 0);
+    outline: none;
+    color: #fff;
+    border-radius: 5px;
+    background-color: var(--primary);
+    transition: all 0.3s;
+    cursor: pointer;
+    margin: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 /* Style for the download button */
 .download-button{
     display:block;

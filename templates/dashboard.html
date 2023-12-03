@@ -27,7 +27,8 @@
     <div class="modal-bg">
         <div class="modal"  transition-style="in:custom:circle-swoop">
             <span class="close-modal" onclick="closeModal()"><i class="bx bx-x"></i></span>
-            <img class="img-qr" src="{{url_for('static', filename= '/images/qr-sample.png')}}" alt="QR Code">
+            <!--<img class="img-qr" src="{{url_for('static', filename= '/images/qr-sample.png')}}" alt="QR Code">-->
+            <img class="img-qr" src="{{ qrcode(current_user.id, error_correction='H', icon_img='images/qrlogo.png', border=1) }}" alt="QR Code">
             <a href="#" class="download-button" style=" color: white;
             background-color:var(--success)">
                 Download QR

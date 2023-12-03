@@ -3,11 +3,19 @@
     <i class='bx bx-menu'></i>
     
     <form method="POST" action="{{url_for('search')}}">
-        <div class="form-input">
-            {{ form.hidden_tag() }}
-            <input type="search" placeholder="Search..."n name="searched" required>
-            <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
-        </div>
+        {% if current_user.account_type == "Doctor" or current_user.account_type == "Pharmacy"%}
+            <div class="form-input">
+                {{ form.hidden_tag() }}
+                <input id = search type="search" placeholder="Search ID no." name="searched" required>
+                <button id = searchbtn class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+            </div>
+        {%else%}
+            <div style="display: none;" class="form-input">
+                {{ form.hidden_tag() }}
+                <input type="search" placeholder="Search..." name="searched" required>
+                <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+            </div>
+        {%endif%}
     </form>
     <div class="navbar">
         <span id="mode" style="display: none;">system</span>

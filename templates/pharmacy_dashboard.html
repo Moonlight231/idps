@@ -6,11 +6,32 @@
     <div class="modal-bg">
         <div class="modal"  transition-style="in:custom:circle-swoop">
             <span class="close-modal" onclick="closeModal()"><i class="bx bx-x"></i></span>
-            <img class="img-qr" src="{{url_for('static', filename= '/images/qr-sample.png')}}" alt="QR Code">
-            <a href="#" class="download-button" style="color: white;
-            background-color: var(--success);">
-                Download QR
-            </a>
+            <!--<div id="qr-reader" style=" width: 600px"></div>-->
+            <div style="width: 500px" id="reader"></div>
+            <script>
+                
+                /*function onScanSuccess(decodedText) {
+            
+                document.getElementById("search").value = decodedText;
+                document.getElementById("searchbtn").click();
+                }
+                var html5QrcodeScanner = new Html5QrcodeScanner(
+                    "qr-reader", { fps: 60, qrbox: 250 });
+                html5QrcodeScanner.render(onScanSuccess);*/
+
+                var html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader", { fps: 60, qrbox: 250 });
+                    
+                function onScanSuccess(decodedText) {
+                // Handle on success condition with the decoded text or result.
+                document.getElementById("search").value = decodedText;
+                document.getElementById("searchbtn").click();
+                // ...
+                html5QrcodeScanner.clear();
+                // ^ this will stop the scanner (video feed) and clear the scan area.
+                }
+                html5QrcodeScanner.render(onScanSuccess);
+            </script>
         </div>
     </div>
 
@@ -25,13 +46,12 @@
                 <li><a href="#" class="active">Profile</a></li>
             </ul>
         </div>
-        <!--{%if (current_user.company == None) and (current_user.branch == None)%}
-        {%else%}
+        
             <a href="#" class="report">
                 <i class='bx bx-qr'></i>
-                <span>Profile QR</span>
+                <span>Scan QR</span>
             </a>
-        {%endif%}-->
+        
     </div>
 
 
@@ -463,6 +483,8 @@
     <br><br>
 
 </main>
+
+
 
 {% endblock %}
 
