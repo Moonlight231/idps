@@ -721,7 +721,8 @@ nav .navbar .profile{
 
 .content main .user-profile img{
     width: 22rem;
-    height: auto;
+    height: 22rem;
+    object-fit: cover;
     /*margin-bottom: 0.8rem;*/
     border-radius: 50%;
 }
@@ -1209,7 +1210,7 @@ nav .navbar .profile{
     position: relative;
     max-width: auto;
     width: 100%;
-    height: 470px;
+    height: 500px;
     border-radius: 20px;
     padding: 30px;
     background-color: var(--light);
@@ -1233,7 +1234,7 @@ nav .navbar .profile{
     position: relative;
     max-width: auto;
     width: 100%;
-    height: 520px;
+    height: 570px;
     border-radius: 20px;
     padding: 30px;
     background-color: var(--light);
@@ -1440,7 +1441,7 @@ form .fields .pres-input-field{
     font-weight: 400;
     color: var(--dark);
     border-radius: 5px;
-    border: 1px solid #aaa;
+    border: 1px solid var(--primary);
     padding: 0 15px;
     height: 42px;
     margin: 8px 0;

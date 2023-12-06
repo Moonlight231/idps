@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
 
-from wtforms import StringField, SubmitField, PasswordField, DateField, SelectField, FloatField, TimeField ,BooleanField, ValidationError
+from wtforms import StringField, SubmitField, PasswordField, DateField, SelectField, FloatField, TimeField, BooleanField, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Length, InputRequired
 from wtforms.widgets import TextArea
 from flask_ckeditor import CKEditorField
+from flask_wtf.file import FileField 
 
 #Create a Search Form
 class SearchForm(FlaskForm):
@@ -63,6 +64,7 @@ class UpdateForm(FlaskForm):
     emergency_person = StringField("Contact Person", validators=[DataRequired()])
     emergency_number = StringField("Contact Number", validators=[DataRequired()])
     emergency_email = StringField("Email", validators=[DataRequired()])
+    profile_pic = FileField("Profile Picture")
     submit = SubmitField("Submit")
 
 class UpdateDoctorForm(FlaskForm):

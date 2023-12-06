@@ -7,13 +7,15 @@
 
     <div class="header">
         <div class="left">
-            <h1>Dashboard</h1>
+            <h1>Patient Profile</h1>
             <ul class="breadcrumb">
                 <li><a href="#" style="pointer-events: none;">
-                        Dashboard
-                    </a></li>
+                        Patient {{id.id}}</a>
+                    </li>
                 /
-                <li><a href="#" class="active">Profile</a></li>
+                <li><a href="#" class="active">
+                    Profile</a>
+                </li>
             </ul>
         </div>
         {%if (id.last_name == None) and (id.first_name == None)%}
@@ -46,7 +48,14 @@
         <ul class="insights">
             <li class='user-profile'>
                 <span class="info">
+                    {% if id.profile_pic %}
+
+                    <img src="{{url_for('static', filename= '/images/' + id.profile_pic)}}">
+
+                    {%else%}
+
                     <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                    {%endif%}
                     <h2 class="nameunder">{{id.last_name}}, {{id.first_name}} {{id.middle_name[0]}}.</h2>
                     <!--<p>Fullstack Web Developer</p>-->
                 </span>

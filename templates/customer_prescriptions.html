@@ -22,11 +22,19 @@
 
 <div class="header">
     <div class="left">
-        <h1>Prescriptions</h1>
+        <h1>Patient's Prescriptions</h1>
         <ul class="breadcrumb">
-            /<li><a href="#" class="active">
-                    Prescription List
-                </a></li>
+            <li><a href="#" style="pointer-events: none;">
+                Patient {{id.id}}</a>
+            </li>
+            /
+            <li><a href="{{url_for('customer_profile', id=id.id)}}">
+                Profile</a>
+            </li>
+            /
+            <li><a href="#" class="active">
+                Prescriptions</a>
+            </li>
         </ul>
     </div>
 </div>

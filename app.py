@@ -15,6 +15,9 @@ from datetime import datetime, date
 from webforms import LoginForm, RegisterForm, UpdateForm, UpdateDoctorForm, UpdatePharmacyForm, NamerForm, PasswordForm, CustomerForm, PrescriptionForm, SearchForm, StatusForm
 
 from flask_qrcode import QRcode
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 
 # Create Flask Instance
 app = Flask(__name__)
@@ -35,6 +38,10 @@ QRcode(app)
 
 # Secret Key!
 app.config['SECRET_KEY'] = "moonlight"
+
+UPLOAD_FOLDER = 'static/images/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 # Initialize The Database
 db = SQLAlchemy(app)
@@ -108,6 +115,7 @@ class Customers(Users, UserMixin):
     emergency_number = db.Column(db.String(200))
     emergency_email = db.Column(db.String(200))
     date_added = db.Column(db.Date, default=date.today)
+    profile_pic = db.Column(db.String(1000), nullable=True)
 
     #Customers can have many prescriptions
     prescriptions = db.relationship('Prescriptions', backref='patient')
@@ -429,13 +437,35 @@ def dashboard():
         name_to_update.emergency_number = request.form['emergency_number']
         name_to_update.emergency_email = request.form['emergency_email']
         
-        try:
+        # Check for profile pic
+        if request.files['profile_pic']:
+            name_to_update.profile_pic = request.files['profile_pic']
+        
+            # Grab Image Name
+            pic_filename = secure_filename(name_to_update.profile_pic.filename)
+            # UUID
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            # Save the image
+            saver = request.files['profile_pic']
+            
+            
+            # Change it to a string to save to db
+            name_to_update.profile_pic = pic_name
+
+            try:
+                db.session.commit()
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+                flash("Update Successful")
+                return render_template("dashboard.html", form=form, name_to_update=name_to_update, prescriptions=prescriptions)
+            except:
+                flash("Error! Looks like there's a problem.")
+                return render_template("dashboard.html", form=form, name_to_update=name_to_update, prescriptions=prescriptions)
+        
+        else:
             db.session.commit()
             flash("Update Successful")
             return render_template("dashboard.html", form=form, name_to_update=name_to_update, prescriptions=prescriptions)
-        except:
-            flash("Error! Looks like there's a problem.")
-            return render_template("dashboard.html", form=form, name_to_update=name_to_update, prescriptions=prescriptions)
+
     else:
         return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id, prescriptions=prescriptions)
 
@@ -682,16 +712,36 @@ def update(id):
         name_to_update.emergency_person = request.form['emergency_person']
         name_to_update.emergency_number = request.form['emergency_number']
         name_to_update.emergency_email = request.form['emergency_email']
+        # Check for profile pic
+        if request.files['profile_pic']:
+            name_to_update.profile_pic = request.files['profile_pic']
         
-        try:
+            # Grab Image Name
+            pic_filename = secure_filename(name_to_update.profile_pic.filename)
+            # UUID
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            # Save the image
+            saver = request.files['profile_pic']
+            
+            
+            # Change it to a string to save to db
+            name_to_update.profile_pic = pic_name
+
+            try:
+                db.session.commit()
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+                flash("Update Successful")
+                return render_template("update.html", form=form, name_to_update=name_to_update)
+            except:
+                flash("Error! Looks like there's a problem.")
+                return render_template("update.html", form=form, name_to_update=name_to_update)
+        else:
             db.session.commit()
             flash("Update Successful")
             return render_template("update.html", form=form, name_to_update=name_to_update)
-        except:
-            flash("Error! Looks like there's a problem.")
-            return render_template("update.html", form=form, name_to_update=name_to_update)
     else:
         return render_template("update.html", form=form, name_to_update=name_to_update, id=id)
+    
 
 # Create Update Database Record
 @app.route('/doctor_update/<int:id>', methods=['GET', 'POST'])

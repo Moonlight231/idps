@@ -53,14 +53,18 @@
 
 <div class="formcontainer">
     <header>KEEP YOUR INFORMATION UP-TO-DATE.</header>
-    <form action="/dashboard" method="post" id="regform">
+    <form action="/dashboard" method="post" enctype="multipart/form-data" id="regform">
+        {{ form.hidden_tag() }}
+
+        {{ form.profile_pic.label(class="label") }} <br>
+        {{ form.profile_pic(class="input", placeholder="Enter firstname", value=name_to_update.profile_pic) }}
         <div class="form first">
 
             <div class="details name">
                 <br>
                 <span class="title">Personal Details</span>
                 <div class="fields">
-                        {{ form.hidden_tag() }}
+               
                     <div class="input-field">
                         {{ form.first_name.label(class="label") }}
                         {{ form.first_name(class="input", placeholder="Enter firstname", value=name_to_update.first_name) }}
@@ -152,6 +156,7 @@
                         <i class="uil uil-navigator"></i>
                     </button>
                 </div>
+                <br>
             </div>
 
         </div>

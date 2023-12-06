@@ -43,14 +43,17 @@
     
     <div class="regformcontainer">
         <header>ALLOW US TO KNOW YOU BETTER.</header>
-        <form action="/dashboard" method="post" id="regform">
+        <form action="/dashboard" method="post" enctype="multipart/form-data" id="regform">
+            {{ form.hidden_tag() }}
+
+            {{ form.profile_pic.label(class="label") }} <br>
+            {{ form.profile_pic(class="input", placeholder="Enter firstname", value=name_to_update.profile_pic) }}
             <div class="form first">
-    
                 <div class="details name">
                     <br>
                     <span class="title">Personal Details</span>
                     <div class="fields">
-                            {{ form.hidden_tag() }}
+                            
                         <div class="input-field">
                             {{ form.first_name.label(class="label") }}
                             {{ form.first_name(class="input", placeholder="Enter firstname") }}
@@ -180,7 +183,15 @@
         <ul class="insights">
             <li class='user-profile'>
                 <span class="info">
+
+                    {% if current_user.profile_pic %}
+
+                    <img src="{{url_for('static', filename= '/images/' + current_user.profile_pic)}}">
+
+                    {%else%}
+
                     <img src="{{url_for('static', filename= '/images/Dp.jpg')}}">
+                    {%endif%}
                     <h2 class="nameunder">{{current_user.last_name}}, {{current_user.first_name}} {{current_user.middle_name[0]}}.</h2>
                     <!--<p>Fullstack Web Developer</p>-->
                 </span>
@@ -209,6 +220,9 @@
 
                     <p class="label">Address:</p>
                     <p class="mockinput"><strong>{{current_user.address}}</strong></p>
+
+                    <!--<p class="label">Profile Pic:</p>
+                    <p class="mockinput"><strong>{{current_user.profile_pic}}</strong></p>-->
                 </span>
             </li>
             
