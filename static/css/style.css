@@ -595,7 +595,7 @@ nav .navbar .profile{
     padding: 0 16px;
     border-radius: 36px;
     background: var(--primary);
-    color: var(--light);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1622,7 +1622,6 @@ form .fields .pres-input-field{
     width: 80px;
     border-radius: 50%;
     box-shadow: 0 15px 10px rgba(0, 0, 0, 0.4);
-    
 }
 
 
@@ -1655,7 +1654,9 @@ form .fields .pres-input-field{
 
 .smallbtnText{
     font-size: 13px;
+
 }
+
 
 
 
@@ -1665,7 +1666,9 @@ form .fields .pres-input-field{
     font-size: 14px;
     font-weight: 400;
 }
-
+ .smallbtnText i{
+    transform: rotate(180deg);
+ }
 
 
 form button:hover, .extrabutton:hover{
@@ -1692,6 +1695,22 @@ form .buttons button, .backBtn, .extrabutton{
 }
 
 
+.addBtn{
+    display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        max-width: 125px;
+        min-width: fit-content;
+        width: 100%;
+        border: 0.16em solid rgba(255, 255, 255, 0);
+        outline: none;
+        color: #fff;
+        border-radius: 5px;
+        background-color: var(--primary);
+        transition: all 0.3s;
+        cursor: pointer;
+}
 
 /*regform 2.0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

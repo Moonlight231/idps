@@ -54,22 +54,22 @@
         <div class="buttons">
             <a href="{{url_for('prescription', id=prescription.id)}}" class="extrabutton small-button" >
                 <span class="btnText">View Prescription</span>
-                <i class="uil uil-navigator extrai"></i>
+                <i class="uil uil-eye extrai"></i>
             </a>
             {%if prescription.prescriber_id == current_user.id%}
             <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button grey-btn" >
                 <span class="smallbtnText">Edit</span>
-                <i class="uil uil-navigator extrai"></i>
+                <i class="uil uil-pen extrai"></i>
             </a>
             <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
                 <span class="smallbtnText">Delete</span>
-                <i class="uil uil-navigator extrai"></i>
+                <i class="uil uil-trash-alt extrai"></i>
             </a>
             {%endif%}
             {%if current_user.account_type == "Pharmacy" %}
             <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button grey-btn" >
                 <span class="smallbtnText">Edit Status</span>
-                <i class="uil uil-navigator extrai"></i>
+                <i class="uil uil-pen extrai"></i>
             </a>
             {%endif%}
         </div>

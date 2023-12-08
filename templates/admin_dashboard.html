@@ -31,7 +31,7 @@
                 <h3 class="orig-h3">
                     {{doctors_count}}
                 </h3>
-                <p>Doctors Joined</p>
+                <p>Doctors</p>
             </span>
         </li>
         <li><i class='bx bx-group'></i>
@@ -109,8 +109,148 @@
         
     </ul>-->
 
+    <div class="bottom-data">
+        <div class="orders">
+            <div class="header">
+                <i class="fa-solid fa-chart-pie" style="font-size: 24px; color: var(--warning);"></i>
+                <h3>Users Distribution</h3>
+                <!--<i class='bx bx-layer' style="color: var(--primary);"></i>-->
+                <!-- <a href="#" class="allPres">
+                    <span>View All</span>
+                    <i class='bx bx-search all-pres'></i>
+                </a>       -->
+            </div>
+            <canvas id="userbase" width="50px" height="50px"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                //Chart.scaleService.updateScaleDefaults('linear', {
+                //        ticks: {
+                //           min: 0
+                //        }
+                //});
+
+                const userbase_chart = document.getElementById('userbase');
+                const doctors = {{doctors_count}};
+                const customers = {{customers_count}};
+                const pharmacies = {{pharmacies_count}};
+
+                new Chart(userbase_chart, {
+                    type: 'pie',
+                    data: {
+                    labels: ['Patients', 'Doctors', 'Pharmacies'],
+                        datasets: [{
+                            label: "Registered Users",
+                            data: [customers, doctors, pharmacies],
+                            backgroundColor: ['#fbc02d', '#1976d2', '#3f9444',
+                                '#B276B2', '#E16851', '#FB8267'],
+
+                            borderWidth: 1,
+                            
+                            hoverBorderWidth: 2,
+                            
+                            pointHoverRadius: 5
+                        }],
+                    },
+                    options: {
+                            title: {
+                                display: true,
+                                    text: "Income Vs Expenses",
+                                        fontSize: 20,
+                            },
+                            legend: {
+                                position: "right",
+                                    labels: {
+                                    fontColor: "gray"
+                                },
+                                display: true,
+                            },
+
+                            elements: {
+                                hitRadius: 3,
+                            }
+                    }
+                })
+            </script>
+
+
+
+        </div>
+        <div class="orders">
+            <div class="header">
+                <i class="fa-solid fa-chart-line" style="font-size: 24px; color: var(--primary)"></i>
+                <h3>Prescriptions per Day</h3>
+                <!--<i class='bx bx-layer' style="color: var(--primary);"></i>-->
+                <!-- <a href="#" class="allPres">
+                    <span>View All</span>
+                    <i class='bx bx-search all-pres'></i>
+                </a>       -->
+            </div>
+            
+            <canvas id="prescriptions" width="50" height="50"></canvas>
+            
+            
+
+        <script>
+            const style = getComputedStyle(document.body);
+            const light = style.getPropertyValue('--light');
+            const dark = style.getPropertyValue('--dark');
+            //Chart.scaleService.updateScaleDefaults('linear', {
+            //        ticks: {
+            //           min: 0
+            //        }
+            //});
+
+            const prescriptions_chart = document.getElementById('prescriptions');
+            const dates = JSON.parse({{dates_labels | tojson}});
+            const counts = JSON.parse({{prescription_num | tojson}});
+
+
+            new Chart(prescriptions_chart, {
+                type: 'line',
+                data: {
+                labels: dates,
+                    datasets: [{
+                        label: "Created Prescriptions",
+                        data: counts,
+                        backgroundColor: ['#5DA5DA', '#FAA43A', '#60BD68',
+                            '#B276B2', '#E16851', '#FB8267'],
+                        borderColor: 'rgb(75, 192, 192)',
+                        fontColor: "white",
+
+                        borderWidth: 2,
+                        fontColor:'rgb(75, 192, 192)',
+                        hoverBorderColor: '#5DA5DA',
+                        hoverBorderWidth: 2,
+                        hoverBackgroundColor: 'rgba(154, 245, 140)',
+                        pointHoverRadius: 5
+                    }],
+                },
+                options: {
+                        title: {
+                            display: true,
+                                text: "Income Vs Expenses",
+                                    fontSize: 20,
+                        },
+                        legend: {
+                            position: "right",
+                                labels: {
+                                fontColor: dark
+                            },
+                            display: true,
+                        },
+
+                        elements: {
+                            hitRadius: 3,
+                        }
+                }
+            })
+        </script>
+
+        </div>
+    </div>
     
-    
+
     <div class="bottom-data">
         <div class="orders">
             <div class="header">
@@ -132,7 +272,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {%for prescription in prescriptions [:6:-1]%}
+                {%for prescription in prescriptions [::-1]%}
                     <tr>
                         <td>{{prescription.id}}</td>
                         <td>
@@ -220,7 +360,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {%for customer in customers [:6:-1]%}
+                {%for customer in customers [::-1]%}
                     <tr>
                         <td>{{customer.id}}</td>
                         <td>

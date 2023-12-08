@@ -75,17 +75,17 @@
     <br>
     <div class="buttons">
         <a href="{{url_for('prescriptions')}}" class="extrabutton small-button grey-btn" >
+            <i class="uil uil-navigator extrai" style="transform: rotate(180deg); margin-left:-3px; margin-right:2px;  "></i>
             <span class="smallbtnText">Go Back</span>
-            <i class="uil uil-navigator extrai"></i>
-        </a>
+        </a> 
         {%if prescription.prescriber_id == current_user.id%}
         <a href="{{url_for('edit_prescription', id=prescription.id)}}" class="extrabutton small-button" >
             <span class="smallbtnText">Edit</span>
-            <i class="uil uil-navigator extrai"></i>
+            <i class="uil uil-pen extrai"></i>
         </a>
         <a href="{{url_for('delete_prescription', id=prescription.id)}}" class="extrabutton small-button red-btn" >
             <span class="smallbtnText">Delete</span>
-            <i class="uil uil-navigator extrai"></i>
+            <i class="uil uil-trash-alt extrai"></i>
         </a>
         {%endif%}
         {%if current_user.account_type == "Pharmacy" %}

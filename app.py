@@ -18,6 +18,7 @@ from flask_qrcode import QRcode
 from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
+import json
 
 # Create Flask Instance
 app = Flask(__name__)
@@ -402,6 +403,30 @@ def admin_dashboard():
     doctors_count = Doctors.query.count()
     pharmacies_count = Pharmacies.query.count()
     prescriptions_count = Prescriptions.query.count()
+
+    #for analytics
+    #monthly_prescriptions = db.session.query(db.func.count(Prescriptions.id), Prescriptions.date_added).group_by(Prescriptions.date_added).order_by(Prescriptions.date_added).all()
+    
+    #daily
+    dates = db.session.query(db.func.count(Prescriptions.id), Prescriptions.date_added).group_by(Prescriptions.date_added).order_by(Prescriptions.date_added).all()
+    
+    prescription_num = []
+    dates_labels = []
+    for id, date_added in dates:
+        prescription_num.append(id)
+        dates_labels.append(date_added.strftime("%m-%d-%Y"))
+    ##
+
+    #monthly
+    '''dates = db.session.query(db.func.count(Prescriptions.id), db.func.month(Prescriptions.date_added)).group_by(db.func.month(Prescriptions.date_added)).order_by(db.func.month(Prescriptions.date_added)).all()
+    
+    prescription_num = []
+    dates_labels = []
+    for id, date_added in dates:
+        prescription_num.append(id)
+        dates_labels.append(date_added)
+        #.strftime("%m-%d-%Y")'''
+
     
 
     customers = Customers.query.order_by(Customers.date_added)
@@ -412,7 +437,9 @@ def admin_dashboard():
                            pharmacies_count=pharmacies_count,
                            prescriptions_count=prescriptions_count,
                            customers=customers,
-                           prescriptions=prescriptions)
+                           prescriptions=prescriptions,
+                           prescription_num=json.dumps(prescription_num),
+                           dates_labels=json.dumps(dates_labels))
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
